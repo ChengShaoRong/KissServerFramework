@@ -1,0 +1,2 @@
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\publish\KissGennerateRIDL.pdb
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\publish\KissGennerateRIDL.exe

@@ -1,0 +1,14 @@
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.exe
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.deps.json
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.runtimeconfig.json
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.runtimeconfig.dev.json
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.dll
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\bin\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.pdb
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.AssemblyInfoInputs.cache
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.AssemblyInfo.cs
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.dll
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.pdb
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.genruntimeconfig.cache
+C:\Users\Administrator\source\repos\KissServerFramework\KissGennerateRIDL\obj\Release\netcoreapp3.1\win-x64\KissGennerateRIDL.csproj.AssemblyReference.cache
