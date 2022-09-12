@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj": {}
+    "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj": {
+    "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
         "projectName": "KissServerFramework",
-        "projectPath": "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+        "projectPath": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,7 +48,7 @@
           "dependencies": {
             "KissFramework": {
               "target": "Package",
-              "version": "[1.0.1, )"
+              "version": "[1.0.2, )"
             }
           },
           "imports": [
