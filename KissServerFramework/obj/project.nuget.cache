@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3+sh1zvVBRc2mpEMtnCDygzTd7MSwiVM1x/3UKldgTDe8H60bnpYIBFeXgCSDNAT0D2GKdjBMcnDePShXiFxsQ==",
+  "dgSpecHash": "+S4NWZCONAHB4WbnIMiGPxY91uQ9zKAGsJZ/wN848chlfIWjyQTyuWHGzO2K3V32q0mVFPlWiw3QC4eUnEP/UA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
   "expectedPackageFiles": [
@@ -9,7 +9,8 @@
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\kissframework\\1.0.0\\kissframework.1.0.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\kissframework\\1.0.1\\kissframework.1.0.1.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\kissjson\\1.0.0\\kissjson.1.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",

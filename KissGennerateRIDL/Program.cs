@@ -123,7 +123,7 @@ namespace KissGennerateRIDL
             string[] files = Directory.GetFiles(path, "*.ridl", SearchOption.AllDirectories);
             if (files.Length == 0)
                 throw new Exception($"Not exist *.ridl file in {path}.");
-            myConfig = new MyConfig(path + "/config.ini");
+            myConfig = new MyConfig(path + "/KissGennerateRIDL.ini");
             foreach (string file in files)
             {
                 string str = File.ReadAllText(file, Encoding.UTF8).Replace("\r", "").Replace("\t", " ");

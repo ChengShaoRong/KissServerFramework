@@ -47,3 +47,4 @@ C:\Users\Administrator\source\repos\KissServerFramework\KissServerFramework\obj\
 C:\Users\Administrator\source\repos\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.dll
 C:\Users\Administrator\source\repos\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.pdb
 C:\Users\Administrator\source\repos\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.genruntimeconfig.cache
+C:\Users\Administrator\source\repos\KissServerFramework\KissServerFramework\bin\Debug\netcoreapp3.1\KissJSON.dll

@@ -6,6 +6,7 @@
 
 using KissFramework;
 using System;
+using CSharpLike;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Text;

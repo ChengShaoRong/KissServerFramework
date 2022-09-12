@@ -61,9 +61,10 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "KissFramework/1.0.0": {
+      "KissFramework/1.0.1": {
         "type": "package",
         "dependencies": {
+          "KissJSON": "1.0.0",
           "MySql.Data": "8.0.29",
           "SAEA.Http": "7.0.0.3",
           "SAEA.WebSocket": "7.0.0.3"
@@ -73,6 +74,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/KissFramework.dll": {}
+        }
+      },
+      "KissJSON/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/KissJSON.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/KissJSON.dll": {}
         }
       },
       "Microsoft.NETCore.Platforms/5.0.0": {
@@ -677,18 +687,32 @@
         "lib/netstandard2.0/K4os.Hash.xxHash.xml"
       ]
     },
-    "KissFramework/1.0.0": {
-      "sha512": "lG7zcL2ZObMqGg57I6oKbJbO7VhRGXVqeCPBt9luU90PmgyUazGO5sR2iQsKujHkwG96/3c3PU/f+P4wGLuyBA==",
+    "KissFramework/1.0.1": {
+      "sha512": "Ft9jXckpcw+R4afu8EnKf0ypARCgMDtPPWY5JnBXWtHvNkeGXPTg5NodavLPsMiKuXNTkxbujsJ0yNkS8zb+2g==",
       "type": "package",
-      "path": "kissframework/1.0.0",
+      "path": "kissframework/1.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "kissframework.1.0.0.nupkg.sha512",
+        "kissframework.1.0.1.nupkg.sha512",
         "kissframework.nuspec",
         "lib/netstandard2.0/KissFramework.dll"
+      ]
+    },
+    "KissJSON/1.0.0": {
+      "sha512": "poSk2Q4s8n4n9kAGNALVCRRaMi3nPSEiLqleFblzzFL3YjsBMWzuyamFxxQWXsyPuX/UnUJ9YfbNuhcV5c0FkA==",
+      "type": "package",
+      "path": "kissjson/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "icon.png",
+        "kissjson.1.0.0.nupkg.sha512",
+        "kissjson.nuspec",
+        "lib/netstandard2.0/KissJSON.dll"
       ]
     },
     "Microsoft.NETCore.Platforms/5.0.0": {
@@ -2349,7 +2373,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "KissFramework >= 1.0.0"
+      "KissFramework >= 1.0.1"
     ]
   },
   "packageFolders": {
@@ -2400,7 +2424,7 @@
         "dependencies": {
           "KissFramework": {
             "target": "Package",
-            "version": "[1.0.0, )"
+            "version": "[1.0.1, )"
           }
         },
         "imports": [
