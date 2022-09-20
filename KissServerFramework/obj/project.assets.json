@@ -52,7 +52,7 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "KissFramework/1.0.2": {
+      "KissFramework/1.0.3": {
         "type": "package",
         "dependencies": {
           "KissJSON": "1.0.0",
@@ -662,16 +662,16 @@
         "lib/netstandard2.0/K4os.Hash.xxHash.xml"
       ]
     },
-    "KissFramework/1.0.2": {
-      "sha512": "ahzXDTzABtg5P63LjYkLcrlolBPoZ0DhQOxz9YbMYD/bTCJ1623kN+Iq3ebC0P0R+a7CNaeJWIq+SI2PGiYk7A==",
+    "KissFramework/1.0.3": {
+      "sha512": "8dNK0t5KO/ivSSGwXcPdTryARR494eyZbpy2rEnTVwbixY7nc6uCfDV9FvT8aIX2CW8APSGSrzLkaCoFTXy8TA==",
       "type": "package",
-      "path": "kissframework/1.0.2",
+      "path": "kissframework/1.0.3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "kissframework.1.0.2.nupkg.sha512",
+        "kissframework.1.0.3.nupkg.sha512",
         "kissframework.nuspec",
         "lib/netstandard2.0/KissFramework.dll"
       ]
@@ -2363,7 +2363,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "KissFramework >= 1.0.2"
+      "KissFramework >= 1.0.3"
     ]
   },
   "packageFolders": {
@@ -2373,11 +2373,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
       "projectName": "KissServerFramework",
-      "projectPath": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+      "projectPath": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2414,7 +2414,7 @@
         "dependencies": {
           "KissFramework": {
             "target": "Package",
-            "version": "[1.0.2, )"
+            "version": "[1.0.3, )"
           }
         },
         "imports": [

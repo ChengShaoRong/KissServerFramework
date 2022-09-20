@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "OJ9MZlxQMTQImcDY9CxXllAz2DnVel2H2JhLGlh5MGSLIfDX7TcC+WisxK3XJcTDtZLsE58fsFu2ft6LSBOiwg==",
+  "dgSpecHash": "Fp892+pCabaMPHA+pTy6sMbZccxKJNnxFM7HPoZTa42beOFNPFo7e7vhXigqOcvesQWkDxlil6+58nYrwA43Ew==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Source\\Repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+  "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\kissframework\\1.0.2\\kissframework.1.0.2.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\kissframework\\1.0.3\\kissframework.1.0.3.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\kissjson\\1.0.0\\kissjson.1.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",

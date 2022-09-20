@@ -89,7 +89,6 @@ C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServer
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Security.Principal.Windows.dll
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
-C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.csproj.AssemblyReference.cache
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.AssemblyInfoInputs.cache
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.AssemblyInfo.cs
@@ -98,3 +97,5 @@ C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServer
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.dll
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.pdb
 C:\Users\Administrator\Source\Repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.genruntimeconfig.cache
+C:\Users\Administrator\source\repos\ChengShaoRong\KissServerFramework\KissServerFramework\obj\Debug\netcoreapp3.1\KissServerFramework.csproj.AssemblyReference.cache
+C:\Users\Administrator\source\repos\ChengShaoRong\KissServerFramework\KissServerFramework\bin\Debug\netcoreapp3.1\KissServerFramework.json

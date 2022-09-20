@@ -6,7 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KissFramework" Version="1.0.2" />
+    <PackageReference Include="KissFramework" Version="1.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="KissServerFramework.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet $(ProjectDir)KissGennerateRIDL.dll" />
+  </Target>
 
 </Project>

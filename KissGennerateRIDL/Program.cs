@@ -43,7 +43,8 @@ namespace KissGennerateRIDL
                         folder = arg;
                 }
             }
-            if (string.IsNullOrEmpty(serialNumber))
+            bool bFree = string.IsNullOrEmpty(serialNumber);
+            if (bFree)
                 serialNumber = "anonymous";
             Console.WriteLine("folder = "+ folder);
             Console.WriteLine("debug = " + debug);
@@ -54,11 +55,12 @@ namespace KissGennerateRIDL
                 //Prepare the RIDL file.
                 JSONData jsonData = JSONData.NewDictionary();
                 jsonData["sn"] = serialNumber;
-                jsonData["files"] = LoadFiles(folder);
+                jsonData["files"] = LoadFiles(folder, bFree ? 20 : 200);//Don't modify the value of maxCount, the real limit is at server, not here.
 
                 //Request the web service.
                 Console.WriteLine("start send request.");
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("http://sn.csharplike.com:11114/GennerateRIDL");
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(bFree
+                    ? "http://sn.csharplike.com:11114/GennerateRIDL" : "http://snVIP.csharplike.com:11114/GennerateRIDL");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Timeout = 30000;//30 seconds
                 httpWebRequest.Method = "POST";
@@ -100,7 +102,7 @@ namespace KissGennerateRIDL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
 
             //Let user see the log at console in debug mode.
@@ -116,8 +118,9 @@ namespace KissGennerateRIDL
         /// </summary>
         /// <param name="path">The folder paht of your RIDL file, we will search all RIDL files in it with all directories. 
         /// And we will save file md5 value into 'config.ini' file in that folder for check the RIDL file whether was modified.</param>
+        /// <param name="maxCount">Limit the file count process each time. </param>
         /// <returns>The JSONData about to send to server. We won't save any your file name or your file content in our server.</returns>
-        public static JSONData LoadFiles(string path)
+        public static JSONData LoadFiles(string path, int maxCount)
         {
             JSONData jsonDatas = JSONData.NewList();//[{"path":"path1","content":"base64"},{"path":"path2","content":"base64"}]
             string[] files = Directory.GetFiles(path, "*.ridl", SearchOption.AllDirectories);
@@ -126,6 +129,11 @@ namespace KissGennerateRIDL
             myConfig = new MyConfig(path + "/KissGennerateRIDL.ini");
             foreach (string file in files)
             {
+                if (jsonDatas.Count > maxCount)
+                {
+                    Console.WriteLine($"Had reach max file count of each time, you need run the 'KissGennerateRIDL.exe' again. Free max count is 20 and VIP is 200. e.g. If you are free user and have 25 *.ridl files want to process, you first time run the 'KissGennerateRIDL.exe' will process 20 files, and the second time run the 'KissGennerateRIDL.exe' will process the next 5 files.");
+                    break;
+                }
                 string str = File.ReadAllText(file, Encoding.UTF8).Replace("\r", "").Replace("\t", " ");
                 while (str.Contains("  "))
                     str = str.Replace("  ", " ");
@@ -165,7 +173,7 @@ namespace KissGennerateRIDL
                 jsonData["content"] = strFinal;
             }
             if (jsonDatas.Count == 0)
-                throw new Exception($"All *.ridl file in {path} were not be modified since last success request. You can delete '{path}/config.ini' if you want to force rebuild all files.");
+                throw new Exception($"All *.ridl file in {path} were not be modified since last success request. You can delete '{path}/KissGennerateRIDL.ini' if you want to force rebuild all files.");
             return jsonDatas;
         }
     }

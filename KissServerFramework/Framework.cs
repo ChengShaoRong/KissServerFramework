@@ -39,7 +39,7 @@ namespace KissServerFramework
         /// Process the command input from the console, that run in main thread.
         /// You can do some command to control your game logic, e.g. some cheat command.
         /// </summary>
-        /// <param name="cmd">The command input from the console</param>
+        /// <param name="cmd">The command input from the console, was convert to lowercase letters.</param>
         protected override void OnCommand(string cmd)
         {
             switch (cmd)
@@ -52,8 +52,9 @@ namespace KissServerFramework
                 //Add your custom command below.
                 case "test":
                     {
-                        new ThreadPoolHttp("http://www.teachmeplay.com:11114/UpdateAnonymous", "ver=123&startTime=1970-01-01",
-                            (cb) =>
+                        //The real request run in background thread.
+                        new ThreadPoolHttp("http://sn.csharplike.com:11114/UpdateAnonymous", "ver=123&startTime=1970-01-01",
+                            (cb) =>//The callback function run in main thread. You can do some work after your HTTP request done.
                             {
                                 Logger.LogInfo(cb);
                             });
@@ -61,11 +62,30 @@ namespace KissServerFramework
                     break;
                 case "test2":
                     {
-                        new ThreadPoolHttp("http://www.teachmeplay.com:11114/UpdateAnonymous2", "{\"ver\":123,\"startTime\":\"1970-01-01\"}",
-                            (cb) =>
+                        //The real request run in background thread.
+                        new ThreadPoolHttp("http://sn.csharplike.com:11114/UpdateAnonymous", "{\"ver\":123,\"startTime\":\"1970-01-01\"}",
+                            (cb) =>//The callback function run in main thread. You can do some work after your HTTP request done.
                             {
                                 Logger.LogInfo(cb);
                             });
+                    }
+                    break;
+                case "testthread":
+                    {
+                        //We test read a file in thread, and then process the result.
+                        string strFile = "./KissFramework.dll";
+                        string result = "";
+                        new ThreadPoolEvent(() =>//This function run in thread. You can do some heavy work in thread here, such as IO operation.
+                        {
+                            Logger.LogInfo($"start read file {strFile}", false);//Print log in thread you must set the param 'useInMainThread' as false.
+                            byte[] buff = System.IO.File.ReadAllBytes(strFile);
+                            System.Threading.Thread.Sleep(1000);//We simulate that work take long time.
+                            result = $"{strFile} file length = {buff.Length}";
+                        },
+                        () =>//This function run in main thread. You can do some work after your work done.
+                        {
+                            Logger.LogInfo(result);
+                        });
                     }
                     break;
 
@@ -79,7 +99,7 @@ namespace KissServerFramework
         /// <summary>
         /// Process HTTP message, that run in main thread.
         /// </summary>
-        /// <param name="url">The url string</param>
+        /// <param name="url">The url string, that case sensitive.</param>
         /// <param name="jsonData">The request JSON data from client, support GET/POST data</param>
         /// <param name="url">The client ip</param>
         /// <param name="delayCallback">If you want to do something in thread or delay callback,

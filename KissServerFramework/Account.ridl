@@ -4,9 +4,10 @@
 //JSON config, must start with '{' and end with '}'
 {
     "version":1,                                         //RIDL version
-    "IAsyncUpdateDB":true,                               //This class whether inherit IAsyncUpdateDB.
+    "UpdateDB":true,                               		 //This class whether inherit IAsyncUpdateDB.
     "InsertDB":true,                                     //Insert data into database.
     "SelectDB":["","uid","uid,acctType","name,acctType"] //Select data from database. "" mean add function 'SelectAll(Action<List<SerialNumber>, string> callback)'. "sn" mean add function 'SelectBySn(string sn,Action<List<SerialNumber>, string> callback)'. "sn#snType" mean add function 'SelectBySnAndSnType(string sn, int snType, Action<List<SerialNumber>, string> callback)'.
+    "DeleteDB":["","uid","uid,acctType","name,acctType"] //Delete data from database. "" mean add function 'DeleteAll(Action<int, string> callback)'. "sn" mean add function 'SelectBySn(string sn,Action<int, string> callback)'. "sn#snType" mean add function 'SelectBySnAndSnType(string sn, int snType, Action<int, string> callback)'.
 }
 
 //Annotation
