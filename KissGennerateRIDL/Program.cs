@@ -9,7 +9,10 @@ namespace KissGennerateRIDL
     class Program
     {
         /// <summary>
-        /// Normally you just run this program withow args, andd automatic turn all *.ridl files in current folder(include sub folder) into *.cs.
+        /// Normally you just run this program withow args, and automatic turn all *.ridl files in current folder(include sub folder) into *.cs.
+        /// You can set the 'KissGennerateRIDL.ini' in current folder.
+        /// If your are using Full C#Like version, you can set 'KissGennerateRIDL.ini' like this 'folderClientFull = D:/MyProject/Assets/C#Like/HotUpdateScripts/Sample/NetObjects'.
+        /// If your are using Free C#Like version, you can set 'KissGennerateRIDL.ini' like this 'folderClientFree = D:/MyProject/Assets/C#Like/HotUpdateScripts/Sample/NetObjects'.
         /// </summary>
         /// <param name="args">[folder path] [debug] [serial number]</param>
         static void Main(string[] args)
@@ -64,7 +67,7 @@ namespace KissGennerateRIDL
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Timeout = 30000;//30 seconds
                 httpWebRequest.Method = "POST";
-                byte[] buffPost = Encoding.UTF8.GetBytes(jsonData);
+                byte[] buffPost = Encoding.UTF8.GetBytes(jsonData.ToJson());
                 httpWebRequest.ContentLength = buffPost.Length;
                 using (Stream stream = httpWebRequest.GetRequestStream())
                     stream.Write(buffPost, 0, buffPost.Length);
@@ -77,21 +80,71 @@ namespace KissGennerateRIDL
                     }
                 }
 
-                //Save file if successes.
+                //Save file if success.
                 jsonData = KissJson.ToJSONData(callback);
                 if (string.IsNullOrEmpty(jsonData["error"]))
                 {
                     JSONData jsonFiles = jsonData["files"];
                     Console.WriteLine($"received {jsonFiles.Count} files.");
+                    string folderServerBackup = folder + "\\Export\\Server";
+                    string folderClientFullBackup = folder + "\\Export\\Client\\FullVersion";
+                    string folderClientFreeBackup = folder + "\\Export\\Client\\FreeVersion";
+                    string folderClientFull = myConfig.GetString("folderClientFull");//Absolute path for Unity with Full C#Like version, such as set 'KissGennerateRIDL.ini' like this 'folderClientFull = D:/MyProject/Assets/C#Like/HotUpdateScripts/Sample/NetObjects'
+                    string folderClientFree = myConfig.GetString("folderClientFree");//Absolute path for Unity with Free C#Like version, such as set 'KissGennerateRIDL.ini' like this 'folderClientFree = D:/MyProject/Assets/C#Like/HotUpdateScripts/Sample/NetObjects'
+                    if (!Directory.Exists(folderServerBackup))
+                        Directory.CreateDirectory(folderServerBackup);
+                    if (!Directory.Exists(folderClientFullBackup))
+                        Directory.CreateDirectory(folderClientFullBackup);
+                    if (!Directory.Exists(folderClientFreeBackup))
+                        Directory.CreateDirectory(folderClientFreeBackup);
+                    if (!string.IsNullOrEmpty(folderClientFull) && !Directory.Exists(folderClientFull))
+                        Directory.CreateDirectory(folderClientFull);
+                    if (!string.IsNullOrEmpty(folderClientFree) && !Directory.Exists(folderClientFree))
+                        Directory.CreateDirectory(folderClientFree);
+                    if (!File.Exists(folder + "\\Export\\ReadMe.txt"))
+                        File.WriteAllText(folder + "\\Export\\ReadMe.txt", "Folder '/Export/Server/' is for server code backup (We had copy '*.cs' to the path that same with the '*.ridl'), all files in that folder name suffix with '.cs.backup'.\n\nFolder '/Export/Client/FullVersion' is for the C#Like FULL version, and folder '/Export/Client/FreeVersion' is for the C#Like FREE version. You choose that according to your C#Like version . All files in their folder name suffix with '.backup', please rename all the '*.cs.backup' to '*.cs' after you copy to your Unity project, because we don't want that code be identified as server code by KissServerFramework project.\n\nYou can copy that client code to your C#Like HotUpdate script folder in your Unity project, such as 'Assets\\C#Like\\HotUpdateScripts\\NetObjects\\'.\n\nStrong recommend that set absolute path in KissGennerateRIDL.ini for copy the '*.cs' to your project. \nIf your are using Full C#Like version, you can set 'config.ini' like this 'folderClientFull = D:/MyProject/Assets/C#Like/HotUpdateScripts/NetObjects' \nIf your are using Free C#Like version, you can set 'KissGennerateRIDL.ini' like this 'folderClientFree = D:/MyProject/Assets/C#Like/HotUpdateScripts/Sample/NetObjects'");
+
                     for (int i = 0; i < jsonFiles.Count; i++)
                     {
                         JSONData jsonFile = jsonFiles[i];
-                        Console.WriteLine($"path : {jsonFile["path"]}");
+                        string fileName = jsonFile["fileName"];
+                        Console.WriteLine($"fileName : {fileName}");
+
+                        byte[] buff = CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["content"]));
                         if (!File.Exists(folder + "\\" + jsonFile["path"]))
-                            File.WriteAllBytes(folder + "\\" + jsonFile["path"], CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["content"])));
+                            File.WriteAllBytes(folder + "\\" + jsonFile["path"], buff);
                         else
                             Console.WriteLine($"Exist {folder + "\\" + jsonFile["path"]}, it won't be replace.");
-                        File.WriteAllBytes(folder + "\\" + jsonFile["pathBase"], CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["contentBase"])));
+                        File.WriteAllBytes(folderServerBackup + "\\" + fileName + ".cs.txt", buff);
+
+                        buff = CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["contentBase"]));
+                        File.WriteAllBytes(folder + "\\" + jsonFile["pathBase"], buff);
+                        File.WriteAllBytes(folderServerBackup + "\\" + fileName + "_Base.cs.txt", buff);
+
+                        buff = CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["contentFull"]));
+                        File.WriteAllBytes(folderClientFullBackup + "\\" + fileName + ".cs.txt", buff);
+                        if (!string.IsNullOrEmpty(folderClientFull))
+                        {
+                            if (!File.Exists(folderClientFull+"\\"+ fileName+".cs"))
+                                File.WriteAllBytes(folderClientFull + "\\" + fileName + ".cs", buff);
+                            else
+                                Console.WriteLine($"Exist {folderClientFull + "\\" + fileName + ".cs"}, it won't be replace.");
+                        }
+
+                        buff = CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["contentFullBase"]));
+                        File.WriteAllBytes(folderClientFullBackup + "\\" + fileName + "_Base.cs.txt", buff);
+                        if (!string.IsNullOrEmpty(folderClientFull))
+                            File.WriteAllBytes(folderClientFull + "\\" + fileName + "_Base.cs", buff);
+
+                        buff = CSL_Utils.Decompress(Convert.FromBase64String(jsonFile["contentFree"]));
+                        File.WriteAllBytes(folderClientFreeBackup + "\\" + fileName + ".cs.txt", buff);
+                        if (!string.IsNullOrEmpty(folderClientFree))
+                        {
+                            if (!File.Exists(folderClientFree + "\\" + fileName + ".cs"))
+                                File.WriteAllBytes(folderClientFree + "\\" + fileName + ".cs", buff);
+                            else
+                                Console.WriteLine($"Exist {folderClientFree + "\\" + fileName + ".cs"}, it won't be replace. You should merge it yourself!!!!!");
+                        }
                     }
                     myConfig.Save();//save the config file when success.
                 }
@@ -117,7 +170,7 @@ namespace KissGennerateRIDL
         /// Load all the modified RIDL files into JSONData object.
         /// </summary>
         /// <param name="path">The folder paht of your RIDL file, we will search all RIDL files in it with all directories. 
-        /// And we will save file md5 value into 'config.ini' file in that folder for check the RIDL file whether was modified.</param>
+        /// And we will save file md5 value into 'KissGennerateRIDL.ini' file in that folder for check the RIDL file whether was modified.</param>
         /// <param name="maxCount">Limit the file count process each time. </param>
         /// <returns>The JSONData about to send to server. We won't save any your file name or your file content in our server.</returns>
         public static JSONData LoadFiles(string path, int maxCount)
@@ -127,6 +180,10 @@ namespace KissGennerateRIDL
             if (files.Length == 0)
                 throw new Exception($"Not exist *.ridl file in {path}.");
             myConfig = new MyConfig(path + "/KissGennerateRIDL.ini");
+            if (string.IsNullOrEmpty(myConfig.GetString("folderClientFull")))
+                myConfig.SetString("folderClientFull","");
+            if (string.IsNullOrEmpty(myConfig.GetString("folderClientFree")))
+                myConfig.SetString("folderClientFree", "");
             foreach (string file in files)
             {
                 if (jsonDatas.Count > maxCount)
@@ -173,7 +230,7 @@ namespace KissGennerateRIDL
                 jsonData["content"] = strFinal;
             }
             if (jsonDatas.Count == 0)
-                throw new Exception($"All *.ridl file in {path} were not be modified since last success request. You can delete '{path}/KissGennerateRIDL.ini' if you want to force rebuild all files.");
+                throw new Exception($"All *.ridl files in {path} were not be modified since last success request. You can delete '{path}/KissGennerateRIDL.ini' if you want to force rebuild all files.");
             return jsonDatas;
         }
     }

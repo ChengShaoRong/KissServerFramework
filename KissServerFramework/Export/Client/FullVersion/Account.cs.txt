@@ -1,0 +1,72 @@
+//It's automatic generate by Account.ridl.
+//You can custom this class, such as override the virtual function in class Account_Base, but DON'T modify 'Account_Base.cs'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class Account : Account_Base
+	{
+		#region Event for property value changed
+		public override void OnChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnBaseInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnLoginInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnNicknameChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnMoneyChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnScoreChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnLastLoginTimeChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnDeleted()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		#endregion //Event for property value changed
+		#region Event for sub system had callback object or delete
+		public override void OnCallbackObjectItems(List<Item> data)
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCallbackDeleteItems(List<Item> data)
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCallbackObjectMails(List<Mail> data)
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCallbackDeleteMails(List<Mail> data)
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCallbackObjectSignIn()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCallbackDeleteSignIn()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		#endregion //Event for sub system had callback object or delete
+	}
+}

@@ -1,18 +1,14 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
+    "net5.0": {
       "Google.Protobuf/3.19.4": {
         "type": "package",
-        "dependencies": {
-          "System.Memory": "4.5.3",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
-        },
         "compile": {
-          "lib/netstandard2.0/Google.Protobuf.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Google.Protobuf.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {}
         }
       },
       "K4os.Compression.LZ4/1.2.6": {
@@ -52,10 +48,10 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "KissFramework/1.0.3": {
+      "KissFramework/1.0.6": {
         "type": "package",
         "dependencies": {
-          "KissJSON": "1.0.0",
+          "KissJSON": "1.0.2",
           "MySql.Data": "8.0.30",
           "SAEA.Http": "7.0.0.3",
           "SAEA.WebSocket": "7.0.0.3"
@@ -67,7 +63,7 @@
           "lib/netstandard2.0/KissFramework.dll": {}
         }
       },
-      "KissJSON/1.0.0": {
+      "KissJSON/1.0.2": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/KissJSON.dll": {}
@@ -125,14 +121,14 @@
           "System.Text.Encoding.CodePages": "4.4.0"
         },
         "compile": {
-          "lib/netstandard2.1/MySql.Data.dll": {},
-          "lib/netstandard2.1/Ubiety.Dns.Core.dll": {},
-          "lib/netstandard2.1/ZstdNet.dll": {}
+          "lib/net5.0/MySql.Data.dll": {},
+          "lib/net5.0/Ubiety.Dns.Core.dll": {},
+          "lib/net5.0/ZstdNet.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.1/MySql.Data.dll": {},
-          "lib/netstandard2.1/Ubiety.Dns.Core.dll": {},
-          "lib/netstandard2.1/ZstdNet.dll": {}
+          "lib/net5.0/MySql.Data.dll": {},
+          "lib/net5.0/Ubiety.Dns.Core.dll": {},
+          "lib/net5.0/ZstdNet.dll": {}
         }
       },
       "Pipelines.Sockets.Unofficial/2.2.0": {
@@ -141,10 +137,10 @@
           "System.IO.Pipelines": "5.0.0"
         },
         "compile": {
-          "lib/netcoreapp3.1/Pipelines.Sockets.Unofficial.dll": {}
+          "lib/net5.0/Pipelines.Sockets.Unofficial.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.1/Pipelines.Sockets.Unofficial.dll": {}
+          "lib/net5.0/Pipelines.Sockets.Unofficial.dll": {}
         }
       },
       "Portable.BouncyCastle/1.9.0": {
@@ -162,19 +158,19 @@
           "protobuf-net.Core": "3.0.73"
         },
         "compile": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {}
+          "lib/net5.0/protobuf-net.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.dll": {}
+          "lib/net5.0/protobuf-net.dll": {}
         }
       },
       "protobuf-net.Core/3.0.73": {
         "type": "package",
         "compile": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {}
+          "lib/net5.0/protobuf-net.Core.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.1/protobuf-net.Core.dll": {}
+          "lib/net5.0/protobuf-net.Core.dll": {}
         }
       },
       "SAEA.Common/7.0.0.3": {
@@ -481,10 +477,10 @@
           "System.Windows.Extensions": "5.0.0"
         },
         "compile": {
-          "ref/netcoreapp3.0/System.Security.Permissions.dll": {}
+          "ref/net5.0/System.Security.Permissions.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.0/System.Security.Permissions.dll": {}
+          "lib/net5.0/System.Security.Permissions.dll": {}
         }
       },
       "System.Security.Principal.Windows/5.0.0": {
@@ -662,30 +658,30 @@
         "lib/netstandard2.0/K4os.Hash.xxHash.xml"
       ]
     },
-    "KissFramework/1.0.3": {
-      "sha512": "8dNK0t5KO/ivSSGwXcPdTryARR494eyZbpy2rEnTVwbixY7nc6uCfDV9FvT8aIX2CW8APSGSrzLkaCoFTXy8TA==",
+    "KissFramework/1.0.6": {
+      "sha512": "2wGyxgkg+nXYsQRwvpulDgFngBbgDKoH4H1tH10poosk83QnoFxmvtAZYh10MaGBfAU6BIc0UrzfliK+h+eQjA==",
       "type": "package",
-      "path": "kissframework/1.0.3",
+      "path": "kissframework/1.0.6",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "kissframework.1.0.3.nupkg.sha512",
+        "kissframework.1.0.6.nupkg.sha512",
         "kissframework.nuspec",
         "lib/netstandard2.0/KissFramework.dll"
       ]
     },
-    "KissJSON/1.0.0": {
-      "sha512": "poSk2Q4s8n4n9kAGNALVCRRaMi3nPSEiLqleFblzzFL3YjsBMWzuyamFxxQWXsyPuX/UnUJ9YfbNuhcV5c0FkA==",
+    "KissJSON/1.0.2": {
+      "sha512": "DJdH363jrSdMvDjDkk/PoLyrHkC/1jNmsjISfkXjdKyBfQd0o5Qz2jzehWAZWUPVZa9clx3BZ9cAarnuozjWGw==",
       "type": "package",
-      "path": "kissjson/1.0.0",
+      "path": "kissjson/1.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.txt",
+        "README.md",
         "icon.png",
-        "kissjson.1.0.0.nupkg.sha512",
+        "kissjson.1.0.2.nupkg.sha512",
         "kissjson.nuspec",
         "lib/netstandard2.0/KissJSON.dll"
       ]
@@ -2362,43 +2358,41 @@
     }
   },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
-      "KissFramework >= 1.0.3"
+    "net5.0": [
+      "KissFramework >= 1.0.6"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\vincent\\.nuget\\packages\\": {},
+    "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+      "projectUniqueName": "D:\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
       "projectName": "KissServerFramework",
-      "projectPath": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
-      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\source\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\obj\\",
+      "projectPath": "D:\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\KissServerFramework.csproj",
+      "packagesPath": "C:\\Users\\vincent\\.nuget\\packages\\",
+      "outputPath": "D:\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "D:\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 20.1.config",
+        "C:\\Users\\vincent\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "netcoreapp3.1"
+        "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 20.1\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "projectReferences": {}
         }
       },
@@ -2409,12 +2403,12 @@
       }
     },
     "frameworks": {
-      "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
+      "net5.0": {
+        "targetAlias": "net5.0",
         "dependencies": {
           "KissFramework": {
             "target": "Package",
-            "version": "[1.0.3, )"
+            "version": "[1.0.6, )"
           }
         },
         "imports": [
@@ -2432,7 +2426,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.412\\RuntimeIdentifierGraph.json"
       }
     }
   }

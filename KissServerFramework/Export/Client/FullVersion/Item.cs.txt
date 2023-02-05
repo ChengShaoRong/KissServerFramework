@@ -1,0 +1,30 @@
+//It's automatic generate by Item.ridl.
+//You can custom this class, such as override the virtual function in class Item_Base, but DON'T modify 'Item_Base.cs'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class Item : Item_Base
+	{
+		#region Event for property value changed
+		public override void OnChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnBaseInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnCountChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnDeleted()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		#endregion //Event for property value changed
+	}
+}

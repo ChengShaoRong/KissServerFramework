@@ -1,0 +1,12 @@
+//It's automatic generate by Mail.ridl.
+//You can custom this class, such as override the virtual function in class Mail_Base, but DON'T modify 'Mail_Base.cs'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class Mail : Mail_Base
+	{
+	}
+}

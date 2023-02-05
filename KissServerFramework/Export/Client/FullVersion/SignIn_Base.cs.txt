@@ -1,0 +1,53 @@
+//It's automatic generate by SignIn.ridl, DON'T modify this file.
+//You should modify 'SignIn.cs' or 'SignIn.ridl'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class SignIn_Base
+	{
+		public int acctId;
+		public int month;
+		public string signInList;
+		public string vipSignInList;
+		public static SignIn ToSignIn(JSONData jsonData)
+		{
+			return (SignIn)KissJson.ToObject(typeof(SignIn), jsonData);
+		}
+		public static List<SignIn> ToSignIns(JSONData jsonData)
+		{
+			List<object> objs = KissJson.ToObjects(typeof(SignIn), jsonData);
+			List<SignIn> signIns = new List<SignIn>();
+			foreach (object obj in objs)
+				signIns.Add((SignIn)obj);
+			return signIns;
+		}
+
+		public override string ToString()
+		{
+			return KissJson.ToJSONData(this).ToJson();
+		}
+		public void Clear()
+		{
+			KissJson.ClearCache(_uid_);
+		}
+		string _uid_ = "";
+		ulong _sendMask_ = 0;
+		public virtual void OnChanged() {}
+		public virtual void OnUidInfoChanged(){}
+		public virtual void OnMonthInfoChanged(){}
+		public virtual void OnSignInInfoChanged(){}
+		public virtual void OnVipSignInInfoChanged(){}
+		public virtual void OnDeleted(){}
+		public void NotifyValuesChanged()
+		{
+			if ((_sendMask_ & 1) > 0) OnUidInfoChanged();
+			if ((_sendMask_ & 2) > 0) OnMonthInfoChanged();
+			if ((_sendMask_ & 4) > 0) OnSignInInfoChanged();
+			if ((_sendMask_ & 8) > 0) OnVipSignInInfoChanged();
+			if (_sendMask_ > 0) OnChanged();
+		}
+	}
+}

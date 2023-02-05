@@ -1,0 +1,38 @@
+//It's automatic generate by SignIn.ridl.
+//You can custom this class, such as override the virtual function in class SignIn_Base, but DON'T modify 'SignIn_Base.cs'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class SignIn : SignIn_Base
+	{
+		#region Event for property value changed
+		public override void OnChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnUidInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnMonthInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnSignInInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnVipSignInInfoChanged()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		public override void OnDeleted()
+		{
+			//Add your code here, or delete this function if you don't need it.
+		}
+		#endregion //Event for property value changed
+	}
+}

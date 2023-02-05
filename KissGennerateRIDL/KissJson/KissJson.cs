@@ -1,5 +1,4 @@
 /*
- *           C#Like
  * KissJson : Keep It Simple Stupid JSON
  * Copyright © 2022 RongRong. All right reserved.
  */
@@ -1007,6 +1006,28 @@ namespace CSharpLike
             return obj;
         }
 #endif
+        static Assembly[] _mAssemblys = AppDomain.CurrentDomain.GetAssemblies();
+        static Dictionary<string, Type> _TypeCache = new Dictionary<string, Type>();
+        static Type _GetType(string typeName)
+        {
+            Type type;
+            if (_TypeCache.TryGetValue(typeName, out type))
+                return type;
+            if (_mAssemblys == null)
+                _mAssemblys = AppDomain.CurrentDomain.GetAssemblies();
+            type = Type.GetType(typeName);
+            if (type == null)
+            {
+                foreach (var item in _mAssemblys)
+                {
+                    type = Type.GetType(typeName + "," + item);
+                    if (type != null)
+                        break;
+                }
+            }
+            _TypeCache[typeName] = type;
+            return type;
+        }
         static object _ToObject(Type type, JSONData jsonObj)
         {
             if (jsonObj == null)
@@ -1057,7 +1078,7 @@ namespace CSharpLike
                                     RemoveNullable(ref strType);
                                     Dictionary<string, JSONData> dics = value.Value as Dictionary<string, JSONData>;
                                     var newDics = f.FieldType.Assembly.CreateInstance(f.FieldType.FullName) as IDictionary;
-                                    Type subType = Type.GetType(strType);
+                                    Type subType = _GetType(strType);
                                     switch (strType)
                                     {
                                         case "System.String":
@@ -1105,7 +1126,7 @@ namespace CSharpLike
                                 RemoveList(ref strType);
                                 RemoveNullable(ref strType);
                                 var newArray = f.FieldType.Assembly.CreateInstance(f.FieldType.FullName) as IList;
-                                Type subType = Type.GetType(strType);
+                                Type subType = _GetType(strType);
                                 List<JSONData> arrays = value.Value as List<JSONData>;
                                 switch (strType)
                                 {
@@ -1192,7 +1213,7 @@ namespace CSharpLike
                                     RemoveNullable(ref strType);
                                     Dictionary<string, JSONData> dics = value.Value as Dictionary<string, JSONData>;
                                     var newDics = f.PropertyType.Assembly.CreateInstance(f.PropertyType.FullName) as IDictionary;
-                                    Type subType = Type.GetType(strType);
+                                    Type subType = _GetType(strType);
                                     switch (strType)
                                     {
                                         case "System.String":
@@ -1240,7 +1261,7 @@ namespace CSharpLike
                                 RemoveList(ref strType);
                                 RemoveNullable(ref strType);
                                 var newArray = f.PropertyType.Assembly.CreateInstance(f.PropertyType.FullName) as IList;
-                                Type subType = Type.GetType(strType);
+                                Type subType = _GetType(strType);
                                 List<JSONData> arrays = value.Value as List<JSONData>;
                                 switch (strType)
                                 {

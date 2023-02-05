@@ -1,0 +1,100 @@
+﻿//All line string prefix with '//' will be removed, just as annotation in ridl file.
+//All the '\t' will be replace as space and the multiple spaces will be trim as A space.
+//All file format must using UTF8.
+//Don't use both prefix and subfix with '_' as variable name in RIDL, such as '_XXXXX_', that use for internal variable.
+//JSON config, must start with '{' and end with '}'
+{
+    "version":1,                                         //RIDL version
+    "database":"MySQL",                                  //Using MySQL (Only support 'MySQL' now).
+    "SyncKeyword":"account",                             //Using sync to client, MUST unique in all ridl
+    "Sync":[                                             //Using config sub system that will be automatic sync to client. Only the 'Account.ridl' need config this.
+            {//This config for Item.ridl, this's sample for multiple record in database to a account
+                "type":"Item",                               //MUST same with the file name of Item.ridl
+                "keyword":"items",                           //MUST same with the SyncKeyword in the Item.ridl
+                "sortKeyType":"int",                         //MUST same with the type of itemId in Item.ridl, if set this will create 'Dictionary<int, Item> mails', otherwise will create a single 'Mail _mail_;'
+                "sortKeyName":"itemId",                      //MUST same with the name of itemId in Item.ridl
+                "limit":100,                                 //Max count in ONE packet of 'CB_Object', if you don't want to split it, set it 0
+                "delay":100,                                 //Delay to sync to client, in millisecond.
+                "ClientOnChanged":true,                      //Whether call Event when property changed, MUST same with ClientOnChanged in the 'Item.ridl'
+                "stackIfExist":{"checkSame":"uid", "stack":"count"}//Stack count if exist prevent duplicate due to multithreading, "checkSame" is the unique id, "stack" is which value will stack if duplicate. Remove it if it impossible duplicate, e.g. like mail.
+            },
+            {//This config for Mail.ridl
+                "type":"Mail",
+                "keyword":"mails",
+                "sortKeyType":"int",
+                "sortKeyName":"uid",
+                "limit":50,
+                "delay":100,
+                "ClientOnChanged":false
+            },
+            {//This config for SignIn.ridl, this's sample for single record in database to a account
+                "type":"SignIn",                            //MUST same with the file name of SignIn.ridl
+                "keyword":"signIn",                         //MUST same with the SyncKeyword in the SignIn.ridl
+                "delay":100                                 //Delay to sync to client, in millisecond.
+            }
+        ],
+    "MainNetObject":"",                                  //The main NetObject name, if empty will inherit MainNetObject (ONLY Account.ridl MUST set "", other set "Account"), otherwise inherit NetObject
+    "InsertDB":true,                                     //Insert data into database.
+    "ClientOnChanged":true,                              //Config the client code whether implement OnChanged or OnXXXXChanged or OnDeleted, default is true, must same with the Sync in 'Account.ridl'
+    "SelectDB":["","uid","uid,acctType","name,acctType"],//Select data from database. "" mean add function 'SelectAll(Action<List<Account>, string> callback)'. "uid" mean add function 'SelectByUid(int uid,Action<List<Account>, string> callback)'. "uid,acctType" mean add function 'SelectBySnAndAcctType(int uid, int acctType, Action<List<Account>, string> callback)'.
+    "DeleteDB":["","uid","uid,acctType","name,acctType"] //Delete data from database. "" mean add function 'DeleteAll(Action<int, string> callback)'. "uid" mean add function 'DeleteByUid(int uid,Action<int, string> callback)'. "uid,acctType" mean add function 'DeleteByUidAndAcctType(int uid, int acctType, Action<int, string> callback)'.
+}
+
+//(Optional)Add your annotation here, start with '/*' and end with '*/'. That will keep in XXXXXX_Base.cs. Only support ONE annotation in ONE ridl file
+/*
+ * C#Like
+ * Copyright © 2022-2023 RongRong
+ * It's automatic generate by Account.ridl, don't modify this file.
+ */
+ 
+//(Optional)Add your custom using here(No need manual add using KissFramework/System/CSharpLike/MySql.Data.MySqlClient/System.Collections.Generic/System.Text/System.Data)
+using KissFramework;
+using System;
+
+//(Optional)Add your namespace here if have a namespace. Only support ONE namespace in ONE ridl file. Such as 'namespace XXXX' or 'namespace XXXX.YYYY' or no namespace.
+namespace KissServerFramework
+{
+    //Add your class here, they are only ONE class in ONE ridl file. And all your class name don't suffix with '_Base' prevent duplicate class name.
+    class Account                //Will generate Account.cs and Account_Base.cs two files at the same folder with 'Account.ridl', and it won't replace 'Account.cs' if the file 'Account.cs' was exist in local.
+    {
+        //This name as mark name, inside this mark will change together. Max mark count is 63.
+        //Base infomation won't be change
+        baseInfo                        //mask name
+        {
+            //Format:'attribute type' 'attribute name''(Optional)extra config JSON';
+            //'attribute type' is variable type, you MUST set 'dbType' if NOT in 'byte/sbyte/short/ushort/int/uint/long/ulong/float/double/string/DateTime(same with Byte/SByte/Int16/UInt16/Int32/UInt32/Int64/UInt64/Single/Double/String)'.
+            //'attribute name' is variable name.
+            //'(Optional)extra config JSON' is optional, for setting this attribute.
+            //"primary" mark this attribute is primary key, it MUST same with the real primary key(s) in database.
+            //'dontUpdate' mark this attribute don't need update into database, that wont appear in Update function.
+            //'AUTO_INCREMENT' mark this attribute is AUTO_INCREMENT, and it MUST is a primary key, is unique in ONE ridl.
+            //'dbType' is specify MySqlDbType (MySql.Data.MySqlClient.MySqlDbType) in MySqlParameter, such as 'string' can specify the length ("VarChar,16") and DateTime specify using DateTime or Timestamp.
+            //'byte/sbyte/short/ushort/int/uint/long/ulong/float/double/string/DateTime' defaults to 'Byte/SByte/Int16/UInt16/Int32/UInt32/Int64/UInt64/Float/Double/String/DateTime'.
+            int uid{"primary":true,"AUTO_INCREMENT":true};                      //one of the property type and name with mask 'baseInfo'
+            int acctType{"dontUpdate":true};                                    //one of the property type and name with mask 'baseInfo'
+            DateTime createTime{"dbType":"Timestamp","dontUpdate":true};        //one of the property type and name with mask 'baseInfo'
+        };
+        loginInfo                       //mask name
+        {
+            string name{"dbType":"VarChar, 64"};                //property type and name with mask 'loginInfo'
+            string password{"dbType":"VarChar, 64"};            //property type and name with mask 'loginInfo'
+        };
+        nickname
+        {
+            string nickname{"dbType":"VarChar, 64"};            //for show
+        };
+        money
+        {
+            int money;
+        };
+        score
+        {
+            int score;                       //score value
+            DateTime scoreTime;              //score change time, for ranking sort with same score
+        };
+        lastLoginTime
+        {
+            DateTime lastLoginTime;          //Last login time
+        };
+    }
+}

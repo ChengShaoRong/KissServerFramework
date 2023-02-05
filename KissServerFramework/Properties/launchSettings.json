@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KissServerFramework": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\repos\\ChengShaoRong\\KissServerFramework\\KissServerFramework\\bin\\Debug\\net5.0"
+    }
+  }
+}

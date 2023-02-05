@@ -1,0 +1,6 @@
+namespace KissServerFramework
+{
+	public sealed class Account : Account_Base
+	{
+	}
+}

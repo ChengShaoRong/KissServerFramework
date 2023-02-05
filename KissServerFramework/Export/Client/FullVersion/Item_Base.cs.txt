@@ -1,0 +1,49 @@
+//It's automatic generate by Item.ridl, DON'T modify this file.
+//You should modify 'Item.cs' or 'Item.ridl'.
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CSharpLike
+{
+	public class Item_Base
+	{
+		public int uid;
+		public int itemId;
+		public int acctId;
+		public int count;
+		public static Item ToItem(JSONData jsonData)
+		{
+			return (Item)KissJson.ToObject(typeof(Item), jsonData);
+		}
+		public static List<Item> ToItems(JSONData jsonData)
+		{
+			List<object> objs = KissJson.ToObjects(typeof(Item), jsonData);
+			List<Item> items = new List<Item>();
+			foreach (object obj in objs)
+				items.Add((Item)obj);
+			return items;
+		}
+
+		public override string ToString()
+		{
+			return KissJson.ToJSONData(this).ToJson();
+		}
+		public void Clear()
+		{
+			KissJson.ClearCache(_uid_);
+		}
+		string _uid_ = "";
+		ulong _sendMask_ = 0;
+		public virtual void OnChanged() {}
+		public virtual void OnBaseInfoChanged(){}
+		public virtual void OnCountChanged(){}
+		public virtual void OnDeleted(){}
+		public void NotifyValuesChanged()
+		{
+			if ((_sendMask_ & 1) > 0) OnBaseInfoChanged();
+			if ((_sendMask_ & 2) > 0) OnCountChanged();
+			if (_sendMask_ > 0) OnChanged();
+		}
+	}
+}

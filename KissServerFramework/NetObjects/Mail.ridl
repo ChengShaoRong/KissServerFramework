@@ -1,0 +1,42 @@
+﻿{
+    "version":1,
+    "database":"MySQL",
+    "SyncKeyword":"mails",
+    "MainNetObject":"Account",
+    "InsertDB":true,
+    "ClientOnChanged":false,
+    "SelectDB":["","uid","acctId"],
+    "DeleteDB":["uid","acctId"]
+}
+
+/*
+ * C#Like
+ * Copyright © 2022-2023 RongRong
+ * It's automatic generate by Mail.ridl, don't modify this file.
+ */
+ 
+using KissFramework;
+using System;
+
+namespace KissServerFramework
+{
+    class Mail
+    {
+        baseInfo
+        {
+            int uid{"primary":true,"AUTO_INCREMENT":true};
+            int acctId{"dontUpdate":true};
+            int senderId{"dontUpdate":true};
+            string senderName{"dontUpdate":true};
+            string title{"dontUpdate":true};
+            string content{"dontUpdate":true};
+            string appendix{"dontUpdate":true};
+            DateTime createTime{"dontUpdate":true};
+        };
+        extInfo
+        {
+            byte wasRead;       //Mark this mail whether was read
+            byte received;      //Mark the appendix whether has pick up
+        };
+    }
+}

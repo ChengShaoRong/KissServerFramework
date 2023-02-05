@@ -25,9 +25,9 @@ namespace CSharpLike
                 {
                     if (!string.IsNullOrEmpty(str))
                     {
-                        int i = str.IndexOf('>');
+                        int i = str.IndexOf('=');//We split by '=', so the key or value not support '='
                         if (i>0)
-                            dictionary.Add(str.Substring(0, i), str.Substring(i+1));
+                            dictionary.Add(str.Substring(0, i).Trim(), str.Substring(i+1).Trim());
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace CSharpLike
                 StringBuilder str = new StringBuilder();
                 foreach(var one in dictionary)
                 {
-                    str.AppendFormat("{0}>{1}\n", one.Key, one.Value);
+                    str.AppendFormat("{0} = {1}\n", one.Key, one.Value);
                 }
                 File.WriteAllText(file, str.ToString());
             }

@@ -1,5 +1,4 @@
 /*
- *           C#Like
  * KissJson : Keep It Simple Stupid JSON
  * Copyright © 2022 RongRong. All right reserved.
  */
@@ -26,10 +25,12 @@ namespace CSharpLike
             DataTypeBoolean,
             DataTypeInt,
             DataTypeLong,
+            DataTypeULong,
             DataTypeDouble,
             DataTypeBooleanNullable,
             DataTypeIntNullable,
             DataTypeLongNullable,
+            DataTypeULongNullable,
             DataTypeDoubleNullable,
         }
         /// <summary>
@@ -139,10 +140,12 @@ namespace CSharpLike
                     case DataType.DataTypeBoolean: return bValue;
                     case DataType.DataTypeInt: return iValue;
                     case DataType.DataTypeLong: return lValue;
+                    case DataType.DataTypeULong: return ulValue;
                     case DataType.DataTypeDouble: return dValue;
                     case DataType.DataTypeBooleanNullable: return bValueNullable;
                     case DataType.DataTypeIntNullable: return iValueNullable;
                     case DataType.DataTypeLongNullable: return lValueNullable;
+                    case DataType.DataTypeULongNullable: return ulValueNullable;
                     case DataType.DataTypeDoubleNullable: return dValueNullable;
                     default: return null;
                 }
@@ -366,12 +369,15 @@ namespace CSharpLike
         private bool bValue;
         private int iValue;
         private long lValue;
+        private ulong ulValue;
         private double dValue;
         private bool? bValueNullable;
         private int? iValueNullable;
         private long? lValueNullable;
+        private ulong? ulValueNullable;
         private double? dValueNullable;
         private Dictionary<string, object> externObjects;
+
         /// <summary>
         /// Convert this JSONData to string no deal with special string '\' '"' '\n' '\r' '\t' '\b' '\f'. 
         /// They are will error if have secial string in it, you should use ToJson() instead.
@@ -432,6 +438,8 @@ namespace CSharpLike
                     return iValue.ToString();
                 case DataType.DataTypeLong:
                     return lValue.ToString();
+                case DataType.DataTypeULong:
+                    return ulValue.ToString();
                 case DataType.DataTypeDouble:
                     return dValue.ToString();
                 case DataType.DataTypeBooleanNullable:
@@ -440,6 +448,8 @@ namespace CSharpLike
                     return iValueNullable == null ? "null" : iValueNullable.Value.ToString();
                 case DataType.DataTypeLongNullable:
                     return lValueNullable == null ? "null" : lValueNullable.Value.ToString();
+                case DataType.DataTypeULongNullable:
+                    return ulValueNullable == null ? "null" : ulValueNullable.Value.ToString();
                 case DataType.DataTypeDoubleNullable:
                     return dValueNullable == null ? "null" : dValueNullable.Value.ToString();
                 default:
@@ -528,6 +538,8 @@ namespace CSharpLike
                     return iValue.ToString();
                 case DataType.DataTypeLong:
                     return lValue.ToString();
+                case DataType.DataTypeULong:
+                    return ulValue.ToString();
                 case DataType.DataTypeDouble:
                     return dValue.ToString();
                 case DataType.DataTypeBooleanNullable:
@@ -536,6 +548,8 @@ namespace CSharpLike
                     return iValueNullable == null ? "null" : iValueNullable.Value.ToString();
                 case DataType.DataTypeLongNullable:
                     return lValueNullable == null ? "null" : lValueNullable.Value.ToString();
+                case DataType.DataTypeULongNullable:
+                    return ulValueNullable == null ? "null" : ulValueNullable.Value.ToString();
                 case DataType.DataTypeDoubleNullable:
                     return dValueNullable == null ? "null" : dValueNullable.Value.ToString();
                 default:
@@ -1558,9 +1572,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (byte)value.iValue;
                 case DataType.DataTypeLong: return (byte)value.lValue;
+                case DataType.DataTypeULong: return (byte)value.ulValue;
                 case DataType.DataTypeDouble: return (byte)value.dValue;
                 case DataType.DataTypeIntNullable: return (byte)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (byte)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (byte)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (byte)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToByte(value.strValue);
             }
@@ -1583,9 +1599,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (byte?)value.iValue;
                 case DataType.DataTypeLong: return (byte?)value.lValue;
+                case DataType.DataTypeULong: return (byte?)value.ulValue;
                 case DataType.DataTypeDouble: return (byte?)value.dValue;
                 case DataType.DataTypeIntNullable: return (byte?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (byte?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (byte?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (byte?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -1620,9 +1638,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (sbyte)value.iValue;
                 case DataType.DataTypeLong: return (sbyte)value.lValue;
+                case DataType.DataTypeULong: return (sbyte)value.ulValue;
                 case DataType.DataTypeDouble: return (sbyte)value.dValue;
                 case DataType.DataTypeIntNullable: return (sbyte)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (sbyte)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (sbyte)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (sbyte)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToSByte(value.strValue);
             }
@@ -1638,9 +1658,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (sbyte?)value.iValue;
                 case DataType.DataTypeLong: return (sbyte?)value.lValue;
+                case DataType.DataTypeULong: return (sbyte?)value.ulValue;
                 case DataType.DataTypeDouble: return (sbyte?)value.dValue;
                 case DataType.DataTypeIntNullable: return (sbyte?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (sbyte?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (sbyte?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (sbyte?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -1682,9 +1704,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (short)value.iValue;
                 case DataType.DataTypeLong: return (short)value.lValue;
+                case DataType.DataTypeULong: return (short)value.ulValue;
                 case DataType.DataTypeDouble: return (short)value.dValue;
                 case DataType.DataTypeIntNullable: return (short)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (short)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (short)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (short)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToInt16(value.strValue);
             }
@@ -1707,9 +1731,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (ushort)value.iValue;
                 case DataType.DataTypeLong: return (ushort)value.lValue;
+                case DataType.DataTypeULong: return (ushort)value.ulValue;
                 case DataType.DataTypeDouble: return (ushort)value.dValue;
                 case DataType.DataTypeIntNullable: return (ushort)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (ushort)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (ushort)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (ushort)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToUInt16(value.strValue);
             }
@@ -1773,9 +1799,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return (int)value.lValue;
+                case DataType.DataTypeULong: return (int)value.ulValue;
                 case DataType.DataTypeDouble: return (int)value.dValue;
                 case DataType.DataTypeIntNullable: return (int)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (int)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (int)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (int)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToInt32(value.strValue);
             }
@@ -1798,9 +1826,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (uint)value.iValue;
                 case DataType.DataTypeLong: return (uint)value.lValue;
+                case DataType.DataTypeULong: return (uint)value.ulValue;
                 case DataType.DataTypeDouble: return (uint)value.dValue;
                 case DataType.DataTypeIntNullable: return (uint)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (uint)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (uint)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (uint)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToUInt32(value.strValue);
             }
@@ -1823,9 +1853,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return (long)value.ulValue;
                 case DataType.DataTypeDouble: return (long)value.dValue;
                 case DataType.DataTypeIntNullable: return (long)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (long)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (long)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (long)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToInt64(value.strValue);
             }
@@ -1836,8 +1868,8 @@ namespace CSharpLike
         public static implicit operator JSONData(ulong value)
         {
             JSONData data = new JSONData();
-            data.dataType = DataType.DataTypeDouble;
-            data.dValue = value;
+            data.dataType = DataType.DataTypeULong;
+            data.ulValue = value;
             return data;
         }
         public static implicit operator ulong(JSONData value)
@@ -1848,9 +1880,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (ulong)value.iValue;
                 case DataType.DataTypeLong: return (ulong)value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return (ulong)value.dValue;
                 case DataType.DataTypeIntNullable: return (ulong)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (ulong)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (ulong)value.lValueNullable;
                 case DataType.DataTypeDoubleNullable: return (ulong)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToUInt64(value.strValue);
             }
@@ -1872,9 +1906,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return value.dValue;
                 case DataType.DataTypeIntNullable: return (double)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (double)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (double)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (double)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToDouble(value.strValue);
             }
@@ -1896,9 +1932,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return (float)value.dValue;
                 case DataType.DataTypeIntNullable: return (float)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (float)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (float)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (float)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToSingle(value.strValue);
             }
@@ -1921,9 +1959,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (char)value.iValue;
                 case DataType.DataTypeLong: return (char)value.lValue;
+                case DataType.DataTypeULong: return (char)value.ulValue;
                 case DataType.DataTypeDouble: return (char)value.dValue;
                 case DataType.DataTypeIntNullable: return (char)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (char)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (char)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (char)value.dValueNullable;
                 case DataType.DataTypeString: return Convert.ToChar(value.strValue);
             }
@@ -1947,10 +1987,12 @@ namespace CSharpLike
                 case DataType.DataTypeString: return value.strValue;
                 case DataType.DataTypeInt: return value.iValue.ToString();
                 case DataType.DataTypeLong: return value.lValue.ToString();
+                case DataType.DataTypeULong: return value.ulValue.ToString();
                 case DataType.DataTypeDouble: return value.dValue.ToString();
                 case DataType.DataTypeBoolean: return value.bValue.ToString();
                 case DataType.DataTypeIntNullable: return value.iValueNullable.ToString();
                 case DataType.DataTypeLongNullable: return value.lValueNullable.ToString();
+                case DataType.DataTypeULongNullable: return value.ulValueNullable.ToString();
                 case DataType.DataTypeDoubleNullable: return value.dValueNullable.ToString();
                 case DataType.DataTypeBooleanNullable: return value.bValueNullable.ToString();
             }
@@ -1971,9 +2013,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (short?)value.iValue;
                 case DataType.DataTypeLong: return (short?)value.lValue;
+                case DataType.DataTypeULong: return (short?)value.ulValue;
                 case DataType.DataTypeDouble: return (short?)value.dValue;
                 case DataType.DataTypeIntNullable: return (short?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (short?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (short?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (short?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2006,9 +2050,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (ushort?)value.iValue;
                 case DataType.DataTypeLong: return (ushort?)value.lValue;
+                case DataType.DataTypeULong: return (ushort?)value.ulValue;
                 case DataType.DataTypeDouble: return (ushort?)value.dValue;
                 case DataType.DataTypeIntNullable: return (ushort?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (ushort?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (ushort?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (ushort?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2041,9 +2087,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return (int?)value.lValue;
+                case DataType.DataTypeULong: return (int?)value.ulValue;
                 case DataType.DataTypeDouble: return (int?)value.dValue;
                 case DataType.DataTypeIntNullable: return value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (int?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (int?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (int?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2076,9 +2124,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (uint?)value.iValue;
                 case DataType.DataTypeLong: return (uint?)value.lValue;
+                case DataType.DataTypeULong: return (uint?)value.ulValue;
                 case DataType.DataTypeDouble: return (uint?)value.dValue;
                 case DataType.DataTypeIntNullable: return (uint?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (uint?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (uint?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (uint?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2111,9 +2161,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return (long?)value.ulValue;
                 case DataType.DataTypeDouble: return (long?)value.dValue;
                 case DataType.DataTypeIntNullable: return value.iValueNullable;
                 case DataType.DataTypeLongNullable: return value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (long?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (long?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2134,8 +2186,8 @@ namespace CSharpLike
         public static implicit operator JSONData(ulong? value)
         {
             JSONData data = new JSONData();
-            data.dataType = DataType.DataTypeDoubleNullable;
-            data.dValueNullable = value;
+            data.dataType = DataType.DataTypeLongNullable;
+            data.ulValueNullable = value;
             return data;
         }
         public static implicit operator ulong?(JSONData value)
@@ -2146,9 +2198,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (ulong?)value.iValue;
                 case DataType.DataTypeLong: return (ulong?)value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return (ulong?)value.dValue;
                 case DataType.DataTypeIntNullable: return (ulong?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (ulong?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (ulong?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2181,9 +2235,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return value.dValue;
                 case DataType.DataTypeIntNullable: return value.iValueNullable;
                 case DataType.DataTypeLongNullable: return value.lValueNullable;
+                case DataType.DataTypeULongNullable: return value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2216,9 +2272,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return value.iValue;
                 case DataType.DataTypeLong: return value.lValue;
+                case DataType.DataTypeULong: return value.ulValue;
                 case DataType.DataTypeDouble: return (float?)value.dValue;
                 case DataType.DataTypeIntNullable: return value.iValueNullable;
                 case DataType.DataTypeLongNullable: return value.lValueNullable;
+                case DataType.DataTypeULongNullable: return value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (float?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2251,9 +2309,11 @@ namespace CSharpLike
             {
                 case DataType.DataTypeInt: return (char?)value.iValue;
                 case DataType.DataTypeLong: return (char?)value.lValue;
+                case DataType.DataTypeULong: return (char?)value.ulValue;
                 case DataType.DataTypeDouble: return (char?)value.dValue;
                 case DataType.DataTypeIntNullable: return (char?)value.iValueNullable;
                 case DataType.DataTypeLongNullable: return (char?)value.lValueNullable;
+                case DataType.DataTypeULongNullable: return (char?)value.ulValueNullable;
                 case DataType.DataTypeDoubleNullable: return (char?)value.dValueNullable;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
@@ -2294,10 +2354,12 @@ namespace CSharpLike
                 case DataType.DataTypeBoolean: return value.bValue;
                 case DataType.DataTypeInt: return value.iValue > 0;
                 case DataType.DataTypeLong: return value.lValue > 0;
+                case DataType.DataTypeULong: return value.ulValue > 0;
                 case DataType.DataTypeDouble: return value.dValue > 0;
                 case DataType.DataTypeBooleanNullable: return value.bValueNullable != null && value.bValueNullable.Value;
                 case DataType.DataTypeIntNullable: return value.iValueNullable != null && value.iValueNullable.Value > 0;
                 case DataType.DataTypeLongNullable: return value.lValueNullable != null && value.lValueNullable.Value > 0;
+                case DataType.DataTypeULongNullable: return value.ulValueNullable != null && value.ulValueNullable.Value > 0;
                 case DataType.DataTypeDoubleNullable: return value.dValueNullable != null && value.dValueNullable.Value > 0;
                 case DataType.DataTypeString:
                     {
@@ -2327,10 +2389,12 @@ namespace CSharpLike
                 case DataType.DataTypeBoolean: return value.bValue;
                 case DataType.DataTypeInt: return value.iValue > 0;
                 case DataType.DataTypeLong: return value.lValue > 0;
+                case DataType.DataTypeULong: return value.ulValue > 0;
                 case DataType.DataTypeDouble: return value.dValue > 0;
                 case DataType.DataTypeBooleanNullable: return value.bValueNullable;
                 case DataType.DataTypeIntNullable: if (value.iValueNullable != null) return value.iValueNullable.Value > 0; else return null;
                 case DataType.DataTypeLongNullable: if (value.lValueNullable != null) return value.lValueNullable.Value > 0; else return null;
+                case DataType.DataTypeULongNullable: if (value.ulValueNullable != null) return value.ulValueNullable.Value > 0; else return null;
                 case DataType.DataTypeDoubleNullable: if (value.dValueNullable != null) return value.dValueNullable.Value > 0; else return null;
                 case DataType.DataTypeNull: return null;
                 case DataType.DataTypeString:
