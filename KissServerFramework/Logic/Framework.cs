@@ -14,11 +14,26 @@ namespace KissServerFramework
     public class Framework : FrameworkBase
     {
         /// <summary>
+        /// Initialize CSV file, that run before OnStart.
+        /// You can call this function by yourself to reload them if your CSV file was moidfied and need to be reload.
+        /// </summary>
+        public override void InitializeCSV()
+        {
+            Logger.LogInfo("Framework:InitializeCSV");
+            //You should initialize all your CSV file here. All CSV file will load into cache.
+            KissCSV.Init("Item.csv", "id");
+
+            //Sample for how to read value from CSV file.
+            Logger.LogInfo($"test CSV maxStack={KissCSV.GetInt("Item.csv", "100", "maxStack")}");
+            Logger.LogInfo($"test CSV name={KissCSV.GetString("Item.csv", "100", "name")}");
+        }
+        /// <summary>
         /// When the KISS framework initialized will call this function, you can call your initialize here.
         /// </summary>
         protected override void OnStart()
         {
             Logger.LogInfo("Framework:OnStart");
+
             AircraftBattleManager.Instance.Initialize();
             RaiseEvent(ChatRoomManager.Instance.Update, 60f);//we call 'ChatRoomManager.Instance.Update' in every 60 seconds.
 
@@ -27,7 +42,18 @@ namespace KissServerFramework
             //That make your code look more simple and tidy than handle all HTTP URLs in
             //'protected override string OnHttpMessage(string url, JSONData jsonData, string ip, Action<string> delayCallback)'.
             //That run in main thread.
-            BindHttpMsg("/TestHttp", TestHttp.OnHttpMessage);
+            BindHttpMsg("/TestHttp", TestHttp.OnHttpMessage);//the url is case-insensitive
+
+            //Bind the console command into different class to handle it.
+            //It's recommend using this way console command.
+            //That make your code look more simple and tidy than handle all console command in
+            //'protected virtual void OnCommand(string cmd, string[] args)'.
+            //That run in main thread.
+            //Input 'TestCommand aa "bb ""Cc" 1 1.5' in console, will received TestCommand.OnCommand({"aa","bb \"Cc","1","1.5"}) in main thread
+            BindCommand("TestCommand", TestCommand.OnCommand);//The command is case-insensitive, but args is case-sensitive
+            BindCommand("ReloadCsv", (args) => { InitializeCSV(); });//Register command 'reloadcsv' for reload CSV file in console
+            BindCommand("quit", (args) => { Running = false; });//Register command 'quit' in console
+            BindCommand("exit", (args) => { Running = false; });//Register command 'quit' in console
         }
         /// <summary>
         /// The main game loop function, that run in main thread.
@@ -44,19 +70,19 @@ namespace KissServerFramework
 
         /// <summary>
         /// Process the command input from the console, that run in main thread.
+        /// We recommend using 'BindCommand' to handle each single command.
         /// You can do some command to control your game logic, e.g. some cheat command.
+        /// e.g.
+        /// input 'exit' in console, will received OnCommand("exit", {})
+        /// input 'doSomething aa "bb cc" 1 1.5' in console, will received OnCommand("dosomething", {"aa","bb cc","1","1.5"})
         /// </summary>
         /// <param name="cmd">The command input from the console, that WAS turn into lowercase letters</param>
-        protected override void OnCommand(string cmd)
+        /// <param name="args">The args input from the console, that split by ' ', case-sensitive</param>
+        protected override void OnCommand(string cmd, string[] args)
         {
             Logger.LogInfo("Framework:OnCommand:" + cmd);
             switch (cmd)
             {
-                //When input 'exit' or 'quit' will exit the game.
-                case "exit":
-                case "quit":
-                    Running = false;
-                    break;
                 //Add your custom command below.
                 case "test":
                     {
@@ -106,7 +132,7 @@ namespace KissServerFramework
         /// Process HTTP message, that run in main thread.
         /// We recommend using 'BindHttpMsg' to handle each single HTTP request.
         /// </summary>
-        /// <param name="url">The url string</param>
+        /// <param name="url">The url string, and is LOWERCASE letter</param>
         /// <param name="jsonData">The request JSON data from client, support GET/POST data</param>
         /// <param name="url">The client ip</param>
         /// <param name="delayCallback">If you want to do something in thread or delay callback,
@@ -125,7 +151,7 @@ namespace KissServerFramework
                 //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = '{"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}'
                 //We are both got jsonData = {"uid":"123456789","token"="xxxxxx","sign":"yyyyyy"}
                 //If post the JSON string, we will get the JSON you send.
-                case "/TestThirdPartyAccount":
+                case "/testthirdpartyaccount":
                     {
                         JSONData jsonReturn = JSONData.NewDictionary();
                         //int uid=jsonData["uid"];//You will got the int number 123456789 both the JSON {"uid":"123456789"} and {"uid":123456789}
@@ -141,7 +167,7 @@ namespace KissServerFramework
                         //We just check the sign and return
                         return jsonReturn.ToString();//If success return {"state":0}, otherwise return {"state":1,"msg":"sign not math"}
                     }
-                case "/TestDelayCallback"://Sample for callback delay
+                case "/testdelaycallback"://Sample for callback delay
                     {
                         //We request HTTP for example
                         new ThreadPoolHttp("http://www.google.com",
