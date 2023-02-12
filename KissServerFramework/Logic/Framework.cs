@@ -20,7 +20,7 @@ namespace KissServerFramework
         public override void InitializeCSV()
         {
             Logger.LogInfo("Framework:InitializeCSV");
-            //You should initialize all your CSV file here. All CSV file will load into cache.
+            //You should initialize all your CSV files here. All CSV files will load into cache.
             KissCSV.Init("Item.csv", "id");
 
             //Sample for how to read value from CSV file.
@@ -35,6 +35,7 @@ namespace KissServerFramework
             Logger.LogInfo("Framework:OnStart");
 
             AircraftBattleManager.Instance.Initialize();
+            //Sample for using event timer
             RaiseEvent(ChatRoomManager.Instance.Update, 60f);//we call 'ChatRoomManager.Instance.Update' in every 60 seconds.
 
             //Bind the HTTP URL into different class to handle it.
@@ -53,7 +54,7 @@ namespace KissServerFramework
             BindCommand("TestCommand", TestCommand.OnCommand);//The command is case-insensitive, but args is case-sensitive
             BindCommand("ReloadCsv", (args) => { InitializeCSV(); });//Register command 'reloadcsv' for reload CSV file in console
             BindCommand("quit", (args) => { Running = false; });//Register command 'quit' in console
-            BindCommand("exit", (args) => { Running = false; });//Register command 'quit' in console
+            BindCommand("exit", (args) => { Running = false; });//Register command 'exit' in console
         }
         /// <summary>
         /// The main game loop function, that run in main thread.
@@ -61,6 +62,7 @@ namespace KissServerFramework
         /// We recommend using:
         /// 'public static string RaiseEvent(Action action, float intervalTime = 0, int repeatCount = int.MaxValue)'
         /// to do the loop timer.
+        /// You can see the sample in OnStart()
         /// </summary>
         /// <param name="deltaTime">delta time since last update, in seconds</param>
         protected override void OnUpdate(float deltaTime)
@@ -75,6 +77,7 @@ namespace KissServerFramework
         /// e.g.
         /// input 'exit' in console, will received OnCommand("exit", {})
         /// input 'doSomething aa "bb cc" 1 1.5' in console, will received OnCommand("dosomething", {"aa","bb cc","1","1.5"})
+        /// You can see the sample in OnStart()
         /// </summary>
         /// <param name="cmd">The command input from the console, that WAS turn into lowercase letters</param>
         /// <param name="args">The args input from the console, that split by ' ', case-sensitive</param>

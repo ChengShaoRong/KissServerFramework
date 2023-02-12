@@ -104,6 +104,7 @@ namespace KissServerFramework
 			_attribute_.score = Convert.ToInt32(data["score"]);
 			_attribute_.scoreTime = Convert2DateTime(data["scoreTime"]);
 			_attribute_.lastLoginTime = Convert2DateTime(data["lastLoginTime"]);
+			RegisterSync();
 		}
 		/// <summary>
 		/// Select all data from database. The select operation run in background thread. The callback action occur after database operation done.
@@ -277,6 +278,7 @@ namespace KissServerFramework
 					{
 						_account_ = new Account();
 						_account_._attribute_.uid = (int)_lastInsertedId_;
+						_account_.RegisterSync();
 						_account_._attribute_.acctType = acctType;
 						_account_._attribute_.createTime = createTime;
 						_account_._attribute_.name = name;
@@ -295,7 +297,7 @@ namespace KissServerFramework
 		#endregion //Insert
 
 		#region Sync
-		public Account_Base()
+		public void RegisterSync()
 		{
 			int _uid_ = _attribute_.uid;
 			Func<int, PlayerBase> _getPlayer_ = GetPlayer();

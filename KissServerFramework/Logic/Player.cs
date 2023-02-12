@@ -23,7 +23,7 @@ namespace KissServerFramework
         {
             if (jsonData == null)
                 return;
-            Logger.LogInfo("Player:OnMessage:" + jsonData.ToString());//Comment out this line if you don't want too much log.
+            //Logger.LogInfo("Player:OnMessage:" + jsonData.ToString());//Set config JSON printSendAndReceived = true to enable log send and received packet
             switch (jsonData.GetPacketType<PacketType>())
             {
                 //Chat room system

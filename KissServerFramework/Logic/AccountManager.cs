@@ -301,10 +301,7 @@ namespace KissServerFramework
                     oldPlayer.Replace(player);//will disconnect the old player
                     //player = oldPlayer;
                 }
-                else
-                {
-                    playersByAccount[account] = player;
-                }
+                playersByAccount[account] = player;
                 player.account = account;
                 //callback the account to client immediately
                 jsonData = JSONData.NewPacket(PacketType.CB_AccountLogin);
