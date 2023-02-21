@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="CSV\Item.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="KissServerFramework.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

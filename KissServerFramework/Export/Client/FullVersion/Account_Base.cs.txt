@@ -57,32 +57,30 @@ namespace CSharpLike
 					NotifyValuesChanged();
 					break;
 				case "items":
-				{
-					List<Item> _items_ = Item.ToItems(jsonData["obj"]);
-					foreach(Item _one_ in _items_)
 					{
-						items[_one_.itemId] = _one_;
-						_one_.NotifyValuesChanged();
+						List<Item> _items_ = Item.ToItems(jsonData["obj"]);
+						foreach(Item _one_ in _items_)
+						{
+							items[_one_.itemId] = _one_;
+							_one_.NotifyValuesChanged();
+						}
+						OnCallbackObjectItems(_items_);
 					}
-					OnCallbackObjectItems(_items_);
 					break;
-				}
 				case "mails":
-				{
-					List<Mail> _mails_ = Mail.ToMails(jsonData["obj"]);
-					foreach(Mail _one_ in _mails_)
 					{
-						mails[_one_.uid] = _one_;
+						List<Mail> _mails_ = Mail.ToMails(jsonData["obj"]);
+						foreach(Mail _one_ in _mails_)
+						{
+							mails[_one_.uid] = _one_;
+						}
+						OnCallbackObjectMails(_mails_);
 					}
-					OnCallbackObjectMails(_mails_);
 					break;
-				}
 				case "signIn":
-				{
 					signIn = SignIn.ToSignIn(jsonData["obj"]);
 					OnCallbackObjectSignIn();
 					break;
-				}
 				default:
 					Debug.LogError("CB_Object unsupported name " + name);
 					break;
@@ -98,45 +96,43 @@ namespace CSharpLike
 					OnDeleted();
 					break;
 				case "items":
-				{
-					List<Item> _deletes_ = new List<Item>();
-					foreach(int _itemId_ in ids)
 					{
-						Item _one_ = GetItem(_itemId_);
-						if (_one_ != null)
+						List<Item> _deletes_ = new List<Item>();
+						foreach(int _itemId_ in ids)
 						{
-							_deletes_.Add(_one_);
-							_one_.Clear();
-							items.Remove(_itemId_);
-							_one_.OnDeleted();
+							Item _one_ = GetItem(_itemId_);
+							if (_one_ != null)
+							{
+								_deletes_.Add(_one_);
+								_one_.Clear();
+								items.Remove(_itemId_);
+								_one_.OnDeleted();
+							}
 						}
+						OnCallbackDeleteItems(_deletes_);
 					}
-					OnCallbackDeleteItems(_deletes_);
 					break;
-				}
 				case "mails":
-				{
-					List<Mail> _deletes_ = new List<Mail>();
-					foreach(int _uid_ in ids)
 					{
-						Mail _one_ = GetMail(_uid_);
-						if (_one_ != null)
+						List<Mail> _deletes_ = new List<Mail>();
+						foreach(int _uid_ in ids)
 						{
-							_deletes_.Add(_one_);
-							_one_.Clear();
-							mails.Remove(_uid_);
+							Mail _one_ = GetMail(_uid_);
+							if (_one_ != null)
+							{
+								_deletes_.Add(_one_);
+								_one_.Clear();
+								mails.Remove(_uid_);
+							}
 						}
+						OnCallbackDeleteMails(_deletes_);
 					}
-					OnCallbackDeleteMails(_deletes_);
 					break;
-				}
 				case "signIn":
-				{
 					signIn.Clear();
 					OnCallbackDeleteSignIn();
 					signIn = null;
 					break;
-				}
 				default:
 					Debug.LogError("CB_Delete unsupported name " + name);
 					break;

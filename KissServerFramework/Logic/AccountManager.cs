@@ -267,17 +267,17 @@ namespace KissServerFramework
                                     return;
                                 }
                                 //Using the account that just inserted into database
-                                LoginStep3(jsonData, newAccount, player);
+                                LoginStep3(jsonData, newAccount, player, true);
                             });
                         return;
                     }
                     //Using the account select from database
-                    LoginStep3(jsonData, accounts[0], player);
+                    LoginStep3(jsonData, accounts[0], player, false);
                 });
                 return;
             }
             //Using the account in cache
-            LoginStep3(jsonData, account, player);
+            LoginStep3(jsonData, account, player, false);
         }
         /// <summary>
         /// Check account info whether valid, and then send to client.
@@ -285,12 +285,13 @@ namespace KissServerFramework
         /// <param name="jsonData">JSONData from client(name/password)</param>
         /// <param name="account">the account instance</param>
         /// <param name="player">current player</param>
-        void LoginStep3(JSONData jsonData, Account account, Player player)
+        /// <param name="bCreate">Whether just was created this account right now</param>
+        void LoginStep3(JSONData jsonData, Account account, Player player, bool bCreate)
         {
             //cache account
             GetAccount(ref account);
 
-            if (account.acctType == (int)Account.AccountType.BuildIn && account.password != jsonData["password"])
+            if (account.acctType == (int)Account.AccountType.BuildIn && !string.IsNullOrEmpty(account.password) && account.password != jsonData["password"])
                 player.CallbackError("password not match");//build-in account check password here.
             else
             {
@@ -304,71 +305,57 @@ namespace KissServerFramework
                 playersByAccount[account] = player;
                 player.account = account;
                 //callback the account to client immediately
-                jsonData = JSONData.NewPacket(PacketType.CB_AccountLogin);
-                jsonData["account"] = account.ToJSONData();
-                player.Send(jsonData);
+                JSONData cbAccount = JSONData.NewPacket(PacketType.CB_AccountLogin);
+                cbAccount["account"] = account.ToJSONData();
+                player.Send(cbAccount);
+
+                //If the build-in account login with password and old password is null, we consider as change password too.
+                if (account.acctType == (int)Account.AccountType.BuildIn
+                    && string.IsNullOrEmpty(account.password)
+                    && account.password != jsonData["password"])
+                {
+                    account.password = jsonData["password"];
+                    JSONData cbJSON = JSONData.NewPacket(PacketType.CB_AccountChangeNameAndPassword);
+                    cbJSON["password"] = account.password;
+                    cbJSON["name"] = account.name;
+                    player.Send(jsonData);
+                }
 
                 //Log account
                 LogManager.LogAccount(account.uid, 0, player.IP);
 
-                //Load sub systems from database, you can choose simultaneous style or one by one style.
-                //------Below are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
-                //Load all item
-                Item.SelectByAcctId(account.uid, (items, error) =>
+                //Process the first time account login.
+                if (bCreate)
                 {
-                    if (string.IsNullOrEmpty(error))
+                    //We send a mail here for example, with item id 3 and item count 2 as mail appendix 
+                    account.SendMail("Create account gift", "Welcome, here are the gift for you.", 3, 2);
+                    //We add a item here for example
+                    account.ChangeItem(3, 1);
+                    //Initialize some sub system here
+                    SignIn.Insert(account.uid, DateTime.Now.Month, "", "", (signIn, error) =>
                     {
                         player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
                         if (player != null)//May be player was offline 
-                            player.account.SetItems(items);
-                    }
-                    else
-                        Logger.LogError(error);
-                });
-                //Load all mail
-                Mail.SelectByAcctId(account.uid, (mails, error) =>
+                            player.account.SetSignIn(signIn);
+                    });
+                }
+                else
                 {
-                    if (string.IsNullOrEmpty(error))
+                    //Load sub systems from database, you can choose simultaneous style or one by one style.
+                    //------Below are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
+                    //Load all item
+                    Item.SelectByAcctId(account.uid, (items, error) =>
                     {
-                        player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                        if (player != null)//May be player was offline 
-                            player.account.SetMails(mails);
-                    }
-                    else
-                        Logger.LogError(error);
-                });
-                //Load SignIn
-                SignIn.SelectByAcctId(account.uid, (signIns, error) =>
-                {
-                    if (string.IsNullOrEmpty(error))
-                    {
-                        if (signIns.Count != 0)
+                        if (string.IsNullOrEmpty(error))
                         {
                             player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
                             if (player != null)//May be player was offline 
-                                player.account.SetSignIn(signIns[0]);
+                                player.account.SetItems(items);
                         }
-                    }
-                    else
-                        Logger.LogError(error);
-                });
-                //------Above are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
-
-                /*
-                //------Below are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
-                //1. Load all item
-                Item.SelectByAcctId(account.uid, (items, error) =>
-                {
-                    if (string.IsNullOrEmpty(error))
-                    {
-                        player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                        if (player != null)//May be player was offline 
-                            player.account.SetItems(items);
-                    }
-                    else
-                        Logger.LogError(error);
-
-                    //2. Load all mail after load item done
+                        else
+                            Logger.LogError(error);
+                    });
+                    //Load all mail
                     Mail.SelectByAcctId(account.uid, (mails, error) =>
                     {
                         if (string.IsNullOrEmpty(error))
@@ -376,38 +363,82 @@ namespace KissServerFramework
                             player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
                             if (player != null)//May be player was offline 
                                 player.account.SetMails(mails);
-                            });
+                        }
+                        else
+                            Logger.LogError(error);
+                    });
+                    //Load SignIn
+                    SignIn.SelectByAcctId(account.uid, (signIns, error) =>
+                    {
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            if (signIns.Count != 0)
+                            {
+                                player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
+                                if (player != null)//May be player was offline 
+                                    player.account.SetSignIn(signIns[0]);
+                            }
+                        }
+                        else
+                            Logger.LogError(error);
+                    });
+                    //------Above are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
+
+                    /*
+                    //------Below are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
+                    //1. Load all item
+                    Item.SelectByAcctId(account.uid, (items, error) =>
+                    {
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
+                            if (player != null)//May be player was offline 
+                                player.account.SetItems(items);
                         }
                         else
                             Logger.LogError(error);
 
-                        //3. Load SignIn after load mail done
-                        SignIn.SelectByAcctId(account.uid, (signIns, error) =>
+                        //2. Load all mail after load item done
+                        Mail.SelectByAcctId(account.uid, (mails, error) =>
                         {
                             if (string.IsNullOrEmpty(error))
                             {
-                                if (signIns.Count != 0)
-                                {
-                                    player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                                    if (player != null)//May be player was offline 
-                                        player.account.SetSignIn(signIns[0]);
-                                }
+                                player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
+                                if (player != null)//May be player was offline 
+                                    player.account.SetMails(mails);
+                                });
                             }
                             else
                                 Logger.LogError(error);
+
+                            //3. Load SignIn after load mail done
+                            SignIn.SelectByAcctId(account.uid, (signIns, error) =>
+                            {
+                                if (string.IsNullOrEmpty(error))
+                                {
+                                    if (signIns.Count != 0)
+                                    {
+                                        player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
+                                        if (player != null)//May be player was offline 
+                                            player.account.SetSignIn(signIns[0]);
+                                    }
+                                }
+                                else
+                                    Logger.LogError(error);
+                        });
+
                     });
+                    //------Above are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
+                    */
 
-                });
-                //------Above are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
-                */
-
-                //Process login in different day.
-                if (account.lastLoginTime.Day != DateTime.Now.Day)
-                {
-                    //We send a mail here for example, with item id 1 and item count 2 as mail appendix 
-                    account.SendMail("Login gift", "Welcome to KissServerFramework, here are the gift for you.", 1, 2);
-                    //We add a item here for example
-                    account.ChangeItem(2, 1);
+                    //Process login in different day.
+                    if (account.lastLoginTime.Day != DateTime.Now.Day)
+                    {
+                        //We send a mail here for example, with item id 1 and item count 2 as mail appendix 
+                        account.SendMail("Login gift", "Welcome to KissServerFramework, here are the gift for you.", 1, 2);
+                        //We add a item here for example
+                        account.ChangeItem(2, 1);
+                    }
                 }
                 account.lastLoginTime = DateTime.Now;
             }
