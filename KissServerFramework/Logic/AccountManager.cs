@@ -136,11 +136,18 @@ namespace KissServerFramework
                     oldPlayer.Replace(player);//will disconnect the old player
                     //player = oldPlayer;
                 }
+                Account account = player.account;
+                GetAccount(ref account);
+                playersByAccount[account] = player;
+                player.account = account;
+                Logger.LogInfo("Account info still in cache, resend them.");
+
                 jsonData = JSONData.NewPacket(PacketType.CB_AccountLogin);
                 jsonData["account"] = player.account.ToJSONData();
                 player.Send(jsonData);
 
-                //And other data you should send back to client too, if had.
+                account.MarkModifyMaskAllSubSystem();
+                account.SyncToClient();
                 return;
             }
 

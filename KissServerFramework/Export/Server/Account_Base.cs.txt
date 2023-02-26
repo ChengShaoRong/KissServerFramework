@@ -432,7 +432,15 @@ namespace KissServerFramework
 			}
 			return false;
 		}
-		#endregion //Sync
+		public void MarkModifyMaskAllSubSystem()
+		{
+			foreach(Item one in items.Values)
+				one.MarkModifyMaskAll();
+			foreach(Mail one in mails.Values)
+				one.MarkModifyMaskAll();
+			signIn.MarkModifyMaskAll();
+		}
+#endregion //Sync
 		#region Property
 		public enum UpdateMask : ulong
 		{
