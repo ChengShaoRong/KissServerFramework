@@ -23,7 +23,7 @@ namespace KissServerFramework
         {
             if (jsonData == null)
                 return;
-            //Logger.LogInfo("Player:OnMessage:" + jsonData.ToString());//Set config JSON printSendAndReceived = true to enable log send and received packet
+            //Set config JSON printSendAndReceived = true to enable log the send and received packet
             switch (jsonData.GetPacketType<PacketType>())
             {
                 //Chat room system
@@ -52,7 +52,7 @@ namespace KissServerFramework
                     else
                         CallbackError("account null");
                     break;
-                case PacketType.CB_AircraftBattleGetRank:
+                case PacketType.AircraftBattleGetRank:
                     AircraftBattleManager.Instance.GetRank(this);
                     break;
 
@@ -75,7 +75,7 @@ namespace KissServerFramework
                     break;
 
                 default:
-                    Logger.LogError("Player : OnMessage : Unknown packet type");
+                    Logger.LogError("Player : OnMessage : Unknown packet type:" + jsonData["PacketType"]);
                     break;
             }
         }

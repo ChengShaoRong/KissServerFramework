@@ -63,7 +63,11 @@ namespace KissServerFramework
             {
                 if (playersByAccount.TryGetValue(account, out Player player))
                     return player;
+                else
+                    Logger.LogInfo("GetPlayer : Not exist in playersByAccount : uid " + uid);
             }
+            else
+                Logger.LogInfo("GetPlayer : Not exist in accounts : uid " + uid);
             return null;
         }
         /// <summary>

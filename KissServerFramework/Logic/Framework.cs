@@ -44,6 +44,41 @@ namespace KissServerFramework
             //'protected override string OnHttpMessage(string url, JSONData jsonData, string ip, Action<string> delayCallback)'.
             //That run in main thread.
             BindHttpMsg("/TestHttp", TestHttp.OnHttpMessage);//the url is case-insensitive
+            BindHttpMsg("/ReqGateway", ReqGateway.OnHttpMessage);//Client requet config setting
+            BindHttpMsg("/TestThirdPartyAccount", (jsonData, ip, delayCallback) =>
+            {
+                //e.g. GET : url = 'http://ip[:port]/TestThirdPartyAccount?uid=123456789&token=xxxxxx&sign=yyyyyy'
+                //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = 'uid=123456789&token=xxxxxx&sign=yyyyyy'
+                //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = '{"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}'
+                //We are both got jsonData = {"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}
+                //If post the JSON string, we will get the JSON you send.
+                JSONData jsonReturn = JSONData.NewDictionary();
+                //int uid=jsonData["uid"];//You will got the int number 123456789 both the JSON {"uid":"123456789"} and {"uid":123456789}
+                //sign = md5(uid+token+key)
+                string sign = GetMD5((string)jsonData["uid"] + jsonData["token"] + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+                if (sign != jsonData["sign"])
+                {
+                    jsonReturn["state"] = 1;
+                    jsonReturn["msg"] = "sign not math";
+                }
+                else
+                    jsonReturn["state"] = 0;
+                //We just check the sign and return
+                return jsonReturn.ToJson();//If success return {"state":0}, otherwise return {"state":1,"msg":"sign not math"}
+            });
+            BindHttpMsg("/TestDelayCallback", (jsonData, ip, delayCallback) =>
+            {
+                //We request HTTP for example
+                new ThreadPoolHttp("http://www.google.com",
+                    (msg) =>//The HTTP request running in background thread, and this callback run in main thread after the HTTP request done.
+                    {
+                        JSONData jsonReturn = JSONData.NewDictionary();
+                        jsonReturn["state"] = 0;
+                        jsonReturn["msg"] = msg;
+                        delayCallback(jsonReturn);//Here are the real return string to the client after we request HTTP done.
+                    });
+                return "";//return empty string mean you will callback later.
+            });
 
             //Bind the console command into different class to handle it.
             //It's recommend using this way console command.
@@ -55,6 +90,34 @@ namespace KissServerFramework
             BindCommand("ReloadCsv", (args) => { InitializeCSV(); });//Register command 'reloadcsv' for reload CSV file in console
             BindCommand("quit", (args) => { Running = false; });//Register command 'quit' in console
             BindCommand("exit", (args) => { Running = false; });//Register command 'exit' in console
+            BindCommand("Reload", (args) =>
+            {
+                // Register command 'reload' for reload JSON config file in console
+                // Reload the config value from your config JSON file.
+                // You can consider as you had reload the value in Config, but exclude the value in ConfigBase (The value in ConfigBase changed but not take effect.).
+                FrameworkBase.config = CreateConfig(Environment.CurrentDirectory
+                    + "/" + System.Diagnostics.Process.GetCurrentProcess().ProcessName + ".json");
+
+                //Add your code here for make your config value take effect.
+                ReqGateway.Clear();//Make sure the gateway server infomation reload from the config JSON.
+            });
+            BindCommand("TestThread", (args)=>
+            {
+                //We test read a file in thread, and then process the result.
+                string strFile = "./KissFramework.dll";
+                string result = "";
+                new ThreadPoolEvent(() =>//This function run in thread. You can do some heavy work in thread here, such as IO operation.
+                {
+                    Logger.LogInfo($"start read file {strFile}", false);//Print log in thread you must set the param 'useInMainThread' as false.
+                    byte[] buff = System.IO.File.ReadAllBytes(strFile);
+                    System.Threading.Thread.Sleep(1000);//We simulate that work take long time.
+                    result = $"{strFile} file length = {buff.Length}";
+                },
+                () =>//This function run in main thread. You can do some work after your work done.
+                        {
+                    Logger.LogInfo(result);
+                });
+            });
         }
         /// <summary>
         /// The main game loop function, that run in main thread.
@@ -68,67 +131,6 @@ namespace KissServerFramework
         protected override void OnUpdate(float deltaTime)
         {
             //Add your custom function below if you need Update.
-        }
-
-        /// <summary>
-        /// Process the command input from the console, that run in main thread.
-        /// We recommend using 'BindCommand' to handle each single command.
-        /// You can do some command to control your game logic, e.g. some cheat command.
-        /// e.g.
-        /// input 'exit' in console, will received OnCommand("exit", {})
-        /// input 'doSomething aa "bb cc" 1 1.5' in console, will received OnCommand("dosomething", {"aa","bb cc","1","1.5"})
-        /// You can see the sample in OnStart()
-        /// </summary>
-        /// <param name="cmd">The command input from the console, that WAS turn into lowercase letters</param>
-        /// <param name="args">The args input from the console, that split by ' ', case-sensitive</param>
-        protected override void OnCommand(string cmd, string[] args)
-        {
-            Logger.LogInfo("Framework:OnCommand:" + cmd);
-            switch (cmd)
-            {
-                //Add your custom command below.
-                case "test":
-                    {
-                        new ThreadPoolHttp("http://www.teachmeplay.com:11114/UpdateAnonymous", "ver=123&startTime=1970-01-01",
-                            (cb) =>
-                            {
-                                Logger.LogInfo(cb);
-                            });
-                    }
-                    break;
-                case "test2":
-                    {
-                        new ThreadPoolHttp("http://www.teachmeplay.com:11114/UpdateAnonymous2", "{\"ver\":123,\"startTime\":\"1970-01-01\"}",
-                            (cb) =>
-                            {
-                                Logger.LogInfo(cb);
-                            });
-                    }
-                    break;
-                case "testthread":
-                    {
-                        //We test read a file in thread, and then process the result.
-                        string strFile = "./KissFramework.dll";
-                        string result = "";
-                        new ThreadPoolEvent(() =>//This function run in thread. You can do some heavy work in thread here, such as IO operation.
-                        {
-                            Logger.LogInfo($"start read file {strFile}", false);//Print log in thread you must set the param 'useInMainThread' as false.
-                            byte[] buff = System.IO.File.ReadAllBytes(strFile);
-                            System.Threading.Thread.Sleep(1000);//We simulate that work take long time.
-                            result = $"{strFile} file length = {buff.Length}";
-                        },
-                        () =>//This function run in main thread. You can do some work after your work done.
-                        {
-                            Logger.LogInfo(result);
-                        });
-                    }
-                    break;
-
-                //Default just print an error message.
-                default:
-                    Logger.LogError("Unrecognized command : " + cmd);
-                    break;
-            }
         }
 
         /// <summary>
@@ -147,45 +149,7 @@ namespace KissServerFramework
         protected override string OnHttpMessage(string url, JSONData jsonData, string ip, Action<string> delayCallback)
         {
             Logger.LogInfo($"Framework:OnHttpMessage : url = {url}  jsonData = {jsonData} from {ip}");
-            switch (url)
-            {
-                //e.g. GET : url = 'http://ip[:port]/TestThirdPartyAccount?uid=123456789&token=xxxxxx&sign=yyyyyy'
-                //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = 'uid=123456789&token=xxxxxx&sign=yyyyyy'
-                //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = '{"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}'
-                //We are both got jsonData = {"uid":"123456789","token"="xxxxxx","sign":"yyyyyy"}
-                //If post the JSON string, we will get the JSON you send.
-                case "/testthirdpartyaccount":
-                    {
-                        JSONData jsonReturn = JSONData.NewDictionary();
-                        //int uid=jsonData["uid"];//You will got the int number 123456789 both the JSON {"uid":"123456789"} and {"uid":123456789}
-                        //sign = md5(uid+token+key)
-                        string sign = GetMD5((string)jsonData["uid"] + jsonData["token"] + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-                        if (sign != jsonData["sign"])
-                        {
-                            jsonReturn["state"] = 1;
-                            jsonReturn["msg"] = "sign not math";
-                        }
-                        else
-                            jsonReturn["state"] = 0;
-                        //We just check the sign and return
-                        return jsonReturn.ToString();//If success return {"state":0}, otherwise return {"state":1,"msg":"sign not math"}
-                    }
-                case "/testdelaycallback"://Sample for callback delay
-                    {
-                        //We request HTTP for example
-                        new ThreadPoolHttp("http://www.google.com",
-                            (msg) =>//The HTTP request running in background thread, and this callback run in main thread after the HTTP request done.
-                            {
-                                JSONData jsonReturn = JSONData.NewDictionary();
-                                jsonReturn["state"] = 0;
-                                jsonReturn["msg"] = msg;
-                                delayCallback(jsonReturn);//Here are the real return string to the client after we request HTTP done.
-                            });
-                        return "";//return empty string mean you will callback later.
-                    }
-                default:
-                    return @"{""error"":""unknown url""}";
-            }
+            return @"{""error"":""unknown url""}";
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿
+using CSharpLike;
 using KissFramework;
 using System.Collections.Generic;
 
@@ -49,5 +50,17 @@ namespace KissServerFramework
         /// How many seconds the account data keep in cache after account offline.
         /// </summary>
         public int accountCacheTime = 60;
+        /// <summary>
+        /// Server infomation for gateway
+        /// </summary>
+        public List<GatewayServerInfo> serverInfos = new List<GatewayServerInfo>();
+        /// <summary>
+        /// Hot udpate scripte binary file URI for C#Like full version
+        /// </summary>
+        public string hotUpdateScriptFile = "";
+        /// <summary>
+        /// Hot udpate scripte binary file URI for C#Like free version
+        /// </summary>
+        public string hotUpdateScriptFileFree = "";
     }
 }
