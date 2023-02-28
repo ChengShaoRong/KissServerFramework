@@ -28,7 +28,7 @@ Guide for how setup C#Like(Free) sample:
 	3.2 Double-click to run 'files/ImportDatabase.bat' to import from 'kiss.sql'. (Click 'Enter' while ask for password because no password as default). Modify the BAT file if your install folder is not 'C:/xampp'.
 
 4 (Optional step)HTTP upgrade to HTTPS, WS upgrade to WSS
-	4.1 Prefare SSL certificate, You can go to Tencent(https://console.cloud.tencent.com/ssl) or "Let's Encrypt"(https://letsencrypt.org/)apply for a free SSL certificate or buy one. I was apply the free one year SSL certificate from Tencent, and download the Apache version and Nginx version reserve for next step.
+	4.1 Prefare SSL certificate, You can go to Tencent( https://console.cloud.tencent.com/ssl ) or "Let's Encrypt"( https://letsencrypt.org/ )apply for a free SSL certificate or buy one. I was apply the free one year SSL certificate from Tencent, and download the Apache version and Nginx version reserve for next step.
 	4.2 Setup Nginx proxy
 		4.2.1 Go to Nginx web site download it. http://nginx.org/en/download.html Normaly we download the stable version, we take 'nginx.Windows-1.22.1' for example.
 		4.2.2 Unzip the 'nginx-1.22.1.zip' to 'C:\'.
@@ -153,7 +153,7 @@ Guide for how setup C#Like(Free) sample:
 	3.2 执行批处理文件files/ImportDatabase.bat(默认没密码,要求输入密码直接按回车键), 如果XAMPP安装路径有变,请修改bat文件
 
 4 可选步骤:升级HTTP到HTTPS,升级WS到WSS
-	4.1 准备SSL证书,可以到腾讯云(https://console.cloud.tencent.com/ssl)或"Let's Encrypt"(https://letsencrypt.org/)申请免费的SSL证书或购买.我自己是腾讯云申请的免费SSL证书,下载Apache版证书和Nginx版证书备用.
+	4.1 准备SSL证书,可以到腾讯云( https://console.cloud.tencent.com/ssl )或"Let's Encrypt"( https://letsencrypt.org/ )申请免费的SSL证书或购买.我自己是腾讯云申请的免费SSL证书,下载Apache版证书和Nginx版证书备用.
 	4.2 安装Nginx代理
 		4.2.1 Nginx官网下载 http://nginx.org/en/download.html 一般我们下载里面的稳定版本,我们这里示范选nginx.Windows-1.22.1
 		4.2.2 下载的回来的nginx-1.22.1.zip解压在C盘中
