@@ -1,0 +1,1 @@
+C:\xampp\mysql\bin\mysqladmin -u root -p create kiss
