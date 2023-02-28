@@ -1,3 +1,130 @@
+Here the guide in English, and in the end are guide in Chinese.
+
+Guide for how setup C#Like(Free) sample:
+
+1 Setup 'KissServerFramework' server
+	1.1 Download source code of the server, and then using Visual Studio complie and public into a single EXE file(You can direct use the EXE file that I public if your don't want to complie yourself),put it to 'C:\KissServerFramework':
+		C:\KissServerFramework
+			|
+			|--CSV
+			|  |--Item.csv						//CSV file for test only
+			|
+			|--KissServerFramework.exe			//Main EXE file
+			|--KissServerFramework.json			//config JSON file
+			|--kiss.sql							//The SQL file use in step 3 only
+
+	1.2 If your computer did not installed .NET5 runtime library, you should go to Microsoft web site download and install it. https://download.visualstudio.microsoft.com/download/pr/a0832b5a-6900-442b-af79-6ffddddd6ba4/e2df0b25dd851ee0b38a86947dd0e42e/dotnet-runtime-5.0.17-win-x64.exe
+	1.3 You can modify WebSocket port(default is 9000) and Socket port(default is 9001) and HTTP port(default is 9002) in 'KissServerFramework.json' IF you need to.
+	1.4 Open the 9000-9002 TCP port IF your computer protected by Firewall.
+
+2 Setup XAMPP
+	2.1 Go to XAMPP web site download it. https://www.apachefriends.org/download.html
+	2.2 Click 'Next' until XAMPP install done.(Default install to 'C:/xampp')
+	2.3 Make sure both the MySQL and Apache is running, you can check it in 'XAMPP Control Panel'.
+	2.4 Open the 80 TCP port IF your computer protected by Firewall.
+
+3 Create Database 'kiss' and import from 'kiss.sql'
+	3.1 Double-click to run 'files/CreateDatabase.bat' to create database 'kiss'. (Click 'Enter' while ask for password because no password as default). Modify the BAT file if your install folder is not 'C:/xampp'.
+	3.2 Double-click to run 'files/ImportDatabase.bat' to import from 'kiss.sql'. (Click 'Enter' while ask for password because no password as default). Modify the BAT file if your install folder is not 'C:/xampp'.
+
+4 (Optional step)HTTP upgrade to HTTPS, WS upgrade to WSS
+	4.1 Prefare SSL certificate, You can go to Tencent(https://console.cloud.tencent.com/ssl) or "Let's Encrypt"(https://letsencrypt.org/)apply for a free SSL certificate or buy one. I was apply the free one year SSL certificate from Tencent, and download the Apache version and Nginx version reserve for next step.
+	4.2 Setup Nginx proxy
+		4.2.1 Go to Nginx web site download it. http://nginx.org/en/download.html Normaly we download the stable version, we take 'nginx.Windows-1.22.1' for example.
+		4.2.2 Unzip the 'nginx-1.22.1.zip' to 'C:\'.
+		4.2.3 Copy 'files/QuitNginx.bat' 'files/RetartNginx.bat' 'files/StartNginx.bat' 'files/StopNginx.bat' to Nginx folder.
+		4.2.4 "files/nginx.conf" replace "C:\nginx-1.22.1\conf\nginx.conf"
+		4.2.5 Unzip the Nginx version SSL certificate to 'C:\nginx-1.22.1\conf\xxxx.com\'
+			Final file tree:
+			C:\nginx-1.22.1
+				|
+				|--conf
+				|  |--xxxx.com				//Nginx version SSL certificate
+				|  |   |--xxxx.com_bundle.crt
+				|  |   |--xxxx.com.key
+				|  |
+				|  |--nginx.conf			//Nginx config file
+				|
+				|--contrib
+				|--docs
+				|--html
+				|--logs
+				|--temp
+				|--nginx.exe
+				|
+				|--QuitNginx.bat			//Double-click it to quit Nginx
+				|--RetartNginx.bat			//Double-click it to restart Nginx, use it after modify 'nginx.conf'
+				|--StartNginx.bat			//Double-click it to start Nginx, use it in the first run Nginx
+				|--StopNginx.bat			//Double-click it to stop Nginx
+
+		4.2.6 Modify 'C:/nginx-1.22.1/conf/nginx.conf', change the 'xxxx.com' into your real domain. In my case I use 'csharplike.com' replace 'xxxx.com'
+		4.2.7 You can change the WSS port and WS port and HTTPs port and HTTP port IF you need to. Open the 10000 and 10002 TCP port IF your computer protected by Firewall.
+		4.2.8 Modify 'C:\KissServerFramework\KissServerFramework.json' because we use WSS and HTTPS now:
+			"WebSocketURI": "wss://www.xxxx.com:10000" INSIDE the 'serverInfos' node
+			"HttpURI": "https://www.xxxx.com:10002" INSIDE the 'serverInfos' node
+		4.2.9 Finally remember execute 'StartNginx.bat' to start Nginx (Execute 'RetartNginx.bat' IF you had been run Nginx).
+
+	4.3 Setup Apache SSL certificate
+		4.2.1 Unzip the Apache version SSL certificate to 'C:\xampp\apache\conf\xxxx.com\'
+		4.2.2 Modify 'C:\xampp\apache\conf\extra\httpd-ssl.conf'
+			SSLCertificateFile "C:/xampp/apache/conf/xxxx.com/xxxx.com.crt"
+			SSLCertificateKeyFile "C:/xampp/apache/conf/xxxx.com/xxxx.com.key"
+			SSLCertificateChainFile "C:/xampp/apache/conf/xxxx.com/root_bundle.crt"
+			Please replace the 'xxxx.com' to your real domain. In my case I use 'csharplike.com' replace 'xxxx.com'
+		4.2.3 Open the 443 TCP port IF your computer protected by Firewall.
+
+	4.4 Restart the Apache server make the config take effect. (Click Start button after click Stop button in 'XAMPP Control Panel')
+
+5 Double-click 'C:/KissServerFramework/KissServerFramework.exe' to start KissServerFramework
+	5.1 If the EXE crash down, that may be not exist .NET runtime library, your should check the tips in 'Event Viewer' and download it from Microsoft web site.
+	5.2 If the console just only show 'KissFramework version : 1.0.x.x' mean the port was used. You can click 'NetStat' button in 'XAMPP Control Panel' to check whick port was used.
+
+6 Export C#Like or C#LikeFree to WebGL platform
+	6.1 Create a empty 2D Unity project.
+	6.2 Import C#Like or C#LikeFree plugin.
+	6.3 Modify the HTTP connect domain and port in "Assets\C#Like\Runtime\Sample\SampleCSharpLike.cs"
+		6.3.1 e.g. In HTTP:
+			https://www.csharplike.com:10002/ReqGateway => http://127.0.0.1:9002/ReqGateway
+		6.3.2 e.g. In HTTPS:
+			https://www.csharplike.com:10002/ReqGateway => https://[Your domain]:[Your port]/ReqGateway
+	6.4 'Menu/Window/C#Like' open the setting panel of C#Like. Click 'Rebuild Scripts' button, compile all '*.cs' files in 'Assets\C#Like\HotUpdateScripts' into binary file 'Assets\StreamingAssets\output.bytes'.
+	6.5 (Optional step) : Delete the hold 'Assets\C#Like\HotUpdateScripts' folder after backup, to verify that our hot update script is really can be hot update!
+	6.6 Click '/Assets/C#Like/Scenes/SampleScene.unity' to open the demo scene in Unity editor.
+	6.7 'Menu/File/Build Settings...' open 'Build Settings' panel.
+		6.7.1 Click 'Add Open Scenes' button, make 'C#Like/Scenes/SampleScene' to be the first scens in 'Scenes In Build'
+		6.7.2 Choose 'WebGL' and then click 'Switch Platform' button, switch the current plaform to WebGL
+		6.7.3 Click 'Player Setting...' button, and then modify as you need.
+			6.7.3.1 "Resolution and Presentation"
+				"Default Canvas Width" 600
+				"Default Canvas Height" 960
+				"Run In Background" "v"
+			6.7.3.2 "Other Settings"
+				"Api Compatibility Level" ".NET Standard 2.0"
+				"Strip Engine Code" "v"
+				"Managed Stripping Level" "Medium"
+			6.7.3.3 "Publishing Settings"
+				"Enable Exceptions" "Explicitly Thrown Exceptions Only"
+				"WebAssembly Arithmetic Exceptions" "Throw"
+				"Compression Format" "Gzip"
+				"Data Caching" "v"
+				"Decompression Fallback" "v"
+		6.7.4 Click 'Build' button to export the final WebGL folder
+			6.7.4.1 e.g. C#Like export to folder CSharpLikeDemo
+			6.7.4.2 e.g. C#LikeFree export to folder CSharpLikeFreeDemo
+
+7 Copy exported folder to 'C:\xampp\htdocs'
+	7.1 e.g. Copy the 'CSharpLikeDemo' that exported in step '6.7.4.1' to 'C:\xampp\htdocs'
+		7.1.1 e.g. in my case visit the demo by link : https://www.csharplike.com/CSharpLikeDemo/index.html
+		7.1.2 e.g. in the local with no SSL certificate, you can visit the demo by link : http://127.0.0.1/CSharpLikeDemo/index.html
+	7.2 e.g. Copy the 'CSharpLikeFreeDemo' that exported in step '6.7.4.2' to 'C:\xampp\htdocs'
+		7.1.1 e.g. in my case visit the demo by link : https://www.csharplike.com/CSharpLikeFreeDemo/index.html
+		7.1.2 e.g. in the local with no SSL certificate, you can visit the demo by link : http://127.0.0.1/CSharpLikeFreeDemo/index.html
+
+
+
+
+简体中文:
+
 搭建C#Like(Free)示例的详细流程:
 
 1 搭建KissServerFramework服务器
@@ -90,7 +217,7 @@
 	6.6 Unity编辑器内双击/Assets/C#Like/Scenes/SampleScene.unity打开演示场景
 	6.7 在'Menu/File/Build Settings...'菜单打开'Build Settings'设置面板
 		6.7.1 点击'Add Open Scenes',令'C#Like/Scenes/SampleScene'成为'Scenes In Build'里面首个场景(而非默认的空白场景'Scenes/SampleScene')
-		6.7.2 选中"WebGL"后点击"Switch Platform"按钮切换当前Platform到WebGL Player Setting..."
+		6.7.2 选中"WebGL"后点击"Switch Platform"按钮切换当前Platform到WebGL
 		6.7.3 点击"Player Setting..."按钮,然后按需修改
 			6.7.3.1 "Resolution and Presentation"
 				"Default Canvas Width" 600
@@ -112,8 +239,8 @@
 
 7 把C#Like或C#LikeFree导出的WebGL放入到C:\xampp\htdocs目录内
 	7.1 把导出的CSharpLikeDemo目录放入C:\xampp\htdocs目录内
-		7.1.1 例如我自己的配置了SSL的可以通过 https://www.csharplike.com/CSharpLikeDemo/index.html 来访问
-		7.1.2 例如如果本地没有配置SSL的可以通过 http://127.0.0.1/CSharpLikeDemo/index.html 来访问
+		7.1.1 例如我自己的配置了SSL证书的可以通过 https://www.csharplike.com/CSharpLikeDemo/index.html 来访问
+		7.1.2 例如如果本地没有配置SSL证书的可以通过 http://127.0.0.1/CSharpLikeDemo/index.html 来访问
 	7.2 把导出的CSharpLikeFreeDemo目录放入C:\xampp\htdocs目录内
-		7.2.1 例如我自己的配置了SSL的可以通过 https://www.csharplike.com/CSharpLikeFreeDemo/index.html 来访问
-		7.2.2 例如如果本地没有配置SSL的可以通过 http://127.0.0.1/CSharpLikeFreeDemo/index.html 来访问
+		7.2.1 例如我自己的配置了SSL证书的可以通过 https://www.csharplike.com/CSharpLikeFreeDemo/index.html 来访问
+		7.2.2 例如如果本地没有配置SSL证书的可以通过 http://127.0.0.1/CSharpLikeFreeDemo/index.html 来访问
