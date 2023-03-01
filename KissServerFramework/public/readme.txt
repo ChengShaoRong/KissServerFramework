@@ -27,7 +27,7 @@ Guide for how setup C#Like(Free) sample:
 	3.1 Double-click to run 'files/CreateDatabase.bat' to create database 'kiss'. (Click 'Enter' while ask for password because no password as default). Modify the BAT file if your install folder is not 'C:/xampp'.
 	3.2 Double-click to run 'files/ImportDatabase.bat' to import from 'kiss.sql'. (Click 'Enter' while ask for password because no password as default). Modify the BAT file if your install folder is not 'C:/xampp'.
 
-4 (Optional step)HTTP upgrade to HTTPS, WS upgrade to WSS
+4 (Optional step)HTTP upgrade to HTTPS, WS upgrade to WSS, change RSA certificate that use in Socket 
 	4.1 Prefare SSL certificate, You can go to Tencent( https://console.cloud.tencent.com/ssl ) or "Let's Encrypt"( https://letsencrypt.org/ )apply for a free SSL certificate or buy one. I was apply the free one year SSL certificate from Tencent, and download the Apache version and Nginx version reserve for next step.
 	4.2 Setup Nginx proxy
 		4.2.1 Go to Nginx web site download it. http://nginx.org/en/download.html Normaly we download the stable version, we take 'nginx.Windows-1.22.1' for example.
@@ -74,6 +74,14 @@ Guide for how setup C#Like(Free) sample:
 		4.2.3 Open the 443 TCP port IF your computer protected by Firewall.
 
 	4.4 Restart the Apache server make the config take effect. (Click Start button after click Stop button in 'XAMPP Control Panel')
+
+	4.5 Our socket encrypt by RSA first and then encrypt by AES, you should modify the default RSA certificate to your unique.
+		4.5.1 Generate RSA certificate
+			'Menu/Window/C#Like' open the setting panel of C#Like, click 'Generate RSA' button, will generate 'Assets\C#Like\Editor\RSAPublicKey.txt' and 'Assets\C#Like\Editor\RSAPrivateKey.txt' two files.
+		4.5.2 Modify the KissServerFramework config
+			Modify 'socketServerRSAPrivateKey' value in 'C:\KissServerFramework\KissServerFramework.json' to the conten of 'Assets\C#Like\Editor\RSAPrivateKey.txt'
+		4.5.3 Modify the C#Like config
+			Modify 'socketRSAPublicKey' value in 'Assets\C#Like\HotUpdateScripts\Sample\SampleSocket.cs' to the conten of 'Assets\C#Like\Editor\RSAPublicKey.txt'
 
 5 Double-click 'C:/KissServerFramework/KissServerFramework.exe' to start KissServerFramework
 	5.1 If the EXE crash down, that may be not exist .NET runtime library, your should check the tips in 'Event Viewer' and download it from Microsoft web site.
@@ -152,7 +160,7 @@ Guide for how setup C#Like(Free) sample:
 	3.1 执行批处理文件files/CreateDatabase.bat(默认没密码,要求输入密码直接按回车键), 如果XAMPP安装路径有变,请修改bat文件
 	3.2 执行批处理文件files/ImportDatabase.bat(默认没密码,要求输入密码直接按回车键), 如果XAMPP安装路径有变,请修改bat文件
 
-4 可选步骤:升级HTTP到HTTPS,升级WS到WSS
+4 可选步骤:升级HTTP到HTTPS,升级WS到WSS,更换Socket的RSA证书
 	4.1 准备SSL证书,可以到腾讯云( https://console.cloud.tencent.com/ssl )或"Let's Encrypt"( https://letsencrypt.org/ )申请免费的SSL证书或购买.我自己是腾讯云申请的免费SSL证书,下载Apache版证书和Nginx版证书备用.
 	4.2 安装Nginx代理
 		4.2.1 Nginx官网下载 http://nginx.org/en/download.html 一般我们下载里面的稳定版本,我们这里示范选nginx.Windows-1.22.1
@@ -199,6 +207,14 @@ Guide for how setup C#Like(Free) sample:
 		4.2.3 如果存在防火墙,则需要对外开放TCP端口443
 
 	4.4 配置完毕记得在XAMPP控制面板里点Stop按钮,然后点Start按钮,来重启Apache令配置生效
+
+	4.5 我们的Socket是采用先RSA后AES加密,默认设置的证书是内置的,你需要更换成自己独一无二的RSA证书
+		4.5.1 生成证书
+			在'Menu/Window/C#Like'打开C#Like设置面板,点"Generate RSA"按钮,会生成'Assets\C#Like\Editor\RSAPublicKey.txt'和'Assets\C#Like\Editor\RSAPrivateKey.txt'两个文件
+		4.5.2 替换服务器KissServerFramework里的设置
+			修改C:\KissServerFramework\KissServerFramework.json内的socketServerRSAPrivateKey成'Assets\C#Like\Editor\RSAPrivateKey.txt'的内容
+		4.5.3 替换客户端C#Like里的设置
+			修改'Assets\C#Like\HotUpdateScripts\Sample\SampleSocket.cs内的socketRSAPublicKey成'Assets\C#Like\Editor\RSAPublicKey.txt'的内容
 
 5 双击运行C:/KissServerFramework/KissServerFramework.exe
 	5.1 如果exe闪掉没开起了,可能是因为没有对应.NET运行时库,可以根据事件查看器的提示到微软官网下载运行时库.
