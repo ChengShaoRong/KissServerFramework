@@ -48,7 +48,7 @@
           "lib/netstandard2.0/K4os.Hash.xxHash.dll": {}
         }
       },
-      "KissCSV/1.0.2": {
+      "KissCSV/1.0.4": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/KissCSV.dll": {}
@@ -57,10 +57,10 @@
           "lib/netstandard2.0/KissCSV.dll": {}
         }
       },
-      "KissFramework/1.0.9": {
+      "KissFramework/1.0.10": {
         "type": "package",
         "dependencies": {
-          "KissCSV": "1.0.2",
+          "KissCSV": "1.0.4",
           "KissJSON": "1.0.3",
           "MySql.Data": "8.0.30",
           "SAEA.Http": "7.0.0.3",
@@ -668,30 +668,30 @@
         "lib/netstandard2.0/K4os.Hash.xxHash.xml"
       ]
     },
-    "KissCSV/1.0.2": {
-      "sha512": "MXuoDdCOLt7bkX0+1Epuk7nvuuexfU6225pVccnFNRg6kgMomNQY73sGw2EiSWjzzNgh/XXR4ei1YSRiUR4W5Q==",
+    "KissCSV/1.0.4": {
+      "sha512": "d0aooVlwIBIRruVJChDP7S753YwM7ioyxrLjqwLIIyUxjGcZUdVrdlCB8F/fsl26GzG6sKBlZOiZ8ycRoS96ag==",
       "type": "package",
-      "path": "kisscsv/1.0.2",
+      "path": "kisscsv/1.0.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE",
         "icon.png",
-        "kisscsv.1.0.2.nupkg.sha512",
+        "kisscsv.1.0.4.nupkg.sha512",
         "kisscsv.nuspec",
         "lib/netstandard2.0/KissCSV.dll"
       ]
     },
-    "KissFramework/1.0.9": {
-      "sha512": "9gIQswlnsVJHoBtgHBWES/i6f+3REu1JvBfx4XuHI07qdmvlbseSS6gb1GmwSOad4BEJSidMkYH0xWGvfFjCxg==",
+    "KissFramework/1.0.10": {
+      "sha512": "SS1KO9xZWKGokYl2VevCJN3yulcrrCm+UcvIE36fbHbskMe+Rpw3x7ZlRDuN2mRnmFSp47MASgcZNUNUgMm/3Q==",
       "type": "package",
-      "path": "kissframework/1.0.9",
+      "path": "kissframework/1.0.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "kissframework.1.0.9.nupkg.sha512",
+        "kissframework.1.0.10.nupkg.sha512",
         "kissframework.nuspec",
         "lib/netstandard2.0/KissFramework.dll"
       ]
@@ -2383,7 +2383,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "KissFramework >= 1.0.9"
+      "KissFramework >= 1.0.10"
     ]
   },
   "packageFolders": {
@@ -2432,7 +2432,7 @@
         "dependencies": {
           "KissFramework": {
             "target": "Package",
-            "version": "[1.0.9, )"
+            "version": "[1.0.10, )"
           }
         },
         "imports": [

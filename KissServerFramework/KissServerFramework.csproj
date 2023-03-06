@@ -6,11 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KissFramework" Version="1.0.9" />
+    <PackageReference Include="KissFramework" Version="1.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="CSV\Item.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CSV\TestCsv.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="KissServerFramework.json">

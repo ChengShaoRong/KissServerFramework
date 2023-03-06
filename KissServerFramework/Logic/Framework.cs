@@ -2,13 +2,12 @@
 using CSharpLike;
 using KissFramework;
 using System;
+using System.Collections.Generic;
 
 namespace KissServerFramework
 {
     /// <summary>
     /// All our logic running in main thread, 
-    /// except the database SELECT/INSERT/UPDATE/DELETE operation, 
-    /// We write sample for operate database, it's easy way to use database in Multithreading.
     /// You don't need to use 'lock' syntax!
     /// </summary>
     public class Framework : FrameworkBase
@@ -20,12 +19,21 @@ namespace KissServerFramework
         public override void InitializeCSV()
         {
             Logger.LogInfo("Framework:InitializeCSV");
-            //You should initialize all your CSV files here. All CSV files will load into cache.
-            KissCSV.Init("Item.csv", "id");
+            //We recommend read data from CSV file with class(NOT struct!).
+            KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id");
+            //Sample for read a row data as class object
+            TestCsv testCsv = KissCSV.Get("TestCsv.csv", 1) as TestCsv;
+            if (testCsv != null)//If not exist "1" in columnName "id" will return null.
+            {
+                Logger.LogInfo($"TestCsv id={testCsv.id}");//output id=1
+                Logger.LogInfo($"TestCsv name={testCsv.name}");//output name=test name
+            }
 
+            //If you don't want to define a class ,you can read data from CSV file by SimpleKissCSV.
+            SimpleKissCSV.Load("Item.csv", "id");
             //Sample for how to read value from CSV file.
-            Logger.LogInfo($"test CSV maxStack={KissCSV.GetInt("Item.csv", "100", "maxStack")}");
-            Logger.LogInfo($"test CSV name={KissCSV.GetString("Item.csv", "100", "name")}");
+            Logger.LogInfo($"test CSV maxStack={SimpleKissCSV.GetInt("Item.csv", "100", "maxStack")}");
+            Logger.LogInfo($"test CSV name={SimpleKissCSV.GetString("Item.csv", "100", "name")}");
         }
         /// <summary>
         /// When the KISS framework initialized will call this function, you can call your initialize here.
@@ -118,38 +126,6 @@ namespace KissServerFramework
                     Logger.LogInfo(result);
                 });
             });
-        }
-        /// <summary>
-        /// The main game loop function, that run in main thread.
-        /// You should call all other Update(float deltaTime) from here.
-        /// We recommend using:
-        /// 'public static string RaiseEvent(Action action, float intervalTime = 0, int repeatCount = int.MaxValue)'
-        /// to do the loop timer.
-        /// You can see the sample in OnStart()
-        /// </summary>
-        /// <param name="deltaTime">delta time since last update, in seconds</param>
-        protected override void OnUpdate(float deltaTime)
-        {
-            //Add your custom function below if you need Update.
-        }
-
-        /// <summary>
-        /// Process HTTP message, that run in main thread.
-        /// We recommend using 'BindHttpMsg' to handle each single HTTP request.
-        /// </summary>
-        /// <param name="url">The url string, and is LOWERCASE letter</param>
-        /// <param name="jsonData">The request JSON data from client, support GET/POST data</param>
-        /// <param name="url">The client ip</param>
-        /// <param name="delayCallback">If you want to do something in thread or delay callback,
-        /// such as get some data from database, you can return "" in this function 
-        /// and call this action while your work done. 
-        /// And the timeout is 'config.processTimeoutHTTP = 10;' seconds.
-        /// You can ignore this if you return client immediately.</param>
-        /// <returns>That string will callback to client immediately. If return empty string, you should call delayCallback later.</returns>
-        protected override string OnHttpMessage(string url, JSONData jsonData, string ip, Action<string> delayCallback)
-        {
-            Logger.LogInfo($"Framework:OnHttpMessage : url = {url}  jsonData = {jsonData} from {ip}");
-            return @"{""error"":""unknown url""}";
         }
 
         /// <summary>
