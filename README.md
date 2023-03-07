@@ -304,3 +304,108 @@ Mail --|> Mail_Base
 Item --|> Item_Base
 SignIn --|> SignIn_Base
 ```
+
+* **(chinese) 无需用到SQL知识, 仅需定义数据库表结构,即可使用自动获取的数据库数据. 修改数据后, 后台会全自动异步更新至数据库和客户端**
+以示范项目为例:  
+>* 客户端(Player类),通过账号登录管理器(AccountManager类)获取账号(Account类)信息,成功登录后,全自动加载所包含的子系统且全自动同步到客户端. 这里的示范子系统分别是邮件系统(Mail类)和物品系统(Item类)和签到系统(SignIn类).  
+>* 你需要定义account.ridl, item.ridl, mail.ridl, signIn.ridl这4个文件.  
+>* 每个'XXXX.ridl'文件将生成2个服务器用的XXXX类(用于自定义修改)和XXXX_Base类(禁止修改且修改ridl会自动覆盖), 2个C#Like完整版用的XXXX类(用于自定义修改)和XXXX_Base类(禁止修改且修改ridl会自动覆盖), 1个C#Like免费版用的XXXX类(用于自定义修改,为何没有XXXX_Base类?因为C#Like免费版热更新脚本不支持继承.).  
+>* 修改自动生成的类属性时候, 将会自动触发**后台线程**的保存数据库和同步客户端的操作. 某些无需更新的属性可以通过配置ridl文件排除, 例如Item里的itemId和acctId是绝对不会改变的.  
+```mermaid
+classDiagram
+class AccountManager{
+	+Dictionary~int, Account~ accounts
+	+Dictionary~Account, Player~ playersByAccount
+	+Dictionary~string, Account~ accountsByName
+	+Login(JSONData jsonData, Player player)
+	-LoginStep2(JSONData jsonData, Player player)
+	-LoginStep3()
+	+GetAccount(ref Account account)
+	+GetAccount(int uid)
+	+GetAccount(string name, int acctType)
+	+GetAccountByNickname(string nickname)
+	+ClearAccountCache(Account account)
+	+GetPlayer(Account account)
+	+GetPlayer(int uid)
+	+ChangeNameAndPassword()
+	+BroadcastToAllPlayer(JSONData msg)
+}
+class PlayerBase{
+	+string SessionID
+	+string IP
+	+bool printSendAndReceived$
+	+Send(JSONData jsonData)
+	+Send(string msg)
+	+Disconnect()
+}
+class Player{
+	+Account account
+	+OnMessage(JSONData jsonData)
+	+OnDisconnect(JSONData jsonData)
+	+OnConnect(JSONData jsonData)
+	+OnError(JSONData jsonData)
+}
+class Account{
+	
+}
+class Account_Base{
+	+int uid
+	+int acctType
+	+DateTime createTime
+	+string name
+	+string password
+	+string nickname
+	+int money
+	+int score
+	+DateTime scoreTime
+	+DateTime lastLoginTime
+	+Dictionary~int,Item~ items
+	+Dictionary~int,Mail~ mails
+	+SignIn signIn
+	+LoadAllSubSystem(PlayerBase player)
+	+SelectByNameAndAcctType(string name, int acctType, Action<List<Account>, string> _callback_)
+}
+class Item{
+	
+}
+class Item_Base{
+	+int uid
+	+int itemId
+	+int acctId
+	+int count
+}
+class Mail{
+	
+}
+class Mail_Base{
+	+int uid
+	+int acctId
+	+int senderId
+	+int acctType
+	+string senderName
+	+string title
+	+string content
+	+string appendix
+	+DateTime createTime
+	+byte wasRead
+	+byte received
+}
+class SignIn{
+	
+}
+class SignIn_Base{
+	+int acctId
+	+int month
+	+string signInList
+	+string vipSignInList
+}
+Player --|> PlayerBase
+Player *-- Account
+Account_Base *-- "0..n" Item
+Account_Base *-- "0..n" Mail
+Account_Base *-- "1" SignIn
+Account --|> Account_Base
+Mail --|> Mail_Base
+Item --|> Item_Base
+SignIn --|> SignIn_Base
+```
