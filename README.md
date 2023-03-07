@@ -236,9 +236,9 @@ class PlayerBase{
 class Player{
 	+Account account
 	+OnMessage(JSONData jsonData)
-	+OnDisconnect(JSONData jsonData)
-	+OnConnect(JSONData jsonData)
-	+OnError(JSONData jsonData)
+	+OnDisconnect()
+	+OnConnect()
+	+OnError(string msg)
 }
 class Account{
 	
@@ -258,7 +258,7 @@ class Account_Base{
 	+Dictionary~int,Mail~ mails
 	+SignIn signIn
 	+LoadAllSubSystem(PlayerBase player)
-	+SelectByNameAndAcctType(string name, int acctType, Action<List<Account>, string> _callback_)
+	+SelectByNameAndAcctType(string name, int acctType, Action~List<Account>, string~ _callback_)
 }
 class Item{
 	
@@ -341,9 +341,9 @@ class PlayerBase{
 class Player{
 	+Account account
 	+OnMessage(JSONData jsonData)
-	+OnDisconnect(JSONData jsonData)
-	+OnConnect(JSONData jsonData)
-	+OnError(JSONData jsonData)
+	+OnDisconnect()
+	+OnConnect()
+	+OnError(string msg)
 }
 class Account{
 	
@@ -363,7 +363,7 @@ class Account_Base{
 	+Dictionary~int,Mail~ mails
 	+SignIn signIn
 	+LoadAllSubSystem(PlayerBase player)
-	+SelectByNameAndAcctType(string name, int acctType, Action<List<Account>, string> _callback_)
+	+SelectByNameAndAcctType(string name, int acctType, Action~List<Account>, string~ _callback_)
 }
 class Item{
 	
