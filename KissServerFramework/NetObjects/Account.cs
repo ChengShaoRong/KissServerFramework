@@ -21,6 +21,22 @@ namespace KissServerFramework
                             //-> our server confirm that uid and token from third party server by HTTP(s).
                             //-> login success/fail
         }
+        public override void OnItemLoaded()
+        {
+            Logger.LogInfo("OnItemLoaded:count=" + items.Count);
+        }
+        public override void OnMailLoaded()
+        {
+            Logger.LogInfo("OnMailLoaded:count=" + mails.Count);
+        }
+        public override void OnSignInLoaded()
+        {
+            Logger.LogInfo("OnSignInLoaded:" + signIn);
+        }
+        public override void OnAllSubSystemLoaded()
+        {
+            Logger.LogInfo("OnAllSubSystemLoaded");
+        }
         public override Func<int, PlayerBase> GetPlayer()
         {
             return (int uid) => { return AccountManager.Instance.GetPlayer(uid); };

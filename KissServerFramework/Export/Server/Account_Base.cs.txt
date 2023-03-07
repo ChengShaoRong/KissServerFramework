@@ -440,6 +440,67 @@ namespace KissServerFramework
 				one.MarkModifyMaskAll();
 			signIn.MarkModifyMaskAll();
 		}
+		public virtual void OnItemLoaded() { }
+		public virtual void OnMailLoaded() { }
+		public virtual void OnSignInLoaded() { }
+		public virtual void OnAllSubSystemLoaded() { }
+		public void LoadAllSubSystem(PlayerBase player)
+		{
+			int _uid_ = _attribute_.uid;
+			Func<int, PlayerBase> _getPlayer_ = GetPlayer();
+			int _count_ = 3;
+			Item.SelectByAcctId(_uid_, (items, error) =>
+			{
+				if (string.IsNullOrEmpty(error))
+				{
+					PlayerBase _playerNow_ = _getPlayer_(_uid_);
+					if (_playerNow_ != null && player == _playerNow_)
+					{
+						SetItems(items);
+						OnItemLoaded();
+					}
+				}
+				else
+					Logger.LogError(error);
+				_count_--;
+				if (_count_ <= 0)
+					OnAllSubSystemLoaded();
+			});
+			Mail.SelectByAcctId(_uid_, (mails, error) =>
+			{
+				if (string.IsNullOrEmpty(error))
+				{
+					PlayerBase _playerNow_ = _getPlayer_(_uid_);
+					if (_playerNow_ != null && player == _playerNow_)
+					{
+						SetMails(mails);
+						OnMailLoaded();
+					}
+				}
+				else
+					Logger.LogError(error);
+				_count_--;
+				if (_count_ <= 0)
+					OnAllSubSystemLoaded();
+			});
+			SignIn.SelectByAcctId(_uid_, (signIns, error) =>
+			{
+				if (string.IsNullOrEmpty(error))
+				{
+					PlayerBase _playerNow_ = _getPlayer_(_uid_);
+					if (signIns.Count != 0 && _playerNow_ != null && player == _playerNow_)
+					{
+						SetSignIn(signIns[0]);
+						OnSignInLoaded();
+					}
+				}
+				else
+					Logger.LogError(error);
+				_count_--;
+				if (_count_ <= 0)
+					OnAllSubSystemLoaded();
+			});
+		}
 #endregion //Sync
 		#region Property
 		public enum UpdateMask : ulong

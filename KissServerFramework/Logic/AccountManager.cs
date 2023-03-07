@@ -342,7 +342,7 @@ namespace KissServerFramework
                     account.SendMail("Create account gift", "Welcome, here are the gift for you.", 3, 2);
                     //We add a item here for example
                     account.ChangeItem(3, 1);
-                    //Initialize some sub system here
+                    //Initialize some sub system here, You MUST manual insert if not exist
                     SignIn.Insert(account.uid, DateTime.Now.Month, "", "", (signIn, error) =>
                     {
                         player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
@@ -352,95 +352,10 @@ namespace KissServerFramework
                 }
                 else
                 {
-                    //Load sub systems from database, you can choose simultaneous style or one by one style.
-                    //------Below are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
-                    //Load all item
-                    Item.SelectByAcctId(account.uid, (items, error) =>
-                    {
-                        if (string.IsNullOrEmpty(error))
-                        {
-                            player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                            if (player != null)//May be player was offline 
-                                player.account.SetItems(items);
-                        }
-                        else
-                            Logger.LogError(error);
-                    });
-                    //Load all mail
-                    Mail.SelectByAcctId(account.uid, (mails, error) =>
-                    {
-                        if (string.IsNullOrEmpty(error))
-                        {
-                            player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                            if (player != null)//May be player was offline 
-                                player.account.SetMails(mails);
-                        }
-                        else
-                            Logger.LogError(error);
-                    });
-                    //Load SignIn
-                    SignIn.SelectByAcctId(account.uid, (signIns, error) =>
-                    {
-                        if (string.IsNullOrEmpty(error))
-                        {
-                            if (signIns.Count != 0)
-                            {
-                                player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                                if (player != null)//May be player was offline 
-                                    player.account.SetSignIn(signIns[0]);
-                            }
-                        }
-                        else
-                            Logger.LogError(error);
-                    });
-                    //------Above are load sub systems(Simultaneous style, mean all sub systems load together in multi-threading, that fast but cost more CPU resources.)---------
-
-                    /*
-                    //------Below are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
-                    //1. Load all item
-                    Item.SelectByAcctId(account.uid, (items, error) =>
-                    {
-                        if (string.IsNullOrEmpty(error))
-                        {
-                            player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                            if (player != null)//May be player was offline 
-                                player.account.SetItems(items);
-                        }
-                        else
-                            Logger.LogError(error);
-
-                        //2. Load all mail after load item done
-                        Mail.SelectByAcctId(account.uid, (mails, error) =>
-                        {
-                            if (string.IsNullOrEmpty(error))
-                            {
-                                player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                                if (player != null)//May be player was offline 
-                                    player.account.SetMails(mails);
-                                });
-                            }
-                            else
-                                Logger.LogError(error);
-
-                            //3. Load SignIn after load mail done
-                            SignIn.SelectByAcctId(account.uid, (signIns, error) =>
-                            {
-                                if (string.IsNullOrEmpty(error))
-                                {
-                                    if (signIns.Count != 0)
-                                    {
-                                        player = GetPlayer(account.uid);//May be player instance was changed after DB multi-threading operation done
-                                        if (player != null)//May be player was offline 
-                                            player.account.SetSignIn(signIns[0]);
-                                    }
-                                }
-                                else
-                                    Logger.LogError(error);
-                        });
-
-                    });
-                    //------Above are load sub systems(One by one style, mean load next sub system after Pre sub system done, that slow but cost less CPU resources.)---------------------
-                    */
+                    //Load all system into account, it will automatically synchronize to client.
+                    //If you want to do something when all system loaded, you can override OnAllSubSystemLoaded in Account.
+                    //If you want to do something when some system loaded, you can override OnXXXXXLoaded in Account.
+                    account.LoadAllSubSystem(player);//callback in account override function 'OnAllSubSystemLoaded'
 
                     //Process login in different day.
                     if (account.lastLoginTime.Day != DateTime.Now.Day)

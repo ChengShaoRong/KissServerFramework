@@ -2,5 +2,29 @@ namespace KissServerFramework
 {
 	public sealed class Account : Account_Base
 	{
+		/// <summary>
+		/// Will be called after Item system loaded from database.
+		/// </summary>
+		public override void OnItemLoaded()
+		{
+		}
+		/// <summary>
+		/// Will be called after Mail system loaded from database.
+		/// </summary>
+		public override void OnMailLoaded()
+		{
+		}
+		/// <summary>
+		/// Will be called after SignIn system loaded from database.
+		/// </summary>
+		public override void OnSignInLoaded()
+		{
+		}
+		/// <summary>
+		/// Will be called after ALL system loaded from database.
+		/// </summary>
+		public override void OnLoadedAllSubSystem()
+		{
+		}
 	}
 }
