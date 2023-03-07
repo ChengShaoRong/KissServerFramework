@@ -164,24 +164,23 @@ https://github.com/ChengShaoRong/KissServerFramework.git
 	//立即返回的示范(同步)
 	BindHttpMsg("/TestThirdPartyAccount", (jsonData, ip, delayCallback) =>
 	{
-	    //e.g. GET : url = 'http://ip[:port]/TestThirdPartyAccount?uid=123456789&token=xxxxxx&sign=yyyyyy'
-	    //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = 'uid=123456789&token=xxxxxx&sign=yyyyyy'
-	    //e.g. POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = '{"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}'
-	    //We are both got jsonData = {"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}
-	    //If post the JSON string, we will get the JSON you send.
+	    //例如客户端GET : url = 'http://ip[:port]/TestThirdPartyAccount?uid=123456789&token=xxxxxx&sign=yyyyyy'
+	    //例如客户端POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = 'uid=123456789&token=xxxxxx&sign=yyyyyy'
+	    //例如客户端POST : url = 'http://ip[:port]/TestThirdPartyAccount'  post = '{"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}'
+	    //我们都会获取到JSON对象 = {"uid":"123456789","token":"xxxxxx","sign":"yyyyyy"}
 	    JSONData jsonReturn = JSONData.NewDictionary();
-	    //int uid=jsonData["uid"];//You will got the int number 123456789 both the JSON {"uid":"123456789"} and {"uid":123456789}
+	    //int uid=jsonData["uid"];//JSON {"uid":"123456789"} and {"uid":123456789}都可以自动变成数字123456789
 	    //sign = md5(uid+token+key)
 	    string sign = GetMD5((string)jsonData["uid"] + jsonData["token"] + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
 	    if (sign != jsonData["sign"])
 	    {
 	        jsonReturn["state"] = 1;
-	        jsonReturn["msg"] = "sign not math";
+	        jsonReturn["msg"] = "验签失败";
 	    }
 	    else
 	        jsonReturn["state"] = 0;
 	    //We just check the sign and return
-	    return jsonReturn.ToJson();//If success return {"state":0}, otherwise return {"state":1,"msg":"sign not math"}
+	    return jsonReturn.ToJson();//如果成功则返回{"state":0}, 失败则返回 {"state":1,"msg":"验签失败"}
 	});
 	//延迟返回的示范(异步)
 	BindHttpMsg("/TestDelayCallback", (jsonData, ip, delayCallback) =>
@@ -197,4 +196,111 @@ https://github.com/ChengShaoRong/KissServerFramework.git
 	        });
 	    return "";//这里固定返回空白字符串表示我们将延迟异步返回
 	});
+```
+
+***
+
+* **No need to use SQL knowledge, just define the database table structure, then you can use the automatically acquired database data. After modified the data,  will update it to the database and client automatically and asynchronously in the background**
+e. g. Demo server:  
+>* Client(class Player) get account infomation(class Account) from the account manager(class AccountManager). After login success, will automatically load all subsystem and sync to client.  The demo project include 3 subsystem : mail system(class Mail), item system(class Item) and sign in system(class SignIn).  
+>* You need define 4 RIDL file, include 'account.ridl', 'item.ridl', 'mail.ridl', 'signIn.ridl'.  
+>* By KissGennerateRIDL project, each 'XXXX.ridl' file will automatically generate 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified and will be covered while 'XXXX.ridl' file was modified) for the server and 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified and will be covered while 'XXXX.ridl' file was modified) for C#Like and 1 class(Why not has class XXXX_Base? Because not support inherit class in free version.) for C#LikeFree.  
+>* Modify the attribute in class XXXX_Base will active save into database and sync to client action in **background thread**. Spme attributes may be no need to be update, you can modify RIDL file exclude it,  e. g. itemId and acctId in class Item will never change in logic.  
+```mermaid
+classDiagram
+class AccountManager{
+	+Dictionary~int, Account~ accounts
+	+Dictionary~Account, Player~ playersByAccount
+	+Dictionary~string, Account~ accountsByName
+	+Login(JSONData jsonData, Player player)
+	-LoginStep2(JSONData jsonData, Player player)
+	-LoginStep3()
+	+GetAccount(ref Account account)
+	+GetAccount(int uid)
+	+GetAccount(string name, int acctType)
+	+GetAccountByNickname(string nickname)
+	+ClearAccountCache(Account account)
+	+GetPlayer(Account account)
+	+GetPlayer(int uid)
+	+ChangeNameAndPassword()
+	+BroadcastToAllPlayer(JSONData msg)
+}
+class PlayerBase{
+	+string SessionID
+	+string IP
+	+bool printSendAndReceived$
+	+Send(JSONData jsonData)
+	+Send(string msg)
+	+Disconnect()
+}
+class Player{
+	+Account account
+	+OnMessage(JSONData jsonData)
+	+OnDisconnect(JSONData jsonData)
+	+OnConnect(JSONData jsonData)
+	+OnError(JSONData jsonData)
+}
+class Account{
+	
+}
+class Account_Base{
+	+int uid
+	+int acctType
+	+DateTime createTime
+	+string name
+	+string password
+	+string nickname
+	+int money
+	+int score
+	+DateTime scoreTime
+	+DateTime lastLoginTime
+	+Dictionary~int,Item~ items
+	+Dictionary~int,Mail~ mails
+	+SignIn signIn
+	+LoadAllSubSystem(PlayerBase player)
+	+SelectByNameAndAcctType(string name, int acctType, Action<List<Account>, string> _callback_)
+}
+class Item{
+	
+}
+class Item_Base{
+	+int uid
+	+int itemId
+	+int acctId
+	+int count
+}
+class Mail{
+	
+}
+class Mail_Base{
+	+int uid
+	+int acctId
+	+int senderId
+	+int acctType
+	+string senderName
+	+string title
+	+string content
+	+string appendix
+	+DateTime createTime
+	+byte wasRead
+	+byte received
+}
+class SignIn{
+	
+}
+class SignIn_Base{
+	+int acctId
+	+int month
+	+string signInList
+	+string vipSignInList
+}
+Player --|> PlayerBase
+Player *-- Account
+Account_Base *-- "0..n" Item
+Account_Base *-- "0..n" Mail
+Account_Base *-- "1" SignIn
+Account --|> Account_Base
+Mail --|> Mail_Base
+Item --|> Item_Base
+SignIn --|> SignIn_Base
 ```
