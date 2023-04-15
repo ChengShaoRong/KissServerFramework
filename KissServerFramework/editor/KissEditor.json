@@ -1,0 +1,477 @@
+{
+    "version": 1,
+    "sn": "anonymous",
+    "sizeWidth": 800,
+    "sizeHeight": 600,
+    "database": "MySQL",
+    "exportFolderBackup": "./../../Backup",
+    "exportFolderServer": "./../NetObjects",
+    "exportFolderClientFull": "",
+    "exportFolderClientFree": "",
+    "namespace": "KissServerFramework",
+    "md5": {
+        "Account": "",
+        "Item": "",
+        "Mail": "",
+        "SignIn": "",
+        "LogManager": ""
+    },
+    "annotation": "/*\
+* C#Like \
+* Copyright © 2022-2023 RongRong \
+* It's automatic generate by KissEditor, don't modify this file. \
+*/",
+    "classes": {
+        "LogManager": {
+            "name": "LogManager",
+            "using": [
+                "using KissFramework;",
+                "using System;"
+            ],
+            "isLogManager": true,
+            "clientOnChanged": false,
+            "sortOrder": 0,
+            "logs": [
+                {
+                    "name": "LogAccount",
+                    "dbName": "LogAccount",
+                    "params": [
+                        {
+                            "type": "int",
+                            "name": "acctId"
+                        },
+                        {
+                            "type": "int",
+                            "name": "logType"
+                        },
+                        {
+                            "type": "string",
+                            "name": "ip"
+                        }
+                    ],
+                    "createTime": true,
+                    "key": [
+                        {
+                            "name": "index_acctId",
+                            "list": [
+                                "acctId"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "LogItem",
+                    "dbName": "LogItem",
+                    "params": [
+                        {
+                            "type": "int",
+                            "name": "acctId"
+                        },
+                        {
+                            "type": "int",
+                            "name": "logType"
+                        },
+                        {
+                            "type": "int",
+                            "name": "changeCount"
+                        },
+                        {
+                            "type": "int",
+                            "name": "finalCount"
+                        }
+                    ],
+                    "createTime": true,
+                    "key": [
+                        {
+                            "name": "index_acctId",
+                            "list": [
+                                "acctId"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "LogMail",
+                    "dbName": "LogMail",
+                    "params": [
+                        {
+                            "type": "int",
+                            "name": "acctId"
+                        },
+                        {
+                            "type": "int",
+                            "name": "logType"
+                        },
+                        {
+                            "type": "string",
+                            "name": "appendix"
+                        },
+                        {
+                            "type": "string",
+                            "name": "content"
+                        },
+                        {
+                            "type": "string",
+                            "name": "title"
+                        }
+                    ],
+                    "createTime": true,
+                    "key": [
+                        {
+                            "name": "index_acctId",
+                            "list": [
+                                "acctId"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "Account": {
+            "name": "Account",
+            "keyword": "account",
+            "syncKeyword": "account",
+            "insertDB": [
+                "name",
+                "acctType",
+                "password",
+                "nickname"
+            ],
+            "selectDB": [
+                "",
+                "uid",
+                "uid,acctType",
+                "name,acctType"
+            ],
+            "deleteDB": [
+                "",
+                "uid",
+                "uid,acctType",
+                "name,acctType"
+            ],
+            "clientOnChanged": true,
+            "sortOrder": 1,
+            "using": [
+                "using KissFramework;",
+                "using System;"
+            ],
+            "key": [
+                {
+                    "unique": true,
+                    "name": "index_name",
+                    "list": [
+                        "name",
+                        "acctType"
+                    ]
+                },
+                {
+                    "name": "index_score",
+                    "list": [
+                        "score",
+                        "scoreTime"
+                    ]
+                }
+            ],
+            "sync": [
+                {
+                    "type": "Mail",
+                    "keyword": "mails",
+                    "sortKey": true,
+                    "sortKeyType": "int",
+                    "sortKeyName": "uid",
+                    "stackIfExist": false,
+                    "limit": 50,
+                    "delay": 100,
+                    "clientOnChanged": false
+                },
+                {
+                    "type": "Item",
+                    "keyword": "items",
+                    "sortKey": true,
+                    "sortKeyType": "int",
+                    "sortKeyName": "itemId",
+                    "limit": 100,
+                    "delay": 100,
+                    "clientOnChanged": true,
+                    "stackIfExist": true,
+                    "stackIfExistName": "itemId",
+                    "stackIfExistCount": "count"
+                },
+                {
+                    "type": "SignIn",
+                    "keyword": "signIn",
+                    "sortKey": false,
+                    "stackIfExist": false,
+                    "delay": 100,
+                    "clientOnChanged": true
+                }
+            ],
+            "attributes": {
+                "uid": [
+                    {
+                        "type": "int",
+                        "name": "uid",
+                        "primary": true,
+                        "AUTO_INCREMENT": true
+                    },
+                    {
+                        "type": "int",
+                        "name": "acctType",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "DateTime",
+                        "name": "createTime",
+                        "dbType": "Timestamp",
+                        "dontUpdate": true
+                    }
+                ],
+                "name": [
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "dbType": "VarChar, 64"
+                    },
+                    {
+                        "type": "string",
+                        "name": "password",
+                        "dbType": "VarChar, 64"
+                    }
+                ],
+                "nickname": [
+                    {
+                        "type": "string",
+                        "name": "nickname",
+                        "dbType": "VarChar, 64"
+                    }
+                ],
+                "money": [
+                    {
+                        "type": "int",
+                        "name": "money",
+                        "default": "0"
+                    }
+                ],
+                "score": [
+                    {
+                        "type": "int",
+                        "name": "score",
+                        "default": "0"
+                    },
+                    {
+                        "type": "DateTime",
+                        "name": "scoreTime",
+                        "default": "current_timestamp()"
+                    }
+                ],
+                "lastLoginTime": [
+                    {
+                        "type": "DateTime",
+                        "name": "lastLoginTime",
+                        "default": "current_timestamp()"
+                    }
+                ]
+            }
+        },
+        "Mail": {
+            "name": "Mail",
+            "keyword": "mail",
+            "syncKeyword": "mails",
+            "insertDB": [
+                "acctId",
+                "senderId",
+                "senderName",
+                "title",
+                "content",
+                "appendix",
+                "createTime"
+            ],
+            "selectDB": [
+                "",
+                "uid",
+                "acctId"
+            ],
+            "deleteDB": [
+                "uid",
+                "acctId"
+            ],
+            "clientOnChanged": false,
+            "sortOrder": 2,
+            "using": [
+                "using KissFramework;",
+                "using System;"
+            ],
+            "mainNetObject": "Account",
+            "key": [
+                {
+                    "name": "index_acctId",
+                    "list": [
+                        "acctId"
+                    ]
+                }
+            ],
+            "attributes": {
+                "uid": [
+                    {
+                        "type": "int",
+                        "name": "uid",
+                        "primary": true,
+                        "AUTO_INCREMENT": true
+                    },
+                    {
+                        "type": "int",
+                        "name": "acctId",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "int",
+                        "name": "senderId",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "senderName",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "title",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "content",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "appendix",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "DateTime",
+                        "name": "createTime",
+                        "dontUpdate": true
+                    }
+                ],
+                "wasRead": [
+                    {
+                        "type": "byte",
+                        "name": "wasRead",
+                        "default": "0"
+                    },
+                    {
+                        "type": "byte",
+                        "name": "received",
+                        "default": "0"
+                    }
+                ]
+            }
+        },
+        "Item": {
+            "name": "Item",
+            "keyword": "item",
+            "syncKeyword": "items",
+            "selectDB": [
+                "",
+                "acctId"
+            ],
+            "deleteDB": [
+                "acctId",
+                "uid"
+            ],
+            "clientOnChanged": true,
+            "sortOrder": 3,
+            "using": [
+                "using KissFramework;",
+                "using System;"
+            ],
+            "mainNetObject": "Account",
+            "key": [
+                {
+                    "name": "index_acctId",
+                    "list": [
+                        "acctId"
+                    ]
+                }
+            ],
+            "attributes": {
+                "uid": [
+                    {
+                        "type": "int",
+                        "name": "uid",
+                        "primary": true,
+                        "AUTO_INCREMENT": true
+                    },
+                    {
+                        "type": "int",
+                        "name": "itemId",
+                        "dontUpdate": true
+                    },
+                    {
+                        "type": "int",
+                        "name": "acctId",
+                        "dontUpdate": true
+                    }
+                ],
+                "count": [
+                    {
+                        "type": "int",
+                        "name": "count"
+                    }
+                ]
+            }
+        },
+        "SignIn": {
+            "name": "SignIn",
+            "keyword": "signIn",
+            "syncKeyword": "signIn",
+            "insertDB": [
+                "acctId"
+            ],
+            "selectDB": [
+                "acctId"
+            ],
+            "deleteDB": [
+                "acctId"
+            ],
+            "clientOnChanged": true,
+            "sortOrder": 4,
+            "using": [
+                "using KissFramework;",
+                "using System;"
+            ],
+            "mainNetObject": "Account",
+            "attributes": {
+                "acctId": [
+                    {
+                        "type": "int",
+                        "name": "acctId",
+                        "primary": true
+                    }
+                ],
+                "month": [
+                    {
+                        "type": "int",
+                        "name": "month",
+                        "default": ""
+                    }
+                ],
+                "signInList": [
+                    {
+                        "type": "string",
+                        "name": "signInList",
+                        "default": ""
+                    }
+                ],
+                "vipSignInList": [
+                    {
+                        "type": "string",
+                        "name": "vipSignInList",
+                        "default": ""
+                    }
+                ]
+            }
+        }
+    }
+}

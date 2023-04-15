@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KissServerFramework", "KissServerFramework\KissServerFramework.csproj", "{2BA0C545-F7DD-4577-9AE7-EDC831B48C45}"
-	ProjectSection(ProjectDependencies) = postProject
-		{470B053C-D208-4F57-9613-5540F22467AF} = {470B053C-D208-4F57-9613-5540F22467AF}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KissGennerateRIDL", "KissGennerateRIDL\KissGennerateRIDL.csproj", "{470B053C-D208-4F57-9613-5540F22467AF}"
 EndProject

@@ -19,6 +19,8 @@ namespace KissGennerateRIDL
         {
             //args [folder path] [debug] [serial number]
             string folder = Environment.CurrentDirectory;
+            if (folder.EndsWith("\\OldTools"))
+                folder = folder.Substring(0, folder.Length - 9);
             bool debug = false;
             //Normally don't need serial number, just in case of too much requests make our server overload.
             //We will give priority to user with serial number.

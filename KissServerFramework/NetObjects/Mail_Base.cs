@@ -1,7 +1,7 @@
 /*
-* C#Like
-* Copyright © 2022-2023 RongRong
-* It's automatic generate by Mail.ridl, don't modify this file.
+* C#Like 
+* Copyright © 2022-2023 RongRong 
+* It's automatic generate by KissEditor, don't modify this file. 
 */
 
 using KissFramework;
@@ -15,7 +15,7 @@ using System.Data;
 namespace KissServerFramework
 {
 	/// <summary>
-	/// This class is automatic generate by 'Mail.ridl', for easy to interact with database. Don't modify this file.
+	/// This class is automatic generate by 'KissEditor', for easy to interact with database. Don't modify this file.
 	/// </summary>
 	public abstract class Mail_Base : NetObject<Mail, Account>
 	{
@@ -29,7 +29,7 @@ namespace KissServerFramework
 			_sb_.Append("UPDATE `Mail` SET ");
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			if (HasUpdate(2ul))//UpdateMask.extInfoMask)
+			if (HasUpdate(2ul))//UpdateMask.wasReadMask)
 			{
 				_sb_.Append("`wasRead` = @wasRead,");
 				_param_ = new MySqlParameter("@wasRead", MySqlDbType.Byte);
@@ -156,7 +156,7 @@ namespace KissServerFramework
 
 		#region Insert
 		/// <summary>
-		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database.
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (All params)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
 		public static void Insert(int acctId, int senderId, string senderName, string title, string content, string appendix, DateTime createTime, byte wasRead, byte received, Action<Mail, string> _callback_ = null)
@@ -214,15 +214,66 @@ namespace KissServerFramework
 				});
 		}
 
+		/// <summary>
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (Selected param only.)
+		/// </summary>
+		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
+		public static void Insert(int acctId, int senderId, string senderName, string title, string content, string appendix, DateTime createTime, Action<Mail, string> _callback_ = null)
+		{
+			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
+			MySqlParameter _param_;
+			_param_ = new MySqlParameter("@acctId", MySqlDbType.Int32);
+			_param_.Value = acctId;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@senderId", MySqlDbType.Int32);
+			_param_.Value = senderId;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@senderName", MySqlDbType.String);
+			_param_.Value = senderName;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@title", MySqlDbType.String);
+			_param_.Value = title;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@content", MySqlDbType.String);
+			_param_.Value = content;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@appendix", MySqlDbType.String);
+			_param_.Value = appendix;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@createTime", MySqlDbType.DateTime);
+			_param_.Value = createTime;
+			_ps_.Add(_param_);
+			Insert("INSERT INTO `Mail` (`acctId`,`senderId`,`senderName`,`title`,`content`,`appendix`,`createTime`) VALUES (@acctId,@senderId,@senderName,@title,@content,@appendix,@createTime)",
+				_ps_,
+				(_lastInsertedId_, _error_) =>
+				{
+					Mail _mail_ = null;
+					if (string.IsNullOrEmpty(_error_))
+					{
+						_mail_ = new Mail();
+						_mail_._attribute_.uid = (int)_lastInsertedId_;
+						_mail_._attribute_.acctId = acctId;
+						_mail_._attribute_.senderId = senderId;
+						_mail_._attribute_.senderName = senderName;
+						_mail_._attribute_.title = title;
+						_mail_._attribute_.content = content;
+						_mail_._attribute_.appendix = appendix;
+						_mail_._attribute_.createTime = createTime;
+					}
+					if (_callback_ != null)
+						_callback_(_mail_, _error_);
+				});
+		}
+
 		#endregion //Insert
 
 		#region Property
 		public enum UpdateMask : ulong
 		{
 			UseSendMask_ = 0ul,
-			baseInfoMask = 1ul,
-			extInfoMask = 2ul,
-			AllMask_ = ulong.MaxValue
+			uidMask = 1ul,
+			wasReadMask = 2ul,
+			AllMask_ = 3ul
 		};
 
 		[KissJsonSerializeProperty]
@@ -312,7 +363,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.wasRead = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.extInfoMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.wasReadMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				if (_mainObject_ != null)
 					_mainObject_.SyncToClient("mails");
@@ -326,7 +377,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.received = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.extInfoMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.wasReadMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				if (_mainObject_ != null)
 					_mainObject_.SyncToClient("mails");
@@ -344,7 +395,7 @@ namespace KissServerFramework
 		{
 			JSONData _jsonData_ = JSONData.NewDictionary();
 			if (mask == 0ul) mask = GetSendMask();
-			if ((mask & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((mask & 1ul) > 0)//UpdateMask.uidMask
 			{
 				_jsonData_["uid"] = _attribute_.uid;
 				_jsonData_["acctId"] = _attribute_.acctId;
@@ -355,7 +406,7 @@ namespace KissServerFramework
 				_jsonData_["appendix"] = _attribute_.appendix;
 				_jsonData_["createTime"] = _attribute_.createTime;
 			}
-			if ((mask & 2ul) > 0)//UpdateMask.extInfoMask
+			if ((mask & 2ul) > 0)//UpdateMask.wasReadMask
 			{
 				_jsonData_["wasRead"] = _attribute_.wasRead;
 				_jsonData_["received"] = _attribute_.received;
@@ -371,7 +422,7 @@ namespace KissServerFramework
 		/// </summary>
 		public void Clone(Mail _source_, ulong _mask_ = ulong.MaxValue)
 			{
-			if ((_mask_ & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((_mask_ & 1ul) > 0)//UpdateMask.uidMask
 			{
 				uid = _source_.uid;
 				acctId = _source_.acctId;
@@ -382,7 +433,7 @@ namespace KissServerFramework
 				appendix = _source_.appendix;
 				createTime = _source_.createTime;
 			}
-			if ((_mask_ & 2ul) > 0)//UpdateMask.extInfoMask
+			if ((_mask_ & 2ul) > 0)//UpdateMask.wasReadMask
 			{
 				wasRead = _source_.wasRead;
 				received = _source_.received;
@@ -395,7 +446,7 @@ namespace KissServerFramework
 		[KissJsonDontSerialize]
 		private struct _fields_
 		{
-			// baseInfo
+			// uid
 			public int uid;
 			public int acctId;
 			public int senderId;
@@ -405,7 +456,7 @@ namespace KissServerFramework
 			public string appendix;
 			public DateTime createTime;
 		
-			// extInfo
+			// wasRead
 			public byte wasRead;
 			public byte received;
 		

@@ -1,7 +1,7 @@
 /*
-* C#Like
-* Copyright © 2022-2023 RongRong
-* It's automatic generate by SignIn.ridl, don't modify this file.
+* C#Like 
+* Copyright © 2022-2023 RongRong 
+* It's automatic generate by KissEditor, don't modify this file. 
 */
 
 using KissFramework;
@@ -15,7 +15,7 @@ using System.Data;
 namespace KissServerFramework
 {
 	/// <summary>
-	/// This class is automatic generate by 'SignIn.ridl', for easy to interact with database. Don't modify this file.
+	/// This class is automatic generate by 'KissEditor', for easy to interact with database. Don't modify this file.
 	/// </summary>
 	public abstract class SignIn_Base : NetObject<SignIn, Account>
 	{
@@ -29,21 +29,21 @@ namespace KissServerFramework
 			_sb_.Append("UPDATE `SignIn` SET ");
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			if (HasUpdate(2ul))//UpdateMask.monthInfoMask)
+			if (HasUpdate(2ul))//UpdateMask.monthMask)
 			{
 				_sb_.Append("`month` = @month,");
 				_param_ = new MySqlParameter("@month", MySqlDbType.Int32);
 				_param_.Value = month;
 				_ps_.Add(_param_);
 			}
-			if (HasUpdate(4ul))//UpdateMask.signInInfoMask)
+			if (HasUpdate(4ul))//UpdateMask.signInListMask)
 			{
 				_sb_.Append("`signInList` = @signInList,");
 				_param_ = new MySqlParameter("@signInList", MySqlDbType.String);
 				_param_.Value = signInList;
 				_ps_.Add(_param_);
 			}
-			if (HasUpdate(8ul))//UpdateMask.vipSignInInfoMask)
+			if (HasUpdate(8ul))//UpdateMask.vipSignInListMask)
 			{
 				_sb_.Append("`vipSignInList` = @vipSignInList,");
 				_param_ = new MySqlParameter("@vipSignInList", MySqlDbType.String);
@@ -126,7 +126,7 @@ namespace KissServerFramework
 
 		#region Insert
 		/// <summary>
-		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database.
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (All params)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
 		public static void Insert(int acctId, int month, string signInList, string vipSignInList, Action<SignIn, string> _callback_ = null)
@@ -163,17 +163,43 @@ namespace KissServerFramework
 				});
 		}
 
+		/// <summary>
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (Selected param only.)
+		/// </summary>
+		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
+		public static void Insert(int acctId, Action<SignIn, string> _callback_ = null)
+		{
+			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
+			MySqlParameter _param_;
+			_param_ = new MySqlParameter("@acctId", MySqlDbType.Int32);
+			_param_.Value = acctId;
+			_ps_.Add(_param_);
+			Insert("INSERT INTO `SignIn` (`acctId`) VALUES (@acctId)",
+				_ps_,
+				(_lastInsertedId_, _error_) =>
+				{
+					SignIn _signIn_ = null;
+					if (string.IsNullOrEmpty(_error_))
+					{
+						_signIn_ = new SignIn();
+						_signIn_._attribute_.acctId = acctId;
+					}
+					if (_callback_ != null)
+						_callback_(_signIn_, _error_);
+				});
+		}
+
 		#endregion //Insert
 
 		#region Property
 		public enum UpdateMask : ulong
 		{
 			UseSendMask_ = 0ul,
-			uidInfoMask = 1ul,
-			monthInfoMask = 2ul,
-			signInInfoMask = 4ul,
-			vipSignInInfoMask = 8ul,
-			AllMask_ = ulong.MaxValue
+			acctIdMask = 1ul,
+			monthMask = 2ul,
+			signInListMask = 4ul,
+			vipSignInListMask = 8ul,
+			AllMask_ = 15ul
 		};
 
 		[KissJsonSerializeProperty]
@@ -193,7 +219,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.month = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.monthInfoMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.monthMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				if (_mainObject_ != null)
 					_mainObject_.SyncToClient("signIn");
@@ -207,7 +233,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.signInList = value;
-				MarkUpdateAndModifyMask(4ul);//UpdateMask.signInInfoMask
+				MarkUpdateAndModifyMask(4ul);//UpdateMask.signInListMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				if (_mainObject_ != null)
 					_mainObject_.SyncToClient("signIn");
@@ -221,7 +247,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.vipSignInList = value;
-				MarkUpdateAndModifyMask(8ul);//UpdateMask.vipSignInInfoMask
+				MarkUpdateAndModifyMask(8ul);//UpdateMask.vipSignInListMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				if (_mainObject_ != null)
 					_mainObject_.SyncToClient("signIn");
@@ -239,13 +265,13 @@ namespace KissServerFramework
 		{
 			JSONData _jsonData_ = JSONData.NewDictionary();
 			if (mask == 0ul) mask = GetSendMask();
-			if ((mask & 1ul) > 0)//UpdateMask.uidInfoMask
+			if ((mask & 1ul) > 0)//UpdateMask.acctIdMask
 				_jsonData_["acctId"] = _attribute_.acctId;
-			if ((mask & 2ul) > 0)//UpdateMask.monthInfoMask
+			if ((mask & 2ul) > 0)//UpdateMask.monthMask
 				_jsonData_["month"] = _attribute_.month;
-			if ((mask & 4ul) > 0)//UpdateMask.signInInfoMask
+			if ((mask & 4ul) > 0)//UpdateMask.signInListMask
 				_jsonData_["signInList"] = _attribute_.signInList;
-			if ((mask & 8ul) > 0)//UpdateMask.vipSignInInfoMask
+			if ((mask & 8ul) > 0)//UpdateMask.vipSignInListMask
 				_jsonData_["vipSignInList"] = _attribute_.vipSignInList;
 			_jsonData_["_uid_"] = _uid_;
 			_jsonData_["_sendMask_"] = mask;
@@ -258,13 +284,13 @@ namespace KissServerFramework
 		/// </summary>
 		public void Clone(SignIn _source_, ulong _mask_ = ulong.MaxValue)
 			{
-			if ((_mask_ & 1ul) > 0)//UpdateMask.uidInfoMask
+			if ((_mask_ & 1ul) > 0)//UpdateMask.acctIdMask
 				acctId = _source_.acctId;
-			if ((_mask_ & 2ul) > 0)//UpdateMask.monthInfoMask
+			if ((_mask_ & 2ul) > 0)//UpdateMask.monthMask
 				month = _source_.month;
-			if ((_mask_ & 4ul) > 0)//UpdateMask.signInInfoMask
+			if ((_mask_ & 4ul) > 0)//UpdateMask.signInListMask
 				signInList = _source_.signInList;
-			if ((_mask_ & 8ul) > 0)//UpdateMask.vipSignInInfoMask
+			if ((_mask_ & 8ul) > 0)//UpdateMask.vipSignInListMask
 				vipSignInList = _source_.vipSignInList;
 		}
 
@@ -274,16 +300,16 @@ namespace KissServerFramework
 		[KissJsonDontSerialize]
 		private struct _fields_
 		{
-			// uidInfo
+			// acctId
 			public int acctId;
 		
-			// monthInfo
+			// month
 			public int month;
 		
-			// signInInfo
+			// signInList
 			public string signInList;
 		
-			// vipSignInInfo
+			// vipSignInList
 			public string vipSignInList;
 		
 		}

@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y $(OutDir)$(TargetName).dll $(SolutionDir)KissServerFramework&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).exe $(SolutionDir)KissServerFramework&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).deps.json $(SolutionDir)KissServerFramework&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).runtimeconfig.json $(SolutionDir)KissServerFramework" />
+    <Exec Command="xcopy /y $(OutDir)$(TargetName).dll $(SolutionDir)KissServerFramework\OldTools&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).exe $(SolutionDir)KissServerFramework\OldTools&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).deps.json $(SolutionDir)KissServerFramework\OldTools&#xD;&#xA;xcopy /y $(OutDir)$(TargetName).runtimeconfig.json $(SolutionDir)KissServerFramework\OldTools" />
   </Target>
 
 </Project>

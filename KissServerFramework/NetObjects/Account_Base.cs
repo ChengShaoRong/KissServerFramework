@@ -1,7 +1,7 @@
 /*
-* C#Like
-* Copyright © 2022-2023 RongRong
-* It's automatic generate by Account.ridl, don't modify this file.
+* C#Like 
+* Copyright © 2022-2023 RongRong 
+* It's automatic generate by KissEditor, don't modify this file. 
 */
 
 using KissFramework;
@@ -15,7 +15,7 @@ using System.Data;
 namespace KissServerFramework
 {
 	/// <summary>
-	/// This class is automatic generate by 'Account.ridl', for easy to interact with database. Don't modify this file.
+	/// This class is automatic generate by 'KissEditor', for easy to interact with database. Don't modify this file.
 	/// </summary>
 	public abstract class Account_Base : MainNetObject<Account>
 	{
@@ -29,21 +29,21 @@ namespace KissServerFramework
 			_sb_.Append("UPDATE `Account` SET ");
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			if (HasUpdate(2ul))//UpdateMask.loginInfoMask)
+			if (HasUpdate(2ul))//UpdateMask.nameMask)
 			{
 				_sb_.Append("`name` = @name,");
-				_param_ = new MySqlParameter("@name", MySqlDbType.VarChar,64);
+				_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 				_param_.Value = name;
 				_ps_.Add(_param_);
 				_sb_.Append("`password` = @password,");
-				_param_ = new MySqlParameter("@password", MySqlDbType.VarChar,64);
+				_param_ = new MySqlParameter("@password", MySqlDbType.VarChar, 64);
 				_param_.Value = password;
 				_ps_.Add(_param_);
 			}
 			if (HasUpdate(4ul))//UpdateMask.nicknameMask)
 			{
 				_sb_.Append("`nickname` = @nickname,");
-				_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar,64);
+				_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar, 64);
 				_param_.Value = nickname;
 				_ps_.Add(_param_);
 			}
@@ -151,7 +151,7 @@ namespace KissServerFramework
 		{
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar,64);
+			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 			_param_.Value = name;
 			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
@@ -223,7 +223,7 @@ namespace KissServerFramework
 		{
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar,64);
+			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 			_param_.Value = name;
 			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
@@ -235,7 +235,7 @@ namespace KissServerFramework
 
 		#region Insert
 		/// <summary>
-		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database.
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (All params)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
 		public static void Insert(int acctType, DateTime createTime, string name, string password, string nickname, int money, int score, DateTime scoreTime, DateTime lastLoginTime, Action<Account, string> _callback_ = null)
@@ -248,13 +248,13 @@ namespace KissServerFramework
 			_param_ = new MySqlParameter("@createTime", MySqlDbType.Timestamp);
 			_param_.Value = createTime;
 			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar,64);
+			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 			_param_.Value = name;
 			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@password", MySqlDbType.VarChar,64);
+			_param_ = new MySqlParameter("@password", MySqlDbType.VarChar, 64);
 			_param_.Value = password;
 			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar,64);
+			_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar, 64);
 			_param_.Value = nickname;
 			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@money", MySqlDbType.Int32);
@@ -294,6 +294,46 @@ namespace KissServerFramework
 				});
 		}
 
+		/// <summary>
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (Selected param only.)
+		/// </summary>
+		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
+		public static void Insert(int acctType, string name, string password, string nickname, Action<Account, string> _callback_ = null)
+		{
+			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
+			MySqlParameter _param_;
+			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
+			_param_.Value = acctType;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
+			_param_.Value = name;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@password", MySqlDbType.VarChar, 64);
+			_param_.Value = password;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar, 64);
+			_param_.Value = nickname;
+			_ps_.Add(_param_);
+			Insert("INSERT INTO `Account` (`acctType`,`name`,`password`,`nickname`) VALUES (@acctType,@name,@password,@nickname)",
+				_ps_,
+				(_lastInsertedId_, _error_) =>
+				{
+					Account _account_ = null;
+					if (string.IsNullOrEmpty(_error_))
+					{
+						_account_ = new Account();
+						_account_._attribute_.uid = (int)_lastInsertedId_;
+						_account_.RegisterSync();
+						_account_._attribute_.acctType = acctType;
+						_account_._attribute_.name = name;
+						_account_._attribute_.password = password;
+						_account_._attribute_.nickname = nickname;
+					}
+					if (_callback_ != null)
+						_callback_(_account_, _error_);
+				});
+		}
+
 		#endregion //Insert
 
 		#region Sync
@@ -301,66 +341,10 @@ namespace KissServerFramework
 		{
 			int _uid_ = _attribute_.uid;
 			Func<int, PlayerBase> _getPlayer_ = GetPlayer();
-			RegisterSync("items", (player) => { Item.Sync(items.Values, player, "items", 100); }, _getPlayer_, _uid_, 0.1f);
 			RegisterSync("mails", (player) => { Mail.Sync(mails.Values, player, "mails", 50); }, _getPlayer_, _uid_, 0.1f);
+			RegisterSync("items", (player) => { Item.Sync(items.Values, player, "items", 100); }, _getPlayer_, _uid_, 0.1f);
 			RegisterSync("signIn", (player) => { signIn.Sync(player, "signIn"); }, _getPlayer_, _uid_, 0.1f);
 			RegisterSync("account", (player) => { Sync(player, "account"); }, _getPlayer_, _uid_, 0.1f);
-		}
-		[KissJsonDontSerialize]
-		public Dictionary<int, Item> items = new Dictionary<int, Item>();
-		public void SetItems(List<Item> items)
-		{
-			if (items.Count == 0)
-				return;
-			if (this.items.Count == 0)
-			{
-				foreach (Item one in items)
-				{
-					one._mainObject_ = this;
-					one.MarkModifyMaskAll();
-					this.items[one.itemId] = one;
-				}
-			}
-			else
-			{
-				foreach (Item one in items)
-				{
-					if (!this.items.ContainsKey(one.itemId))
-					{
-						one._mainObject_ = this;
-						one.MarkModifyMaskAll();
-						this.items[one.itemId] = one;
-					}
-					else
-					{
-						Item old = this.items[one.itemId];
-						if (old.uid != one.uid)
-						{
-							old.count += one.count;
-							one.Delete();
-						}
-					}
-				}
-			}
-			SyncToClient("items");
-		}
-		public Item GetItem(int itemId)
-		{
-			if (items.TryGetValue(itemId, out Item _item_))
-				return _item_;
-			return null;
-		}
-		public bool RemoveItem(int itemId)
-		{
-			Item _item_ = GetItem(itemId);
-			if (_item_ != null)
-			{
-				items.Remove(itemId);
-				_item_.Delete();
-				AddToDelete("items", itemId);
-				return true;
-			}
-			return false;
 		}
 		[KissJsonDontSerialize]
 		public Dictionary<int, Mail> mails = new Dictionary<int, Mail>();
@@ -410,6 +394,62 @@ namespace KissServerFramework
 			return false;
 		}
 		[KissJsonDontSerialize]
+		public Dictionary<int, Item> items = new Dictionary<int, Item>();
+		public void SetItems(List<Item> items)
+		{
+			if (items.Count == 0)
+				return;
+			if (this.items.Count == 0)
+			{
+				foreach (Item one in items)
+				{
+					one._mainObject_ = this;
+					one.MarkModifyMaskAll();
+					this.items[one.itemId] = one;
+				}
+			}
+			else
+			{
+				foreach (Item one in items)
+				{
+					if (!this.items.ContainsKey(one.itemId))
+					{
+						one._mainObject_ = this;
+						one.MarkModifyMaskAll();
+						this.items[one.itemId] = one;
+					}
+					else
+					{
+						Item old = this.items[one.itemId];
+						if (old.itemId != one.itemId)
+						{
+							old.count += one.count;
+							one.Delete();
+						}
+					}
+				}
+			}
+			SyncToClient("items");
+		}
+		public Item GetItem(int itemId)
+		{
+			if (items.TryGetValue(itemId, out Item _item_))
+				return _item_;
+			return null;
+		}
+		public bool RemoveItem(int itemId)
+		{
+			Item _item_ = GetItem(itemId);
+			if (_item_ != null)
+			{
+				items.Remove(itemId);
+				_item_.Delete();
+				AddToDelete("items", itemId);
+				return true;
+			}
+			return false;
+		}
+		[KissJsonDontSerialize]
 		public SignIn signIn = null;
 		public SignIn GetSignIn()
 		{
@@ -434,14 +474,14 @@ namespace KissServerFramework
 		}
 		public void MarkModifyMaskAllSubSystem()
 		{
-			foreach(Item one in items.Values)
-				one.MarkModifyMaskAll();
 			foreach(Mail one in mails.Values)
+				one.MarkModifyMaskAll();
+			foreach(Item one in items.Values)
 				one.MarkModifyMaskAll();
 			signIn.MarkModifyMaskAll();
 		}
-		public virtual void OnItemLoaded() { }
 		public virtual void OnMailLoaded() { }
+		public virtual void OnItemLoaded() { }
 		public virtual void OnSignInLoaded() { }
 		public virtual void OnAllSubSystemLoaded() { }
 		public void LoadAllSubSystem(PlayerBase player)
@@ -449,23 +489,6 @@ namespace KissServerFramework
 			int _uid_ = _attribute_.uid;
 			Func<int, PlayerBase> _getPlayer_ = GetPlayer();
 			int _count_ = 3;
-			Item.SelectByAcctId(_uid_, (items, error) =>
-			{
-				if (string.IsNullOrEmpty(error))
-				{
-					PlayerBase _playerNow_ = _getPlayer_(_uid_);
-					if (_playerNow_ != null && player == _playerNow_)
-					{
-						SetItems(items);
-						OnItemLoaded();
-					}
-				}
-				else
-					Logger.LogError(error);
-				_count_--;
-				if (_count_ <= 0)
-					OnAllSubSystemLoaded();
-			});
 			Mail.SelectByAcctId(_uid_, (mails, error) =>
 			{
 				if (string.IsNullOrEmpty(error))
@@ -475,6 +498,23 @@ namespace KissServerFramework
 					{
 						SetMails(mails);
 						OnMailLoaded();
+					}
+				}
+				else
+					Logger.LogError(error);
+				_count_--;
+				if (_count_ <= 0)
+					OnAllSubSystemLoaded();
+			});
+			Item.SelectByAcctId(_uid_, (items, error) =>
+			{
+				if (string.IsNullOrEmpty(error))
+				{
+					PlayerBase _playerNow_ = _getPlayer_(_uid_);
+					if (_playerNow_ != null && player == _playerNow_)
+					{
+						SetItems(items);
+						OnItemLoaded();
 					}
 				}
 				else
@@ -506,13 +546,13 @@ namespace KissServerFramework
 		public enum UpdateMask : ulong
 		{
 			UseSendMask_ = 0ul,
-			baseInfoMask = 1ul,
-			loginInfoMask = 2ul,
+			uidMask = 1ul,
+			nameMask = 2ul,
 			nicknameMask = 4ul,
 			moneyMask = 8ul,
 			scoreMask = 16ul,
 			lastLoginTimeMask = 32ul,
-			AllMask_ = ulong.MaxValue
+			AllMask_ = 63ul
 		};
 
 		[KissJsonSerializeProperty]
@@ -552,7 +592,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.name = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.loginInfoMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.nameMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -565,7 +605,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.password = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.loginInfoMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.nameMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -647,13 +687,13 @@ namespace KissServerFramework
 		{
 			JSONData _jsonData_ = JSONData.NewDictionary();
 			if (mask == 0ul) mask = GetSendMask();
-			if ((mask & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((mask & 1ul) > 0)//UpdateMask.uidMask
 			{
 				_jsonData_["uid"] = _attribute_.uid;
 				_jsonData_["acctType"] = _attribute_.acctType;
 				_jsonData_["createTime"] = _attribute_.createTime;
 			}
-			if ((mask & 2ul) > 0)//UpdateMask.loginInfoMask
+			if ((mask & 2ul) > 0)//UpdateMask.nameMask
 			{
 				_jsonData_["name"] = _attribute_.name;
 				_jsonData_["password"] = _attribute_.password;
@@ -680,13 +720,13 @@ namespace KissServerFramework
 		/// </summary>
 		public void Clone(Account _source_, ulong _mask_ = ulong.MaxValue)
 			{
-			if ((_mask_ & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((_mask_ & 1ul) > 0)//UpdateMask.uidMask
 			{
 				uid = _source_.uid;
 				acctType = _source_.acctType;
 				createTime = _source_.createTime;
 			}
-			if ((_mask_ & 2ul) > 0)//UpdateMask.loginInfoMask
+			if ((_mask_ & 2ul) > 0)//UpdateMask.nameMask
 			{
 				name = _source_.name;
 				password = _source_.password;
@@ -710,12 +750,12 @@ namespace KissServerFramework
 		[KissJsonDontSerialize]
 		private struct _fields_
 		{
-			// baseInfo
+			// uid
 			public int uid;
 			public int acctType;
 			public DateTime createTime;
 		
-			// loginInfo
+			// name
 			public string name;
 			public string password;
 		

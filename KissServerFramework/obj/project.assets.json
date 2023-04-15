@@ -57,11 +57,11 @@
           "lib/netstandard2.0/KissCSV.dll": {}
         }
       },
-      "KissFramework/1.0.10": {
+      "KissFramework/1.0.12": {
         "type": "package",
         "dependencies": {
           "KissCSV": "1.0.4",
-          "KissJSON": "1.0.3",
+          "KissJSON": "1.0.5",
           "MySql.Data": "8.0.30",
           "SAEA.Http": "7.0.0.3",
           "SAEA.WebSocket": "7.0.0.3"
@@ -73,7 +73,7 @@
           "lib/netstandard2.0/KissFramework.dll": {}
         }
       },
-      "KissJSON/1.0.3": {
+      "KissJSON/1.0.5": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/KissJSON.dll": {}
@@ -682,30 +682,31 @@
         "lib/netstandard2.0/KissCSV.dll"
       ]
     },
-    "KissFramework/1.0.10": {
-      "sha512": "SS1KO9xZWKGokYl2VevCJN3yulcrrCm+UcvIE36fbHbskMe+Rpw3x7ZlRDuN2mRnmFSp47MASgcZNUNUgMm/3Q==",
+    "KissFramework/1.0.12": {
+      "sha512": "n1S35mo3+tSb9NwY6evVxkxvwIQ9rxirxwuN+zboieyTX76gihcpRdhphAQZ+s8GnLpfS8DIrwhofxT8ACmdtw==",
       "type": "package",
-      "path": "kissframework/1.0.10",
+      "path": "kissframework/1.0.12",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.txt",
         "icon.png",
-        "kissframework.1.0.10.nupkg.sha512",
+        "kissframework.1.0.12.nupkg.sha512",
         "kissframework.nuspec",
         "lib/netstandard2.0/KissFramework.dll"
       ]
     },
-    "KissJSON/1.0.3": {
-      "sha512": "3LZMfWAMhvj98C4DhbZayl7GAVz7uNZiXP8j5FoFfJHM4n9nbYb0bOQZGOlWawSZSNlbweZlkA1HVpwVi3+LmQ==",
+    "KissJSON/1.0.5": {
+      "sha512": "0qil3lH1LaF2G7G819c3LzPMVDzoZy83F6cMzezS1K29iqFvFRj7qnr6OrdqpW1wP9P6GeiLSqji7BFDzJXDEA==",
       "type": "package",
-      "path": "kissjson/1.0.3",
+      "path": "kissjson/1.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "LICENSE",
         "README.md",
         "icon.png",
-        "kissjson.1.0.3.nupkg.sha512",
+        "kissjson.1.0.5.nupkg.sha512",
         "kissjson.nuspec",
         "lib/netstandard2.0/KissJSON.dll"
       ]
@@ -2383,7 +2384,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "KissFramework >= 1.0.10"
+      "KissFramework >= 1.0.12"
     ]
   },
   "packageFolders": {
@@ -2432,7 +2433,7 @@
         "dependencies": {
           "KissFramework": {
             "target": "Package",
-            "version": "[1.0.10, )"
+            "version": "[1.0.12, )"
           }
         },
         "imports": [

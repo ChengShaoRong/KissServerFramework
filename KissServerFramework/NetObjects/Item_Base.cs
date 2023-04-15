@@ -1,7 +1,7 @@
 /*
-* C#Like
-* Copyright © 2022-2023 RongRong
-* It's automatic generate by Item.ridl, don't modify this file.
+* C#Like 
+* Copyright © 2022-2023 RongRong 
+* It's automatic generate by KissEditor, don't modify this file. 
 */
 
 using KissFramework;
@@ -15,7 +15,7 @@ using System.Data;
 namespace KissServerFramework
 {
 	/// <summary>
-	/// This class is automatic generate by 'Item.ridl', for easy to interact with database. Don't modify this file.
+	/// This class is automatic generate by 'KissEditor', for easy to interact with database. Don't modify this file.
 	/// </summary>
 	public abstract class Item_Base : NetObject<Item, Account>
 	{
@@ -133,7 +133,7 @@ namespace KissServerFramework
 
 		#region Insert
 		/// <summary>
-		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database.
+		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (All params)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
 		public static void Insert(int itemId, int acctId, int count, Action<Item, string> _callback_ = null)
@@ -173,9 +173,9 @@ namespace KissServerFramework
 		public enum UpdateMask : ulong
 		{
 			UseSendMask_ = 0ul,
-			baseInfoMask = 1ul,
+			uidMask = 1ul,
 			countMask = 2ul,
-			AllMask_ = ulong.MaxValue
+			AllMask_ = 3ul
 		};
 
 		[KissJsonSerializeProperty]
@@ -233,7 +233,7 @@ namespace KissServerFramework
 		{
 			JSONData _jsonData_ = JSONData.NewDictionary();
 			if (mask == 0ul) mask = GetSendMask();
-			if ((mask & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((mask & 1ul) > 0)//UpdateMask.uidMask
 			{
 				_jsonData_["uid"] = _attribute_.uid;
 				_jsonData_["itemId"] = _attribute_.itemId;
@@ -252,7 +252,7 @@ namespace KissServerFramework
 		/// </summary>
 		public void Clone(Item _source_, ulong _mask_ = ulong.MaxValue)
 			{
-			if ((_mask_ & 1ul) > 0)//UpdateMask.baseInfoMask
+			if ((_mask_ & 1ul) > 0)//UpdateMask.uidMask
 			{
 				uid = _source_.uid;
 				itemId = _source_.itemId;
@@ -268,7 +268,7 @@ namespace KissServerFramework
 		[KissJsonDontSerialize]
 		private struct _fields_
 		{
-			// baseInfo
+			// uid
 			public int uid;
 			public int itemId;
 			public int acctId;
