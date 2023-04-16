@@ -7,7 +7,7 @@
 > * **面向对象设计, 客户端和服务器端传输的是JSONData对象或自定义类对象**  
 > * **无需用到SQL知识, 仅需定义数据库表结构,即可使用自动获取的数据库数据. 修改数据后, 后台会全自动异步更新至数据库和客户端**
 ***
-本文档的英文版: [English](https://github.com/ChengShaoRong/KissServerFramework/README.md). 
+本文档的英文版: [English](https://github.com/ChengShaoRong/KissServerFramework/). 
 
 # 安装
 ***
@@ -107,7 +107,7 @@ https://github.com/ChengShaoRong/KissServerFramework.git
 以示范项目为例:  
 >* 客户端(Player类),通过账号登录管理器(AccountManager类)获取账号(Account类)信息,成功登录后,全自动加载所包含的子系统且全自动同步到客户端. 这里的示范子系统分别是邮件系统(Mail类)和物品系统(Item类)和签到系统(SignIn类).  
 >* 使用KissEditor编辑里面用到的类.  
-![Image text](https://github.com/ChengShaoRong/KissServerFramework/image/editor.png)
+![Image text](https://raw.githubusercontent.com/ChengShaoRong/KissServerFramework/main/image/editor.png)
 >* 每个编辑器生成的类将生成2个服务器用的XXXX类(用于自定义修改)和XXXX_Base类(禁止手动修改), 2个C#Like完整版用的XXXX类(用于自定义修改)和XXXX_Base类(禁止手动修改), 1个C#Like免费版用的XXXX类(用于自定义修改,为何没有XXXX_Base类?因为C#Like免费版热更新脚本不支持继承.).  
 >* 代码里修改自动生成的类属性时候, 将会自动触发**后台线程**的保存数据库和同步客户端的操作.   
-![Image text](https://github.com/ChengShaoRong/KissServerFramework/image/classDiagram.png)
+![Image text](https://raw.githubusercontent.com/ChengShaoRong/KissServerFramework/main/image/classDiagram.png)

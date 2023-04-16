@@ -7,7 +7,7 @@ This is a most simple and stupid IOCP server framework, base on KISS rule. It de
 >* **Object-oriented design. The client and server transmit JSONData objects or user-defined class objects**.  
 >* **No need to use SQL knowledge, just define the database table structure, then you can use the automatically acquired database data. After modified the data,  will update it to the database and client automatically and asynchronously in the background**. 
 ***
-Read this in other languages: [中文](https://github.com/ChengShaoRong/KissServerFramework/README_Chinese.md). 
+Read this in other languages: [中文](https://github.com/ChengShaoRong/KissServerFramework/blob/main/README_Chinese.md). 
 
 # Install
 Use directly to copy this solution for modification. Use Git or checkout with SVN using the web URL:  
@@ -110,10 +110,8 @@ https://github.com/ChengShaoRong/KissServerFramework.git
 * **No need to use SQL knowledge, just define the database table structure, then you can use the automatically acquired database data. After modified the data,  will update it to the database and client automatically and asynchronously in the background**
 e. g. Demo server:  
 >* Client(class Player) get account infomation(class Account) from the account manager(class AccountManager). After login success, will automatically load all subsystem and sync to client.  The demo project include 3 subsystem : mail system(class Mail), item system(class Item) and sign in system(class SignIn).  
->* You need define 4 RIDL file, include 'account.ridl', 'item.ridl', 'mail.ridl', 'signIn.ridl'.  
->* By KissGennerateRIDL project, each 'XXXX.ridl' file will automatically generate 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified and will be covered while 'XXXX.ridl' file was modified) for the server and 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified and will be covered while 'XXXX.ridl' file was modified) for C#Like and 1 class(Why not has class XXXX_Base? Because not support inherit class in free version.) for C#LikeFree.  
->* Modify the attribute in class XXXX_Base will active save into database and sync to client action in **background thread**. Spme attributes may be no need to be update, you can modify RIDL file exclude it,  e. g. itemId and acctId in class Item will never change in logic.  
-![Image text](https://github.com/ChengShaoRong/KissServerFramework/image/classDiagram.png)
-
-
-
+>* Edit classes by 'KissEditor' tool.  
+![Image text](https://raw.githubusercontent.com/ChengShaoRong/KissServerFramework/main/image/editor.png)
+>* By 'KissEditor', each class will automatically generate 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified) for the server and 2 classes(class XXXX can be customized or modified, but XXXX_Base can't be modified) for C#Like and 1 class(Why not has class XXXX_Base? Because not support inherit class in free version.) for C#LikeFree.  
+>* Modify the attribute in class XXXX_Base will active save into database and sync to client action in **background thread**. Some attributes may be no need to be update, you can modify RIDL file exclude it,  e. g. itemId and acctId in class Item will never change in logic.  
+![Image text](https://raw.githubusercontent.com/ChengShaoRong/KissServerFramework/main/image/classDiagram.png)
