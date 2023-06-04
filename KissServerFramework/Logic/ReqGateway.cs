@@ -45,12 +45,10 @@ namespace KissServerFramework
         /// <summary>
         /// The Client request server config, that run in main thread.
         /// </summary>
-        public static string OnHttpMessage(JSONData jsonData, string ip, Action<string> delayCallback)
+        [WebMethod(UriName = "ReqGateway")]
+        public static string OnHttpReqGateway(string ip, bool isFreeVersion = false, int serverId = 0)
         {
-            Logger.LogInfo($"ReqGateway : jsonData = {jsonData} from {ip}");
-            //Get the params from client, that depend on your logic.
-            bool isFreeVersion = jsonData["isFreeVersion"];
-            int serverId = jsonData["serverId"];
+            Logger.LogInfo($"ReqGateway : serverId = {serverId}, isFreeVersion = {isFreeVersion} from {ip}");
 
             //Build the server config by client params, that depend on your logic.
             JSONData cbJsonData = JSONData.NewDictionary();

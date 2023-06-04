@@ -29,12 +29,15 @@ namespace KissServerFramework
 			_sb_.Append("UPDATE `Account` SET ");
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			if (HasUpdate(2ul))//UpdateMask.nameMask)
+			if (HasUpdate(1ul))//UpdateMask.uidMask)
 			{
 				_sb_.Append("`name` = @name,");
 				_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 				_param_.Value = name;
 				_ps_.Add(_param_);
+			}
+			if (HasUpdate(2ul))//UpdateMask.passwordMask)
+			{
 				_sb_.Append("`password` = @password,");
 				_param_ = new MySqlParameter("@password", MySqlDbType.VarChar, 64);
 				_param_.Value = password;
@@ -54,7 +57,18 @@ namespace KissServerFramework
 				_param_.Value = money;
 				_ps_.Add(_param_);
 			}
-			if (HasUpdate(16ul))//UpdateMask.scoreMask)
+			if (HasUpdate(16ul))//UpdateMask.tokenMask)
+			{
+				_sb_.Append("`token` = @token,");
+				_param_ = new MySqlParameter("@token", MySqlDbType.VarChar, 64);
+				_param_.Value = token;
+				_ps_.Add(_param_);
+				_sb_.Append("`tokenExpireTime` = @tokenExpireTime,");
+				_param_ = new MySqlParameter("@tokenExpireTime", MySqlDbType.DateTime);
+				_param_.Value = tokenExpireTime;
+				_ps_.Add(_param_);
+			}
+			if (HasUpdate(32ul))//UpdateMask.scoreMask)
 			{
 				_sb_.Append("`score` = @score,");
 				_param_ = new MySqlParameter("@score", MySqlDbType.Int32);
@@ -65,11 +79,22 @@ namespace KissServerFramework
 				_param_.Value = scoreTime;
 				_ps_.Add(_param_);
 			}
-			if (HasUpdate(32ul))//UpdateMask.lastLoginTimeMask)
+			if (HasUpdate(64ul))//UpdateMask.lastLoginTimeMask)
 			{
 				_sb_.Append("`lastLoginTime` = @lastLoginTime,");
 				_param_ = new MySqlParameter("@lastLoginTime", MySqlDbType.DateTime);
 				_param_.Value = lastLoginTime;
+				_ps_.Add(_param_);
+				_sb_.Append("`lastLoginIP` = @lastLoginIP,");
+				_param_ = new MySqlParameter("@lastLoginIP", MySqlDbType.VarChar, 64);
+				_param_.Value = lastLoginIP;
+				_ps_.Add(_param_);
+			}
+			if (HasUpdate(128ul))//UpdateMask.emailMask)
+			{
+				_sb_.Append("`email` = @email,");
+				_param_ = new MySqlParameter("@email", MySqlDbType.VarChar, 64);
+				_param_.Value = email;
 				_ps_.Add(_param_);
 			}
 			_waitingUpdate_ = false;
@@ -96,14 +121,18 @@ namespace KissServerFramework
 		{
 			_attribute_.uid = Convert.ToInt32(data["uid"]);
 			_attribute_.acctType = Convert.ToInt32(data["acctType"]);
-			_attribute_.createTime = Convert2DateTime(data["createTime"]);
 			_attribute_.name = Convert.ToString(data["name"]);
+			_attribute_.createTime = Convert2DateTime(data["createTime"]);
 			_attribute_.password = Convert.ToString(data["password"]);
 			_attribute_.nickname = Convert.ToString(data["nickname"]);
 			_attribute_.money = Convert.ToInt32(data["money"]);
+			_attribute_.token = Convert.ToString(data["token"]);
+			_attribute_.tokenExpireTime = Convert2DateTime(data["tokenExpireTime"]);
 			_attribute_.score = Convert.ToInt32(data["score"]);
 			_attribute_.scoreTime = Convert2DateTime(data["scoreTime"]);
 			_attribute_.lastLoginTime = Convert2DateTime(data["lastLoginTime"]);
+			_attribute_.lastLoginIP = Convert.ToString(data["lastLoginIP"]);
+			_attribute_.email = Convert.ToString(data["email"]);
 			RegisterSync();
 		}
 		/// <summary>
@@ -128,20 +157,17 @@ namespace KissServerFramework
 			Select("SELECT * FROM `Account` WHERE `uid` = @uid", _ps_, _callback_);
 		}
 		/// <summary>
-		/// Select data from database by uid and acctType. The select operation run in background thread.The callback action occur after database operation done.
+		/// Select data from database by email. The select operation run in background thread.The callback action occur after database operation done.
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done.</param>
-		public static void SelectByUidAndAcctType(int uid, int acctType, Action<List<Account>, string> _callback_)
+		public static void SelectByEmail(string email, Action<List<Account>, string> _callback_)
 		{
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
-			_param_ = new MySqlParameter("@uid", MySqlDbType.Int32);
-			_param_.Value = uid;
+			_param_ = new MySqlParameter("@email", MySqlDbType.VarChar, 64);
+			_param_.Value = email;
 			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
-			_param_.Value = acctType;
-			_ps_.Add(_param_);
-			Select("SELECT * FROM `Account` WHERE `uid` = @uid AND `acctType` = @acctType", _ps_, _callback_);
+			Select("SELECT * FROM `Account` WHERE `email` = @email", _ps_, _callback_);
 		}
 		/// <summary>
 		/// Select data from database by name and acctType. The select operation run in background thread.The callback action occur after database operation done.
@@ -200,22 +226,6 @@ namespace KissServerFramework
 			Delete("DELETE FROM `Account` WHERE `uid` = @uid", _ps_, _callback_);
 		}
 		/// <summary>
-		/// Delete data from database by uid and acctType. The delete operation run in background thread.The callback action occur after database operation done.
-		/// </summary>
-		/// <param name="_callback_">This callback occur after database operation done.</param>
-		public static void DeleteByUidAndAcctType(int uid, int acctType, Action<int, string> _callback_)
-		{
-			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
-			MySqlParameter _param_;
-			_param_ = new MySqlParameter("@uid", MySqlDbType.Int32);
-			_param_.Value = uid;
-			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
-			_param_.Value = acctType;
-			_ps_.Add(_param_);
-			Delete("DELETE FROM `Account` WHERE `uid` = @uid AND `acctType` = @acctType", _ps_, _callback_);
-		}
-		/// <summary>
 		/// Delete data from database by name and acctType. The delete operation run in background thread.The callback action occur after database operation done.
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done.</param>
@@ -238,18 +248,18 @@ namespace KissServerFramework
 		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (All params)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
-		public static void Insert(int acctType, DateTime createTime, string name, string password, string nickname, int money, int score, DateTime scoreTime, DateTime lastLoginTime, Action<Account, string> _callback_ = null)
+		public static void Insert(int acctType, string name, DateTime createTime, string password, string nickname, int money, string token, DateTime tokenExpireTime, int score, DateTime scoreTime, DateTime lastLoginTime, string lastLoginIP, string email, Action<Account, string> _callback_ = null)
 		{
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
 			_param_ = new MySqlParameter("@acctType", MySqlDbType.Int32);
 			_param_.Value = acctType;
 			_ps_.Add(_param_);
-			_param_ = new MySqlParameter("@createTime", MySqlDbType.Timestamp);
-			_param_.Value = createTime;
-			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@name", MySqlDbType.VarChar, 64);
 			_param_.Value = name;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@createTime", MySqlDbType.Timestamp);
+			_param_.Value = createTime;
 			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@password", MySqlDbType.VarChar, 64);
 			_param_.Value = password;
@@ -260,6 +270,12 @@ namespace KissServerFramework
 			_param_ = new MySqlParameter("@money", MySqlDbType.Int32);
 			_param_.Value = money;
 			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@token", MySqlDbType.VarChar, 64);
+			_param_.Value = token;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@tokenExpireTime", MySqlDbType.DateTime);
+			_param_.Value = tokenExpireTime;
+			_ps_.Add(_param_);
 			_param_ = new MySqlParameter("@score", MySqlDbType.Int32);
 			_param_.Value = score;
 			_ps_.Add(_param_);
@@ -269,7 +285,13 @@ namespace KissServerFramework
 			_param_ = new MySqlParameter("@lastLoginTime", MySqlDbType.DateTime);
 			_param_.Value = lastLoginTime;
 			_ps_.Add(_param_);
-			Insert("INSERT INTO `Account` (`acctType`,`createTime`,`name`,`password`,`nickname`,`money`,`score`,`scoreTime`,`lastLoginTime`) VALUES (@acctType,@createTime,@name,@password,@nickname,@money,@score,@scoreTime,@lastLoginTime)",
+			_param_ = new MySqlParameter("@lastLoginIP", MySqlDbType.VarChar, 64);
+			_param_.Value = lastLoginIP;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@email", MySqlDbType.VarChar, 64);
+			_param_.Value = email;
+			_ps_.Add(_param_);
+			Insert("INSERT INTO `Account` (`acctType`,`name`,`createTime`,`password`,`nickname`,`money`,`token`,`tokenExpireTime`,`score`,`scoreTime`,`lastLoginTime`,`lastLoginIP`,`email`) VALUES (@acctType,@name,@createTime,@password,@nickname,@money,@token,@tokenExpireTime,@score,@scoreTime,@lastLoginTime,@lastLoginIP,@email)",
 				_ps_,
 				(_lastInsertedId_, _error_) =>
 				{
@@ -278,16 +300,20 @@ namespace KissServerFramework
 					{
 						_account_ = new Account();
 						_account_._attribute_.uid = (int)_lastInsertedId_;
-						_account_.RegisterSync();
 						_account_._attribute_.acctType = acctType;
-						_account_._attribute_.createTime = createTime;
 						_account_._attribute_.name = name;
+						_account_._attribute_.createTime = createTime;
 						_account_._attribute_.password = password;
 						_account_._attribute_.nickname = nickname;
 						_account_._attribute_.money = money;
+						_account_._attribute_.token = token;
+						_account_._attribute_.tokenExpireTime = tokenExpireTime;
 						_account_._attribute_.score = score;
 						_account_._attribute_.scoreTime = scoreTime;
 						_account_._attribute_.lastLoginTime = lastLoginTime;
+						_account_._attribute_.lastLoginIP = lastLoginIP;
+						_account_._attribute_.email = email;
+						_account_.RegisterSync();
 					}
 					if (_callback_ != null)
 						_callback_(_account_, _error_);
@@ -298,7 +324,7 @@ namespace KissServerFramework
 		/// Insert into database. The insert operation run in background thread. The callback occur after insert into database. (Selected param only.)
 		/// </summary>
 		/// <param name="_callback_">This callback occur after database operation done. You can ignore it if you don't care about the callback.</param>
-		public static void Insert(int acctType, string name, string password, string nickname, Action<Account, string> _callback_ = null)
+		public static void Insert(int acctType, string name, string password, string nickname, string token, DateTime tokenExpireTime, string email, Action<Account, string> _callback_ = null)
 		{
 			List<MySqlParameter> _ps_ = new List<MySqlParameter>();
 			MySqlParameter _param_;
@@ -314,7 +340,16 @@ namespace KissServerFramework
 			_param_ = new MySqlParameter("@nickname", MySqlDbType.VarChar, 64);
 			_param_.Value = nickname;
 			_ps_.Add(_param_);
-			Insert("INSERT INTO `Account` (`acctType`,`name`,`password`,`nickname`) VALUES (@acctType,@name,@password,@nickname)",
+			_param_ = new MySqlParameter("@token", MySqlDbType.VarChar, 64);
+			_param_.Value = token;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@tokenExpireTime", MySqlDbType.DateTime);
+			_param_.Value = tokenExpireTime;
+			_ps_.Add(_param_);
+			_param_ = new MySqlParameter("@email", MySqlDbType.VarChar, 64);
+			_param_.Value = email;
+			_ps_.Add(_param_);
+			Insert("INSERT INTO `Account` (`acctType`,`name`,`password`,`nickname`,`token`,`tokenExpireTime`,`email`) VALUES (@acctType,@name,@password,@nickname,@token,@tokenExpireTime,@email)",
 				_ps_,
 				(_lastInsertedId_, _error_) =>
 				{
@@ -323,11 +358,14 @@ namespace KissServerFramework
 					{
 						_account_ = new Account();
 						_account_._attribute_.uid = (int)_lastInsertedId_;
-						_account_.RegisterSync();
 						_account_._attribute_.acctType = acctType;
 						_account_._attribute_.name = name;
 						_account_._attribute_.password = password;
 						_account_._attribute_.nickname = nickname;
+						_account_._attribute_.token = token;
+						_account_._attribute_.tokenExpireTime = tokenExpireTime;
+						_account_._attribute_.email = email;
+						_account_.RegisterSync();
 					}
 					if (_callback_ != null)
 						_callback_(_account_, _error_);
@@ -547,12 +585,14 @@ namespace KissServerFramework
 		{
 			UseSendMask_ = 0ul,
 			uidMask = 1ul,
-			nameMask = 2ul,
+			passwordMask = 2ul,
 			nicknameMask = 4ul,
 			moneyMask = 8ul,
-			scoreMask = 16ul,
-			lastLoginTimeMask = 32ul,
-			AllMask_ = 63ul
+			tokenMask = 16ul,
+			scoreMask = 32ul,
+			lastLoginTimeMask = 64ul,
+			emailMask = 128ul,
+			AllMask_ = 255ul
 		};
 
 		[KissJsonSerializeProperty]
@@ -576,6 +616,19 @@ namespace KissServerFramework
 		}
 
 		[KissJsonSerializeProperty]
+		public string name
+		{
+			get { return _attribute_.name; }
+			set
+			{
+				_attribute_.name = value;
+				MarkUpdateAndModifyMask(1ul);//UpdateMask.uidMask
+				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
+				SyncToClient("account");
+			}
+		}
+
+		[KissJsonSerializeProperty]
 		public DateTime createTime
 		{
 			get { return _attribute_.createTime; }
@@ -586,26 +639,13 @@ namespace KissServerFramework
 		}
 
 		[KissJsonSerializeProperty]
-		public string name
-		{
-			get { return _attribute_.name; }
-			set
-			{
-				_attribute_.name = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.nameMask
-				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
-				SyncToClient("account");
-			}
-		}
-
-		[KissJsonSerializeProperty]
 		public string password
 		{
 			get { return _attribute_.password; }
 			set
 			{
 				_attribute_.password = value;
-				MarkUpdateAndModifyMask(2ul);//UpdateMask.nameMask
+				MarkUpdateAndModifyMask(2ul);//UpdateMask.passwordMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -638,13 +678,39 @@ namespace KissServerFramework
 		}
 
 		[KissJsonSerializeProperty]
+		public string token
+		{
+			get { return _attribute_.token; }
+			set
+			{
+				_attribute_.token = value;
+				MarkUpdateAndModifyMask(16ul);//UpdateMask.tokenMask
+				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
+				SyncToClient("account");
+			}
+		}
+
+		[KissJsonSerializeProperty]
+		public DateTime tokenExpireTime
+		{
+			get { return _attribute_.tokenExpireTime; }
+			set
+			{
+				_attribute_.tokenExpireTime = value;
+				MarkUpdateAndModifyMask(16ul);//UpdateMask.tokenMask
+				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
+				SyncToClient("account");
+			}
+		}
+
+		[KissJsonSerializeProperty]
 		public int score
 		{
 			get { return _attribute_.score; }
 			set
 			{
 				_attribute_.score = value;
-				MarkUpdateAndModifyMask(16ul);//UpdateMask.scoreMask
+				MarkUpdateAndModifyMask(32ul);//UpdateMask.scoreMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -657,7 +723,7 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.scoreTime = value;
-				MarkUpdateAndModifyMask(16ul);//UpdateMask.scoreMask
+				MarkUpdateAndModifyMask(32ul);//UpdateMask.scoreMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -670,7 +736,33 @@ namespace KissServerFramework
 			set
 			{
 				_attribute_.lastLoginTime = value;
-				MarkUpdateAndModifyMask(32ul);//UpdateMask.lastLoginTimeMask
+				MarkUpdateAndModifyMask(64ul);//UpdateMask.lastLoginTimeMask
+				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
+				SyncToClient("account");
+			}
+		}
+
+		[KissJsonSerializeProperty]
+		public string lastLoginIP
+		{
+			get { return _attribute_.lastLoginIP; }
+			set
+			{
+				_attribute_.lastLoginIP = value;
+				MarkUpdateAndModifyMask(64ul);//UpdateMask.lastLoginTimeMask
+				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
+				SyncToClient("account");
+			}
+		}
+
+		[KissJsonSerializeProperty]
+		public string email
+		{
+			get { return _attribute_.email; }
+			set
+			{
+				_attribute_.email = value;
+				MarkUpdateAndModifyMask(128ul);//UpdateMask.emailMask
 				AsyncDatabaseManager.UpdateDelayInBackgroundThread(this);
 				SyncToClient("account");
 			}
@@ -691,24 +783,32 @@ namespace KissServerFramework
 			{
 				_jsonData_["uid"] = _attribute_.uid;
 				_jsonData_["acctType"] = _attribute_.acctType;
+				_jsonData_["name"] = _attribute_.name;
 				_jsonData_["createTime"] = _attribute_.createTime;
 			}
-			if ((mask & 2ul) > 0)//UpdateMask.nameMask
-			{
-				_jsonData_["name"] = _attribute_.name;
+			if ((mask & 2ul) > 0)//UpdateMask.passwordMask
 				_jsonData_["password"] = _attribute_.password;
-			}
 			if ((mask & 4ul) > 0)//UpdateMask.nicknameMask
 				_jsonData_["nickname"] = _attribute_.nickname;
 			if ((mask & 8ul) > 0)//UpdateMask.moneyMask
 				_jsonData_["money"] = _attribute_.money;
-			if ((mask & 16ul) > 0)//UpdateMask.scoreMask
+			if ((mask & 16ul) > 0)//UpdateMask.tokenMask
+			{
+				_jsonData_["token"] = _attribute_.token;
+				_jsonData_["tokenExpireTime"] = _attribute_.tokenExpireTime;
+			}
+			if ((mask & 32ul) > 0)//UpdateMask.scoreMask
 			{
 				_jsonData_["score"] = _attribute_.score;
 				_jsonData_["scoreTime"] = _attribute_.scoreTime;
 			}
-			if ((mask & 32ul) > 0)//UpdateMask.lastLoginTimeMask
+			if ((mask & 64ul) > 0)//UpdateMask.lastLoginTimeMask
+			{
 				_jsonData_["lastLoginTime"] = _attribute_.lastLoginTime;
+				_jsonData_["lastLoginIP"] = _attribute_.lastLoginIP;
+			}
+			if ((mask & 128ul) > 0)//UpdateMask.emailMask
+				_jsonData_["email"] = _attribute_.email;
 			_jsonData_["_uid_"] = _uid_;
 			_jsonData_["_sendMask_"] = mask;
 			return _jsonData_;
@@ -724,24 +824,32 @@ namespace KissServerFramework
 			{
 				uid = _source_.uid;
 				acctType = _source_.acctType;
+				name = _source_.name;
 				createTime = _source_.createTime;
 			}
-			if ((_mask_ & 2ul) > 0)//UpdateMask.nameMask
-			{
-				name = _source_.name;
+			if ((_mask_ & 2ul) > 0)//UpdateMask.passwordMask
 				password = _source_.password;
-			}
 			if ((_mask_ & 4ul) > 0)//UpdateMask.nicknameMask
 				nickname = _source_.nickname;
 			if ((_mask_ & 8ul) > 0)//UpdateMask.moneyMask
 				money = _source_.money;
-			if ((_mask_ & 16ul) > 0)//UpdateMask.scoreMask
+			if ((_mask_ & 16ul) > 0)//UpdateMask.tokenMask
+			{
+				token = _source_.token;
+				tokenExpireTime = _source_.tokenExpireTime;
+			}
+			if ((_mask_ & 32ul) > 0)//UpdateMask.scoreMask
 			{
 				score = _source_.score;
 				scoreTime = _source_.scoreTime;
 			}
-			if ((_mask_ & 32ul) > 0)//UpdateMask.lastLoginTimeMask
+			if ((_mask_ & 64ul) > 0)//UpdateMask.lastLoginTimeMask
+			{
 				lastLoginTime = _source_.lastLoginTime;
+				lastLoginIP = _source_.lastLoginIP;
+			}
+			if ((_mask_ & 128ul) > 0)//UpdateMask.emailMask
+				email = _source_.email;
 		}
 
 		#endregion //JSON
@@ -753,10 +861,10 @@ namespace KissServerFramework
 			// uid
 			public int uid;
 			public int acctType;
+			public string name;
 			public DateTime createTime;
 		
-			// name
-			public string name;
+			// password
 			public string password;
 		
 			// nickname
@@ -765,12 +873,20 @@ namespace KissServerFramework
 			// money
 			public int money;
 		
+			// token
+			public string token;
+			public DateTime tokenExpireTime;
+		
 			// score
 			public int score;
 			public DateTime scoreTime;
 		
 			// lastLoginTime
 			public DateTime lastLoginTime;
+			public string lastLoginIP;
+		
+			// email
+			public string email;
 		
 		}
 		private _fields_ _attribute_ = new _fields_();

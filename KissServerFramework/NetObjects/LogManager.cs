@@ -18,6 +18,12 @@ namespace KissServerFramework
 	/// </summary>
 	public sealed class LogManager
 	{
+		public enum LogAccountType
+        {
+			Login,
+			Logout,
+			Register
+        }
 		public static void LogAccount(int acctId, int logType, string ip)
 		{
 			string strSQL = $"INSERT INTO `LogAccount` (`acctId`,`logType`,`ip`,`createTime`) VALUES (@acctId,@logType,@ip,@createTime)";

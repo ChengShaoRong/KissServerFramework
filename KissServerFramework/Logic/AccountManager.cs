@@ -267,8 +267,9 @@ namespace KissServerFramework
                     //New account if not exist account
                     if (accounts.Count == 0)
                     {
-                        Account.Insert(jsonData["acctType"], DateTime.Now, jsonData["name"], jsonData["password"],
-                            "Guest" + FrameworkBase.GetRand(100000), 0, 0, DateTime.Now, DateTime.Now,
+                        DateTime dtNow = DateTime.Now;
+                        Account.Insert(jsonData["acctType"], jsonData["name"], dtNow, jsonData["password"],
+                            "Guest" + FrameworkBase.GetRand(100000), 0, "", dtNow, 0, dtNow, dtNow, "", "", 
                             (newAccount, error) =>
                             {
                                 //select account occur error

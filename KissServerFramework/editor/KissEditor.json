@@ -10,11 +10,11 @@
     "exportFolderClientFree": "",
     "namespace": "KissServerFramework",
     "md5": {
-        "Account": "",
-        "Item": "",
-        "Mail": "",
-        "SignIn": "",
-        "LogManager": ""
+        "Account": "8c7f1a90baac893bf5a310a08734d7e4",
+        "Item": "ab9b9a0731a88d727d0c6bb8ef0b5165",
+        "Mail": "05c4a65212b3c11295c3c8f925dd9ac4",
+        "SignIn": "838a2b4e4991488991db6e64312d0727",
+        "LogManager": "b0d20db83e81e7820bb1a73b62015c3b"
     },
     "annotation": "/*\
 * C#Like \
@@ -135,18 +135,20 @@
                 "name",
                 "acctType",
                 "password",
-                "nickname"
+                "token",
+                "tokenExpireTime",
+                "nickname",
+                "email"
             ],
             "selectDB": [
                 "",
                 "uid",
-                "uid,acctType",
+                "email",
                 "name,acctType"
             ],
             "deleteDB": [
                 "",
                 "uid",
-                "uid,acctType",
                 "name,acctType"
             ],
             "clientOnChanged": true,
@@ -162,6 +164,12 @@
                     "list": [
                         "name",
                         "acctType"
+                    ]
+                },
+                {
+                    "name": "index_token",
+                    "list": [
+                        "token"
                     ]
                 },
                 {
@@ -220,18 +228,18 @@
                         "dontUpdate": true
                     },
                     {
+                        "type": "string",
+                        "name": "name",
+                        "dbType": "VarChar, 64"
+                    },
+                    {
                         "type": "DateTime",
                         "name": "createTime",
                         "dbType": "Timestamp",
                         "dontUpdate": true
                     }
                 ],
-                "name": [
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "dbType": "VarChar, 64"
-                    },
+                "password": [
                     {
                         "type": "string",
                         "name": "password",
@@ -252,6 +260,18 @@
                         "default": "0"
                     }
                 ],
+                "token": [
+                    {
+                        "type": "string",
+                        "name": "token",
+                        "dbType": "VarChar, 64"
+                    },
+                    {
+                        "type": "DateTime",
+                        "name": "tokenExpireTime",
+                        "default": "current_timestamp()"
+                    }
+                ],
                 "score": [
                     {
                         "type": "int",
@@ -269,6 +289,18 @@
                         "type": "DateTime",
                         "name": "lastLoginTime",
                         "default": "current_timestamp()"
+                    },
+                    {
+                        "type": "string",
+                        "name": "lastLoginIP",
+                        "dbType": "VarChar, 64"
+                    }
+                ],
+                "email": [
+                    {
+                        "type": "string",
+                        "name": "email",
+                        "dbType": "VarChar, 64"
                     }
                 ]
             }

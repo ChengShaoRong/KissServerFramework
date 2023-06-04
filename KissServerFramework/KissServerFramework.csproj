@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="KissFramework" Version="1.0.12" />
+    <PackageReference Include="KissFramework" Version="1.0.16" />
   </ItemGroup>
 
   <ItemGroup>

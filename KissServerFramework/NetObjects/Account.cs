@@ -11,6 +11,28 @@ namespace KissServerFramework
     /// </summary>
     public sealed class Account : Account_Base
     {
+        public override bool IsHttp
+        {
+            get
+            {
+                return acctType == (int)AccountType.BuildInHTTP;
+            }
+        }
+        /// <summary>
+        /// JSON data for HTTP
+        /// </summary>
+        public JSONData jsonDataHTTP
+        {
+            get
+            {
+                JSONData data = ToJSONData();
+                data["msg"] = "";
+                data.RemoveKey("_uid_");
+                data.RemoveKey("_sendMask_");
+                data.RemoveKey("password");
+                return data;
+            }
+        }
         public enum AccountType
         {
             BuildIn,//Build-in account
@@ -20,6 +42,7 @@ namespace KissServerFramework
                             //-> send to our server.
                             //-> our server confirm that uid and token from third party server by HTTP(s).
                             //-> login success/fail
+            BuildInHTTP,//Build-in HTTP account, this account type won't sync to client automatically due to HTTP(s) is short connection
         }
         public override void OnItemLoaded()
         {

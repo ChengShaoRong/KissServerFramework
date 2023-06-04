@@ -8,7 +8,7 @@ namespace KissServerFramework
         {
             SetConsoleCtrlHandler(new HandlerRoutine(ConsoleCtrlCheck), true);
             //Start main thread loop, normally you don't need to modify it
-            new Framework().Run();
+            Framework.Instance.Run();
         }
         #region Check window exit
         static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
