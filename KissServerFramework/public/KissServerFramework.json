@@ -44,7 +44,7 @@
   ],
   "tokenExpireTime": 24,
   "passwordHashSalt": "K/SdftgfDJf~wusa#d(djk8@Mdm8_xT,SFwq]DSF!DFdwWqSFmbvIlO8^SdGsfg2{XC3@dfHL5Xs|dk;DS&%FS*FVrgd6fdg3",
-  "mailDontSend": false,
+  "mailDontSend": true,
   "mailHost": "smtp.163.com",
   "mailName": "You mail address",
   "mailPassword": "You mail token",
