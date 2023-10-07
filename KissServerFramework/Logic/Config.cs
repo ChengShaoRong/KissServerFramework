@@ -126,5 +126,21 @@ namespace KissServerFramework
         /// Reset password mail content(zh for chinese)
         /// </summary>
         public string mailResetContentZH = "<div><div style='margin-left:4%%;'><p>您好：</p><p style='text-indent: 2em;'>您正在使用密保邮箱重置密码功能. 请点下面链接完成修改密码操作.</p><p style='text-indent: 2em;display: block;word-break: break-all;'>Link Address：<a style='text-decoration: none;' href='{0}'>{1}</a></p><ul style='color: rgb(169, 169, 189);font-size: 18px;'><li>为了保证你的账号安全,该链接仅在10分钟内有效.</li><li>如果无法点击该链接,请复制上面的URL链接到浏览器里浏览.</li><li>本邮件请勿回复.</li></ul></div>";
+        /// <summary>
+        /// The max count of player can leave message.
+        /// </summary>
+        public int maxMessages = 1000;
+        /// <summary>
+        /// The password for message manager, for limit who can answer the question.
+        /// </summary>
+        public string messagePassword = "KL]kj8L3#-(A1DmZ";
+        /// <summary>
+        /// GM IP, you can protect your secure operation.
+        /// </summary>
+        public string gmIP = "127.0.0.1";
+        /// <summary>
+        /// Each IP max save message count in every 30 minutes
+        /// </summary>
+        public int saveMessageCount = 3;
     }
 }

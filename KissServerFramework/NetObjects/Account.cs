@@ -106,12 +106,14 @@ namespace KissServerFramework
 
                 }, Framework.config.accountCacheTime);
         }
+
         /// <summary>
         /// Change item count
         /// </summary>
         /// <param name="itemId">item id</param>
         /// <param name="count">item count</param>
         /// <param name="logType">type for log in database, default is 0</param>
+        /// <returns>Change item action whether success</returns>
         public bool ChangeItem(int itemId, int count, int logType = 0)
         {
             if (count == 0)
@@ -128,6 +130,8 @@ namespace KissServerFramework
                 {
                     Item.Insert(itemId, uid, count, (newItem, error) =>
                     {
+                        if (string.IsNullOrEmpty(error))
+                            return;
                         item = GetItem(itemId);
                         if (item != null)//Has exist the item due to was add same item id while inserting into DB. It probably happen!!!
                         {

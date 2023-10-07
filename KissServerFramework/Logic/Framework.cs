@@ -86,7 +86,8 @@ namespace KissServerFramework
             //Sample for using event timer
             RaiseEvent(ChatRoomManager.Instance.Update, 60f);//we call 'ChatRoomManager.Instance.Update' in every 60 seconds.
             RaiseEvent(HttpAccountManager.Instance.UpdateEveryHour, 3600f);
-            RaiseEvent(ForceCheckCacheFile, 1f);
+            //RaiseEvent(ForceCheckCacheFile, 1f);
+            HttpMessageManager.InitMessage();
         }
         [CommandMethod]
         public static void Reload()
