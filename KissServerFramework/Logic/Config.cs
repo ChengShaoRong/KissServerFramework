@@ -81,11 +81,11 @@ namespace KissServerFramework
         /// <summary>
         /// Mail name
         /// </summary>
-        public string mailName = "teachmeplay@163.com";
+        public string mailName = "*@163.com";
         /// <summary>
         /// Mail password
         /// </summary>
-        public string mailPassword = "DLYYSGIUSCRZLPCG";
+        public string mailPassword = "********";
         /// <summary>
         /// Verify mail url
         /// </summary>
@@ -130,10 +130,6 @@ namespace KissServerFramework
         /// The max count of player can leave message.
         /// </summary>
         public int maxMessages = 1000;
-        /// <summary>
-        /// The password for message manager, for limit who can answer the question.
-        /// </summary>
-        public string messagePassword = "KL]kj8L3#-(A1DmZ";
         /// <summary>
         /// GM IP, you can protect your secure operation.
         /// </summary>

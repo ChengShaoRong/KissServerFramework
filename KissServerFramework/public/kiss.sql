@@ -25,6 +25,26 @@ CREATE TABLE `file` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `message`
+--
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `message` (
+	`uid` bigint(20) NOT NULL AUTO_INCREMENT,
+	`title` text NOT NULL,
+	`question` text NOT NULL,
+	`nickname` text NOT NULL,
+	`ip` text NOT NULL,
+	`hideIp` tinyint(4) NOT NULL,
+	`contact` text NOT NULL,
+	`createTime` timestamp NULL DEFAULT NULL,
+	`answer` text NOT NULL,
+	`answerTime` timestamp NULL DEFAULT NULL,
+	PRIMARY KEY (`uid`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `logaccount` in LogManager
 --
 DROP TABLE IF EXISTS `logaccount`;
